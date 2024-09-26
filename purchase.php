@@ -1,5 +1,4 @@
 <?php
-ob_start();
 session_start();
 
 include "config.php";
@@ -20,6 +19,11 @@ if ($result) {
         $items[] = $row;
     }
 }
+$result = mysqli_query($con, "SELECT MAX(receipt_no) AS receipt_no FROM purchase");
+$row = $result ? mysqli_fetch_assoc($result) : null;
+$next_receipt_no = $row && $row['receipt_no'] ? $row['receipt_no'] + 1 : 1;
+
+mysqli_close($con);
 
 ?>
 <!DOCTYPE html>
@@ -66,7 +70,7 @@ if ($result) {
                                             <div class="row">
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Receipt No</label>
-                                                    <input type="number" name="receipt_no" class="form-control form-control-sm" value="1" readonly />
+                                                    <input type="number" name="receipt_no" class="form-control form-control-sm" value="<?php echo $next_receipt_no; ?>" readonly />
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
@@ -86,7 +90,7 @@ if ($result) {
                                                 </div>
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Invoice No</label>
-                                                    <input type="text" name="invoice_text" class="form-control form-control-sm" required />
+                                                    <input type="text" name="invoice_no" class="form-control form-control-sm" required />
                                                 </div>
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Invoice Date</label>

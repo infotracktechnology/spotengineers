@@ -3,30 +3,33 @@ ob_start();
 session_start();
 include "config.php";
 
-// Function to fetch data from the database
-function fetchData($con, $query) {
-    $data = [];
-    $result = mysqli_query($con, $query);
-    if ($result) {
-        while ($row = mysqli_fetch_object($result)) {
-            $data[] = $row;
-        }
+// Fetching purchase orders
+$purchase = [];
+$query = "SELECT * FROM purchase ORDER BY supplier ASC";
+$result = mysqli_query($con, $query);
+if ($result) {
+    while ($row = mysqli_fetch_object($result)) {
+        $purchase[] = $row;
     }
-    return $data;
 }
 
-// Fetch Suppliers and Items
-$suppliers = fetchData($con, "SELECT * FROM suppliers ORDER BY supplier_name ASC");
-$items = fetchData($con, "SELECT * FROM items ORDER BY name ASC");
+// Fetching items
+$items = [];
+$query = "SELECT * FROM items ORDER BY name ASC";
+$result = mysqli_query($con, $query);
+if ($result) {
+    while ($row = mysqli_fetch_object($result)) {
+        $items[] = $row;
+    }
+}
 
-// Fetch the latest receipt number and calculate the next one
+// Getting next receipt number
 $result = mysqli_query($con, "SELECT MAX(receipt_no) AS receipt_no FROM purchase");
 $row = $result ? mysqli_fetch_assoc($result) : null;
 $next_receipt_no = $row && $row['receipt_no'] ? $row['receipt_no'] + 1 : 1;
 
 mysqli_close($con);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +52,7 @@ mysqli_close($con);
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> -->
 </head>
 
@@ -72,22 +76,19 @@ mysqli_close($con);
                                             <div class="row">
                                                 <div class="row">
                                                     <!-- Receipt Number -->
-                                                    <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Receipt No</label>
-                                                    <input type="number" name="receipt_no" class="form-control form-control-sm" value="<?php echo $next_receipt_no; ?>" readonly />
-                                                </div>
-                                                    <!-- Supplier Name -->
-                                                    <div class="col-md-3 form-group">
-                                                        <label class="col-blue">Supplier Name</label>
-                                                        <select id="supplier_name" name="supplier" class="form-control form-control-sm select2" required>
-                                                            <option value="">Select Supplier</option>
-                                                            <?php
-                                                            foreach ($suppliers as $key => $supplier) {
-                                                                echo '<option value="' . $supplier->supplier_id . '">' . $supplier->supplier_name . '</option>';
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
+                                         <!-- Receipt Number Input -->
+                      <!-- Receipt No -->
+<div class="col-md-2 form-group">
+    <label class="col-blue">Receipt No</label>
+    <input type="number" name="receipt_no" id="receipt_no" class="form-control form-control-sm" required />
+</div>
+
+<!-- Supplier Name -->
+<div class="col-md-3 form-group">
+    <label class="col-blue">Supplier Name</label>
+    <input type="text" id="supplier" name="supplier_name" class="form-control form-control-sm" readonly />
+</div>
+
 
 
                                                     <div class="col-md-2 form-group">
@@ -113,12 +114,11 @@ mysqli_close($con);
                                                         <input type="text" name="reason" class="form-control form-control-sm" required />
                                                     </div>
 
-
-                                                    <div class="col-md-3 form-group">
-                                                        <label class="col-blue">Address</label>
-                                                        <input type="text" name="address" class="form-control form-control-sm" readonly />
-                                                    </div>
-
+<!-- Address -->
+<div class="col-md-3 form-group">
+    <label class="col-blue">Address</label>
+    <input type="text" name="address" id="address" class="form-control form-control-sm" readonly />
+</div>
 
                                                     <div class="col-md-4 form-group">
                                                         <label class="col-blue">Payment Method</label>
@@ -137,7 +137,8 @@ mysqli_close($con);
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
                                                 </div>
-                                                <div class="col-md-3 form-group">
+                                               <!-- Product Name Dropdown -->
+                                               <div class="col-md-3 form-group">
                                                     <label class="col-blue">Product Name</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
@@ -146,6 +147,9 @@ mysqli_close($con);
                                                         <?php } ?>
                                                     </select>
                                                 </div>
+
+                                               
+
                                                 <div class="col-md-1 form-group">
     <label class="col-blue">Quantity</label>
     <input type="number" class="form-control form-control-sm" id="quantity" name="unit" required />
@@ -185,15 +189,15 @@ mysqli_close($con);
                                                             
                                                             <tr>
                                                                 <th>#</th>
-                                                                <th>Part No / Spare Name</th>
-                                                                <th>Rate</th>
+                                                                <th>Product Name</th>
+                                                                <th>price</th>
                                                                 <th>Qty</th>
                                                                 <th>Tax%</th>
                                                                 <th>Tax₹</th>
                                                                 <th>Total</th>
                                                                 <th>Action</th>
                                                             </tr>
-                                                            </tr>
+                                                           
                                                         </thead>
                                                         <tbody>
 
@@ -206,10 +210,7 @@ mysqli_close($con);
                                                             <label class="col-blue"> Total Price: </label>
                                                             <span id="mrpTotal">0.00</span>
                                                         </div>
-                                                        <!-- <div class="col-md-3 form-group">
-                                                            <label class="col-blue">Total Discount: </label>
-                                                            <span id="discountTotal">0.00</span>
-                                                        </div> -->
+                                                     
 
                                                         <div class="col-md-3 form-group ">
                                                             <label class="col-blue">Total Tax: </label>
@@ -244,29 +245,55 @@ mysqli_close($con);
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/bundles/datatables/datatables.min.js"></script>
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-
-
-
     <script>
-
+      
 $(document).ready(function() {
-    // Event listeners for changes in supplier and parts dropdowns
-    $('#supplier_name').change(function() {
-        var supplier_id = $(this).val();
-        if (supplier_id) {
-            $.post('get_supplier_details.php', { id: supplier_id }, function(response) {
-                $('input[name="address"]').val(response.address1);
-                $('input[name="state"]').val(response.state);
-                $('input[name="district"]').val(response.district);
-                $('input[name="gst"]').val(response.gst);
-            }, 'json');
+    let itemCounter = 1;
+    let totalPrice = 0;
+    let totalTax = 0;
+
+    function clearFields() {
+        $('input[name="unit"], input[name="mrp"], input[name="rate"], #quantity, #price, #amount, #taxPercentage, #taxAmount, input[name="total"]').val('');
+    }
+
+    function updateCalculations() {
+        const quantity = parseFloat($('#quantity').val()) || 0;
+        const price = parseFloat($('#price').val()) || 0;
+        const amount = quantity * price;
+        const taxPercentage = parseFloat($('#taxPercentage').val()) || 0;
+        const taxAmount = (amount * taxPercentage) / 100;
+        const total = amount + taxAmount;
+
+        $('#amount').val(amount.toFixed(2));
+        $('#taxAmount').val(taxAmount.toFixed(2));
+        $('input[name="total"]').val(total.toFixed(2));
+    }
+
+    function updateOverallTotals() {
+        $('#mrpTotal').text(totalPrice.toFixed(2));
+        $('#taxTotal').text(totalTax.toFixed(2));
+        $('#overallTotal').text((totalPrice + totalTax).toFixed(2));
+    }
+
+    $('#receipt_no').on('input', function() {
+        const receipt_no = $(this).val();
+        if (receipt_no) {
+            $.post('get_purchase_details.php', { receipt_no }, function(response) {
+                const data = JSON.parse(response);
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    $('#supplier').val(data.supplier_name);
+                    $('#address').val(data.address);
+                }
+            });
         } else {
-            clearSupplierDetails();
+            $('#supplier, #address').val('');
         }
     });
 
     $('#parts').change(function() {
-        var item_id = $(this).val();
+        const item_id = $(this).val();
         if (item_id) {
             $.post('get_spare_details.php', { id: item_id }, function(response) {
                 $('input[name="unit"]').val(response.unit);
@@ -275,55 +302,64 @@ $(document).ready(function() {
                 updateCalculations();
             }, 'json');
         } else {
-            clearPartDetails();
+            clearFields();
         }
     });
 
-    // Event listeners for input changes to recalculate amounts
-    $('#quantity, #price, #taxPercentage').on('input', function() {
-        updateCalculations();
+    $('#quantity, #price, #taxPercentage').on('input', updateCalculations);
+
+    $('#addItemButton').on('click', function() {
+        const productName = $('#parts option:selected').text();
+        const price = parseFloat($('#price').val()) || 0;
+        const quantity = parseFloat($('#quantity').val()) || 0;
+        const taxAmount = parseFloat($('#taxAmount').val()) || 0;
+        const total = parseFloat($('input[name="total"]').val()) || 0;
+
+        if (!productName || quantity <= 0 || price <= 0) {
+            alert('Please fill out all required fields.');
+            return;
+        }
+
+        const newRow = `
+            <tr>
+                <td>${itemCounter++}</td>
+                <td>${productName}</td>
+                <td>${price.toFixed(2)}</td>
+                <td>${quantity}</td>
+                <td>${(taxAmount / total * 100).toFixed(2)}%</td>
+                <td>${taxAmount.toFixed(2)}</td>
+                <td>${total.toFixed(2)}</td>
+                <td><button class="btn btn-danger btn-sm removeItem">Remove</button></td>
+            </tr>`;
+        $('#itemsTable tbody').append(newRow);
+
+        totalPrice += (price * quantity);
+        totalTax += taxAmount;
+        updateOverallTotals();
+
+        // Remove item from the table
+        $('.removeItem').last().on('click', function() {
+            const row = $(this).closest('tr');
+            const rowTotal = parseFloat(row.find('td').eq(6).text());
+            const rowTax = parseFloat(row.find('td').eq(5).text());
+            totalPrice -= rowTotal;
+            totalTax -= rowTax;
+            row.remove();
+            updateOverallTotals();
+        });
+
+        clearFields();
     });
 
-    // Function to update calculations for amount, tax, and total
-    function updateCalculations() {
-        // Calculate amount
-        var quantity = parseFloat($('#quantity').val()) || 0;
-        var price = parseFloat($('#price').val()) || 0;
-        var amount = quantity * price;
-        $('#amount').val(amount.toFixed(2));
-
-        // Calculate tax amount
-        var taxPercentage = parseFloat($('#taxPercentage').val()) || 0;
-        var taxAmount = (amount * taxPercentage) / 100;
-        $('#taxAmount').val(taxAmount.toFixed(2));
-
-        // Calculate total amount including tax
-        var total = amount + taxAmount;
-        $('input[name="total"]').val(total.toFixed(2));
-    }
-
-    // Function to clear supplier details
-    function clearSupplierDetails() {
-        $('input[name="address"]').val('');
-        $('input[name="state"]').val('');
-        $('input[name="district"]').val('');
-        $('input[name="gst"]').val('');
-    }
-
-    // Function to clear part details
-    function clearPartDetails() {
-        $('input[name="unit"]').val('');
-        $('input[name="mrp"]').val('');
-        $('input[name="rate"]').val('');
-        $('#quantity').val('');
-        $('#price').val('');
-        $('#amount').val('');
-        $('#taxPercentage').val('');
-        $('#taxAmount').val('');
-        $('input[name="total"]').val('');
-    }
+    $('#submitReceipt').on('click', function() {
+        const receiptNo = $('#receipt_no').val();
+        if (receiptNo) {
+            window.location.href = 'get_purchase_details.php?receipt_no=' + receiptNo;
+        } else {
+            alert('Please enter a receipt number.');
+        }
+    });
 });
-
 
 
     </script>
