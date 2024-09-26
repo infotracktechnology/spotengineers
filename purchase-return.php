@@ -78,7 +78,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
 
                                                     <div class="col-md-2 form-group">
                                                         <label class="col-blue">Invoice No</label>
-                                                        <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" required />
+                                                        <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" readonly />
                                                     </div>
 
 
