@@ -72,7 +72,7 @@ $purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inne
                                                             <td><?= $row['invoice_date'] ?></td>
                                                             <td><?= $row['supplier_name'] ?></td>
                                                             <td><?= $row['city'] ?></td>
-                                                            <td><a href="purchase-return.php?id=<?= $row['purchase_id'] ?>" class="btn btn-success text-white">Return</a></td>
+                                                            <td><a href="purchase-return.php?id=<?= $row['purchase_id'] ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a></td>
                                                         </tr>
                                                     <?php
                                                         $i++;
