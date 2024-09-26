@@ -63,7 +63,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Inventory</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="purchase.php">Purchase (Inward) </a></li>
-                    <li><a class="nav-link" href="purchase-return.php">Purchase Return</a></li>
+                    <li><a class="nav-link" href="purchases.php">Purchase Return</a></li>
                     <li><a class="nav-link" href="sales.php">Sales (Billing)</a></li>
                 </ul>
             </li>
