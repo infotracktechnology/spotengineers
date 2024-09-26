@@ -99,7 +99,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <hr class="bg-dark-gray" />
                                                 </div>
                                               
-                                               <div class="col-md-2 form-group">
+                                               <div class="col-md-3 form-group">
                                                     <label class="col-blue">Spare Name</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
@@ -121,7 +121,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                     </div>
                                     
 
-                                    <div class="col-md-2 form-group">
+                                    <div class="col-md-1 form-group">
                                         <label class="col-blue">Tax%</label>
                                         <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" />
                                     </div>
