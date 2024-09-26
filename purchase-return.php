@@ -99,7 +99,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <hr class="bg-dark-gray" />
                                                 </div>
                                               
-                                               <div class="col-md-3 form-group">
+                                               <div class="col-md-2 form-group">
                                                     <label class="col-blue">Spare Name</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
@@ -113,7 +113,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
 
                                     <div class="col-md-1 form-group">
                                         <label class="col-blue">Quantity</label>
-                                        <input type="number" class="form-control form-control-sm" id="quantity" name="unit" required />
+                                        <input type="number" class="form-control form-control-sm" id="quantity" name="quantity" />
                                     </div>
                                     <div class="col-md-2 form-group">
                                         <label class="col-blue">Buy Rate</label>
@@ -135,6 +135,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <label class="col-blue">Total</label>
                                                     <input type="text" class="form-control form-control-sm" name="total" readonly />
                                                 </div>
+
                                                 <div class="col-md-1 form-group">
                                                     <button type="button" class="btn btn-warning mt-4 btn-lg px-3 py-2" id="addItemButton">
                                                         <i class="fa fa-plus"></i>
