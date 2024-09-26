@@ -66,8 +66,8 @@ $purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inne
                                                     ?>
                                                         <tr>
                                                             <td><?= $i ?></td>
-                                                            <td><?= $row['inward_no'] ?></td>
-                                                            <td><?= $row['inward_date'] ?></td>
+                                                            <td><?= $row['receipt_no'] ?></td>
+                                                            <td><?= $row['receipt_date'] ?></td>
                                                             <td><?= $row['invoice_no'] ?></td>
                                                             <td><?= $row['invoice_date'] ?></td>
                                                             <td><?= $row['supplier_name'] ?></td>
