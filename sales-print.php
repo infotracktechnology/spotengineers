@@ -78,7 +78,7 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
      <table style="margin: 0px 0px 0px 0px;">
         <tbody>
             <tr>
-                <td width="100%"><h6 style="text-align: center;">Final Bill For Order</h6></td>   
+                <td width="100%"><h5 style="text-align: center;">Tax Invoice</h5></td>   
 
             </tr>
         </tbody>
@@ -94,8 +94,8 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
               </tr>
               
               <tr>
-                <td width="50%">Address Line: <?php echo $sale->address_line_1; ?></td>
-                <td width="50%">Address Line 2: <?php echo $sale->address_line_2; ?></td>
+                <td width="50%">Address: <?php echo $sale->address_line_1." ".$sale->address_line_2; ?></td>
+                <td width="50%">Bill Type: <?php echo $sale->bill_type; ?></td>
               </tr>
               <tr>
                 <td width="50%">City: <?php echo $sale->city; ?></td>
