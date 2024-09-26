@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 include "config.php";
 $id  = $_GET['id'];
 $purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inner join suppliers b on a.supplier=b.supplier_id where a.purchase_id = $id GROUP by a.purchase_id")->fetch_object();
-$purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_qty from purchase_items a inner join items b on a.item_id=b.item_id where a.purchase_id=$id GROUP by a.item_id")->fetch_all(MYSQLI_ASSOC);
+$purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_qty,b.item_id from purchase_items a inner join items b on a.item_id=b.item_id where a.purchase_id=$id GROUP by a.item_id")->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +104,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($purchase_items as $row) { ?>
-                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->brand.'/'. $row->name; ?></option>
+                                                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['brand'].'/'. $row['name']; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
