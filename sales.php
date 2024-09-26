@@ -138,11 +138,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 <div class="col-md-12 row">
 
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">Part No / Spare Name</label>
+                                                    <label class="col-blue">Brand / Spare Name</label>
                                                     <select name="item[]"  x-model="item.item" @change="getItem(item)" class="items">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($items as $row) { ?>
-                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->item_id . ' / ' . $row->name; ?></option>
+                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->brand. '/' . $row->name; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -186,11 +186,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 </div>
                                                 </template>
 
-                                                <div class="col-md-12 form-group">
-                                                    <p> Net Total : <span  x-html="net_total.toFixed(2)"></span><input type="hidden" name="net_total" x-model="net_total"><br>
-                                                    <input type="hidden" name="grandtotal" x-model="grandtotal">
-                                                   SGST(9%) : <span x-html="sgst.toFixed(2)"></span>&nbsp;&nbsp;&nbsp;CGST(9%) : <span x-html="cgst.toFixed(2)"></span>&nbsp;&nbsp;&nbsp;Tax Amount : <span x-html="tax_amount.toFixed(2)"></span><input type="hidden" name="tax_amount" x-model="tax_amount"><br>Grand Total : <span  x-html="grandtotal.toFixed(2)"></span></p>
-                                                </div>
+                                            
+                                                    <div class="col-md-2 form-group">
+                                                            <label class="col-blue"> Net Total: </label>
+                                                            <span  x-html="net_total.toFixed(2)"></span>
+                                                            <input type="hidden" name="net_total" x-model="net_total">
+                                                        </div>
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue">CGST(9%): </label>
+                                                            <span x-html="cgst.toFixed(2)"></span>
+                                                        </div>
+
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue">SGST(9%): </label>
+                                                            <span x-html="sgst.toFixed(2)"></span>
+                                                        </div>
+
+                                                        <div class="col-md-2 form-group ">
+                                                            <label class="col-blue">Total Tax: </label>
+                                                            <span x-html="tax_amount.toFixed(2)"></span>
+                                                            <input type="hidden" name="tax_amount" x-model="tax_amount">
+                                                        </div>
+
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue">Grand Total: </label>
+                                                            <span  x-html="grandtotal.toFixed(2)"></span>
+                                                            <input type="hidden" name="grandtotal" x-model="grandtotal">
+                                                        </div>
+                                                   
 
                                             <div class="col-md-12">
                                                 <button type="submit" class="btn btn-success">Submit</button>
