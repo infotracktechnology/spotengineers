@@ -104,7 +104,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($purchase_items as $row) { ?>
-                                                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].$row['name'].'/'. $row['brand']; ?></option>
+                                                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
