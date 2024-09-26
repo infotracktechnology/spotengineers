@@ -71,7 +71,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Reports</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="sales_report.php">Sales Register</a></li>
-                    
+                    <li><a class="nav-link" href="purchase-report.php">Purchase Register</a></li>
                 </ul>
             </li>
             <li class="dropdown">
