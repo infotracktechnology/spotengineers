@@ -54,7 +54,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="row">
+                                                
                                                 <div class="col-md-2 form-group">
                                                         <label class="col-blue">Return No</label>
                                                         <input type="number" name="return_no" class="form-control form-control-sm" value="1" readonly />
@@ -91,7 +91,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
 
                                                    
 
-                                                </div>
+                                              
 
 
                                                 <div class="col-md-12 form-group m-0">
