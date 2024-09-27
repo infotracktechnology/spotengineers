@@ -79,12 +79,12 @@ if ($result) {
 
                            <div class="col-md-3 form-group">
                                <label class="col-blue">Address Line 1</label>
-                               <input type="text" name="address_line_1" value="<?= $customer[0]->address_line_1; ?>" class="form-control form-control-sm"                    required>
+                               <input type="text" name="address_line_1" value="<?= $customer[0]->address_line_1; ?>" class="form-control form-control-sm" required>
                            </div>
 
                            <div class="col-md-3 form-group">
                                <label class="col-blue">Address Line 2</label>
-                               <input type="text" name="address_line_2" value="<?= $customer[0]->address_line_2; ?>" class="form-control form-control-sm"                    required>
+                               <input type="text" name="address_line_2" value="<?= $customer[0]->address_line_2; ?>" class="form-control form-control-sm" required>
                            </div>
 
                            <div class="col-md-3 form-group">
