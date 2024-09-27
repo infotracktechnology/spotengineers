@@ -1,34 +1,14 @@
 <?php
 ob_start();
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("location:index.php");
+    exit;
+}
 include "config.php";
-
-// Fetching purchase orders
-$purchase = [];
-$query = "SELECT * FROM purchase ORDER BY supplier ASC";
-$result = mysqli_query($con, $query);
-if ($result) {
-    while ($row = mysqli_fetch_object($result)) {
-        $purchase[] = $row;
-    }
-}
-
-// Fetching items
-$items = [];
-$query = "SELECT * FROM items ORDER BY name ASC";
-$result = mysqli_query($con, $query);
-if ($result) {
-    while ($row = mysqli_fetch_object($result)) {
-        $items[] = $row;
-    }
-}
-
-// Getting next receipt number
-$result = mysqli_query($con, "SELECT MAX(receipt_no) AS receipt_no FROM purchase");
-$row = $result ? mysqli_fetch_assoc($result) : null;
-$next_receipt_no = $row && $row['receipt_no'] ? $row['receipt_no'] + 1 : 1;
-
-mysqli_close($con);
+$id  = $_GET['id'];
+$purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inner join suppliers b on a.supplier=b.supplier_id where a.purchase_id = $id GROUP by a.purchase_id")->fetch_object();
+$purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_qty,b.item_id from purchase_items a inner join items b on a.item_id=b.item_id where a.purchase_id=$id GROUP by a.item_id")->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -74,26 +54,10 @@ mysqli_close($con);
                                         </div>
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="row">
-                                                    <!-- Receipt Number -->
-                                         <!-- Receipt Number Input -->
-                      <!-- Receipt No -->
-<div class="col-md-2 form-group">
-    <label class="col-blue">Receipt No</label>
-    <input type="number" name="receipt_no" id="receipt_no" class="form-control form-control-sm" required />
-</div>
-
-<!-- Supplier Name -->
-<div class="col-md-3 form-group">
-    <label class="col-blue">Supplier Name</label>
-    <input type="text" id="supplier" name="supplier_name" class="form-control form-control-sm" readonly />
-</div>
-
-
-
-                                                    <div class="col-md-2 form-group">
+                                                
+                                                <div class="col-md-2 form-group">
                                                         <label class="col-blue">Return No</label>
-                                                        <input type="number" name="return_no" class="form-control form-control-sm" value="<?php echo $next_receipt_no; ?>" readonly />
+                                                        <input type="number" name="return_no" class="form-control form-control-sm" value="1" readonly />
                                                     </div>
 
 
@@ -102,81 +66,76 @@ mysqli_close($con);
                                                         <input type="date" name="return_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
                                                     </div>
 
+                                                    <div class="col-md-2 form-group">
+                                                        <label class="col-blue">Receipt No</label>
+                                                        <input type="text" name="receipt_no" id="receipt_no" class="form-control form-control-sm" value="<?= $purchases->receipt_no; ?>" readonly />
+                                                    </div>
+
+                                                    <div class="col-md-3 form-group">
+                                                        <label class="col-blue">Supplier Name</label>
+                                                        <input type="text" id="supplier" name="supplier_name" class="form-control form-control-sm" value="<?= $purchases->supplier_name; ?>" readonly />
+                                                    </div>
 
                                                     <div class="col-md-2 form-group">
                                                         <label class="col-blue">Invoice No</label>
-                                                        <input type="text" name="invoice_no" class="form-control form-control-sm" required />
+                                                        <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" readonly />
                                                     </div>
 
 
-                                                    <div class="col-md-4 form-group">
-                                                        <label class="col-blue">Reason for Return</label>
-                                                        <input type="text" name="reason" class="form-control form-control-sm" required />
+
+
+                                                    <div class="col-md-3 form-group">
+                                                        <label class="col-blue">City</label>
+                                                        <input type="text" value="<?= $purchases->city; ?>" class="form-control form-control-sm" readonly />
                                                     </div>
 
-<!-- Address -->
-<div class="col-md-3 form-group">
-    <label class="col-blue">Address</label>
-    <input type="text" name="address" id="address" class="form-control form-control-sm" readonly />
-</div>
+                                                   
 
-                                                    <div class="col-md-4 form-group">
-                                                        <label class="col-blue">Payment Method</label>
-                                                        <select name="payment_method" class="form-control form-control-sm" required>
-                                                            <option value="">Select Payment Method</option>
-                                                            <option value="cash">Cash</option>
-                                                            <option value="debit">Debit</option>
-                                                            <option value="upi">UPI</option>
-                                                        </select>
-                                                    </div>
-
-                                                </div>
+                                              
 
 
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
                                                 </div>
-                                               <!-- Product Name Dropdown -->
+                                              
                                                <div class="col-md-3 form-group">
-                                                    <label class="col-blue">Product Name</label>
+                                                    <label class="col-blue">Spare Name</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
-                                                        <?php foreach ($items as $row) { ?>
-                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->item_id . ' / ' . $row->name; ?></option>
+                                                        <?php foreach ($purchase_items as $row) { ?>
+                                                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
 
                                                
 
-                                                <div class="col-md-1 form-group">
-    <label class="col-blue">Quantity</label>
-    <input type="number" class="form-control form-control-sm" id="quantity" name="unit" required />
-</div>
-<div class="col-md-2 form-group">
-    <label class="col-blue">Price</label>
-    <input type="number" class="form-control form-control-sm" id="price" name="mrp" />
-</div>
-<div class="col-md-2 form-group">
-    <label class="col-blue">Amount</label>
-    <input type="number" class="form-control form-control-sm" id="amount" name="rate" readonly />
-</div>
+                                    <div class="col-md-1 form-group">
+                                        <label class="col-blue">Quantity</label>
+                                        <input type="number" class="form-control form-control-sm" id="quantity" name="quantity" />
+                                    </div>
+                                    <div class="col-md-2 form-group">
+                                        <label class="col-blue">Buy Rate</label>
+                                        <input type="number" class="form-control form-control-sm" id="price" name="mrp" />
+                                    </div>
+                                    
 
-<div class="col-md-2 form-group">
-    <label class="col-blue">Tax%</label>
-    <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" />
-</div>
+                                    <div class="col-md-1 form-group">
+                                        <label class="col-blue">Tax%</label>
+                                        <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" />
+                                    </div>
 
-<div class="col-md-2 form-group">
-    <label class="col-blue">Tax₹</label>
-    <input type="number" min="0" step="any" id="taxAmount" class="form-control form-control-sm" readonly />
-</div>
+                                    <div class="col-md-2 form-group">
+                                        <label class="col-blue">Tax₹</label>
+                                        <input type="number" min="0" step="any" id="taxAmount" class="form-control form-control-sm" readonly />
+                                    </div>
 
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Total</label>
                                                     <input type="text" class="form-control form-control-sm" name="total" readonly />
                                                 </div>
+
                                                 <div class="col-md-1 form-group">
                                                     <button type="button" class="btn btn-warning mt-4 btn-lg px-3 py-2" id="addItemButton">
                                                         <i class="fa fa-plus"></i>
