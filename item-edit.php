@@ -98,7 +98,7 @@ if ($result) {
                           
                           <select class="form-control form-control-sm select2" name="uom" id="uom" style="width: 100%;" required>
                             <option value="<?= $items[0]->uom; ?>"><?= $items[0]->uom; ?></option>
-                            <option value="Nos">Nos</option>
+                            <option value="Nos">Nos</option> 
                           </select>
                         </div>
                         <div class="col-md-2 form-group">

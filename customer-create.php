@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   extract($_POST);
-  $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city')");
+  $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
   header("location:customer.php");
   exit;
 }
@@ -32,6 +32,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
   <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css">
+  <script src="//unpkg.com/alpinejs" defer></script>
+
 </head>
 
 <body>
@@ -50,53 +52,54 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <h4 class="col-deep-purple m-0">Customer</h4>
                   </div>
                   <div class="card-body">
-                    <form method="post" id="myForm" action="customer-create.php" enctype="multipart/form-data">
-                      <div class="row">
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">Name</label>
-                          
-                          <input type="text" name="name" id="name" class="form-control form-control-sm" required>
-                        </div>
+                  <form method="post" id="myForm" action="customer-create.php" enctype="multipart/form-data" x-data="{ customerType: '' }">
+  <div class="row">
+    <div class="col-md-3 form-group">
+      <label class="col-blue">Name</label>
+      <input type="text" name="name" id="name" class="form-control form-control-sm" required>
+    </div>
 
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">Type</label>
-                          <select name="type" id="type" class="form-control form-control-sm" required>
-                            <option value="">Select Type</option>
-                            <option value="B2C">B2C</option>
-                            <option value="B2B">B2B</option>
-                          </select>
-                        </div>
+    <div class="col-md-3 form-group">
+      <label class="col-blue">Type</label>
+      <select name="type" id="type" class="form-control form-control-sm" x-model="customerType" required>
+        <option value="">Select Type</option>
+        <option value="B2C">B2C</option>
+        <option value="B2B">B2B</option>
+      </select>
+    </div>
 
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">Phone</label>
-                          <input type="text" name="phone"  class="form-control form-control-sm" required>
-                        </div>
+    <div class="col-md-3 form-group">
+      <label class="col-blue">Phone</label>
+      <input type="text" name="phone" class="form-control form-control-sm" required>
+    </div>
 
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">Address Line 1</label>
-                          <input type="text" name="address_line_1"  class="form-control form-control-sm" required>
-                        </div>
+    <div class="col-md-3 form-group">
+      <label class="col-blue">Address Line 1</label>
+      <input type="text" name="address_line_1" class="form-control form-control-sm" required>
+    </div>
 
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">Address Line 2</label>
-                          <input type="text" name="address_line_2"  class="form-control form-control-sm" required>
-                        </div>
+    <div class="col-md-3 form-group">
+      <label class="col-blue">Address Line 2</label>
+      <input type="text" name="address_line_2" class="form-control form-control-sm">
+    </div>
 
+    <div class="col-md-3 form-group">
+      <label class="col-blue">City</label>
+      <input type="text" name="city" class="form-control form-control-sm" required>
+    </div>
 
-                        <div class="col-md-3 form-group">
-                          <label class="col-blue">City</label>
-                          <input type="text" name="city"  class="form-control form-control-sm" required>
-                        </div>
+    <div class="col-md-3 form-group" x-show="customerType === 'B2B'">
+      <label class="col-blue">GST No</label>
+      <input type="text" name="gst_no" id="gst_no" class="form-control form-control-sm" :required="customerType === 'B2B'">
+    </div>
 
-
-                       
-                        <div class="col-md-3 mt-4 form-group">
-                          <button type="submit" id="Submit" class="btn btn-success text-white" name="submit">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+    <div class="col-md-3 mt-4 form-group">
+      <button type="submit" id="Submit" class="btn btn-success text-white" name="submit">Submit</button>
+    </div>
+  </div>
+</form>
                   </div>
-                </div>
+                </div> 
               </div>
             </div>
           </div>  

@@ -25,8 +25,8 @@ $fromDate = date('Y-m-01');
     <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport" />
     <title>Purchase Register</title>
-    <!-- General CSS Files -->
-    <link rel="stylesheet" href="assets/css/app.min.css" />
+   <!-- General CSS Files -->
+   <link rel="stylesheet" href="assets/css/app.min.css" />
     <link rel="stylesheet" href="assets/bundles/summernote/summernote-bs4.css" />
     <link rel="stylesheet" href="assets/bundles/jquery-selectric/selectric.css" />
     <link rel="stylesheet" href="assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
@@ -35,9 +35,7 @@ $fromDate = date('Y-m-01');
     <link rel="stylesheet" href="assets/css/components.css" />
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="assets/css/custom.css" />
-    <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css" />
-    <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
@@ -53,7 +51,7 @@ $fromDate = date('Y-m-01');
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form method="post" name="myForm" action="sales_report.php" enctype="multipart/form-data">
+                                <form method="post" name="myForm" action="purchase_report.php" enctype="multipart/form-data">
                                     <div class="card card-primary">
                                         <div class="card-header">
                                             <h4 class="col-deep-purple m-0">Purchase Register</h4>
@@ -71,19 +69,15 @@ $fromDate = date('Y-m-01');
                                                 <input type="date" name="to_date" class="form-control form-control-sm" value="<?php echo $currentDate; ?>" />
                                             </div>
 
-                                            <div class="col-md-2 form-group">
-                                                <label class="col-blue">Supplier</label>
-                                                <select name="supplier_name" id="supplier" class="form-control form-control-sm">
-                                                    <option value="">Select Supplier</option>
-                                                    <?php
-                                                    foreach ($suppliers as $row) {
-                                                        ?>
-                                                        <option value="<?php echo $row->supplier_id; ?>"><?php echo $row->supplier_name; ?></option>
-                                                        <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                            <div class="col-md-4 form-group">
+                                                    <label class="col-blue">Supplier </label>
+                                                    <select name="supplier" id="supplier"  required>
+                                                        <option value="">Select Supplier</option>
+                                                        <?php foreach ($suppliers as $row) { ?>
+                                                            <option value="<?php echo $row->supplier_id; ?>"><?php echo $row->supplier_name; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
                                         
                                             <div class="col-md-2 form-group">
                                                 <button type="submit" class="btn btn-success" style="margin-top: 25px;">Submit</button>
@@ -140,6 +134,8 @@ $fromDate = date('Y-m-01');
   <script src="assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
   <script src="assets/js/page/datatables.js"></script>
   <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
 
   <!-- Template JS File -->
   <script src="assets/js/scripts.js"></script>
@@ -149,6 +145,15 @@ $fromDate = date('Y-m-01');
 
 <script>
 
+     let supplier = new TomSelect('#supplier', {});
+
+     document.addEventListener('alpine:init', () => {
+        Alpine.data('app', () => ({
+
+            
+
+        }))
+    })
 </script>
 
 </body>
