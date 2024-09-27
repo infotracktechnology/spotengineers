@@ -63,7 +63,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Inventory</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="purchase.php">Purchase (Inward) </a></li>
-                    <li><a class="nav-link" href="purchase-return.php">Purchase Return</a></li>
+                    <li><a class="nav-link" href="purchases.php">Purchase Return</a></li>
                     <li><a class="nav-link" href="sales.php">Sales (Billing)</a></li>
                 </ul>
             </li>
@@ -71,7 +71,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Reports</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="sales_report.php">Sales Register</a></li>
-                    
+                    <li><a class="nav-link" href="purchase-report.php">Purchase Register</a></li>
                 </ul>
             </li>
             <li class="dropdown">
