@@ -124,11 +124,11 @@ mysqli_close($con);
                                                     <hr class="bg-dark-gray" />
                                                 </div>
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">Part No / Spare Name</label>
+                                                    <label class="col-blue">brand/spares</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($items as $row) { ?>
-                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->item_id . ' / ' . $row->name; ?></option>
+                                                            <option value="<?php echo $row->item_id; ?>"><?php echo $row->item_id.'-'.$row->name.'/'.$row->brand; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
