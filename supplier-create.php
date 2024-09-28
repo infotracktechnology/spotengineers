@@ -176,7 +176,7 @@ if ($result) {
                                                 </div>
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">GST NO</label>
-                                                    <input type="text" name="GST" value="" class="form-control form-control-sm" >
+                                                    <input type="text" name="GST" value="" class="form-control form-control-sm"/>
                                                 </div>
                                                 <div class="col-md-3 mt-4 form-group">
                                                     <button type="submit" class="btn btn-primary" name="submit">Submit</button>
