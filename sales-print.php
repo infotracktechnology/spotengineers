@@ -44,11 +44,11 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
     display: block!important;
 }
  
-@page 
-    {
-        size: auto;   /* auto is the initial value */
-        margin: 6mm;  /* this affects the margin in the printer settings */
-    }
+@page {
+    size: B3 landscape;
+    margin: 6mm;
+}
+
     </style>
    </head>
 <body>
