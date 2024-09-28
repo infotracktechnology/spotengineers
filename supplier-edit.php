@@ -121,11 +121,10 @@ if ($result) {
                                                     <label class="col-blue">State</label>
                                                     <span class="text-danger">*</span>
                                                     <select type="text" name="State" value="" class="form-control form-control-sm select2">
-                                                        <option value="<?= $suppliers[0]->state; ?>"><?= $suppliers[0]->state; ?></option>
                                                         <?php
                                                         foreach ($states as $state) {
                                                         ?>
-                                                            <option value="<?php echo $state->State; ?>"><?php echo $state->State; ?></option>
+                                                            <option value="<?php echo $state->State; ?>" <?= $suppliers[0]->state == $state->State ? 'selected' : ''; ?>><?php echo $state->State; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
