@@ -13,13 +13,11 @@
         $district = $_POST['District'];
         $city = $_POST['City'];
         $pincode = $_POST['Pincode'];
-
         $account_no = $_POST['Account_no'];
         $bank_name = $_POST['Bank_name'];
         $ifsc = $_POST['IFSC'];
         $branch_name = $_POST['Branch_name'];
         $gst = $_POST['GST'];
-
         $mobile1 = $_POST['Mobile_one'];
         $mobile2 = $_POST['Mobile_two'];
         $landline = $_POST['Landline'];
