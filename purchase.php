@@ -124,7 +124,7 @@ mysqli_close($con);
                                                     <hr class="bg-dark-gray" />
                                                 </div>
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">brand/spares</label>
+                                                    <label class="col-blue">Brand/Spare</label>
                                                     <select class="form-control form-control-sm select2" id="parts">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($items as $row) { ?>
