@@ -30,10 +30,7 @@
         $sql = "INSERT INTO `suppliers` (`supplier_name`, `mobile1`, `mobile2`, `landline`, `fax`, `mail`, `website`, `address1`, `address2`, `state`, `district`, `city`, `pincode`, `account_no`, `bank_name`, `ifsc`, `branch_name`, `gst`) VALUES ('$name', '$mobile1', '$mobile2', '$landline', '$fax', '$email', '$website', '$address1', '$address2','$state', '$district', '$city', '$pincode', '$account_no', '$bank_name', '$ifsc', '$branch_name','$gst');";
         $result = mysqli_query($con, $sql);
         
-        if($result) {
-            header("Location: supplier.php");
-        }else{
-            header("Location: supplier-create.php");
-        }
+        header("Location: supplier.php");
+        exit;
     }
 ?>
