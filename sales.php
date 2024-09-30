@@ -264,6 +264,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             if(confirm('Are you sure?')){
               this.items.splice(index,1);
             }
+            this.calculateTotal();
         },
           calculateRate(item){
             item.total = item.qty * item.rate;
