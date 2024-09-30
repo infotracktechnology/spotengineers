@@ -14,6 +14,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
         if(password_verify($password, $row['password'])) {
             $_SESSION['username'] = $row['name'];
             $_SESSION['userid'] = $row['id'];
+            $_SESSION['user_role'] = $row['role'];
             header("Location: ../dashboard.php");
             exit;
         }else {
