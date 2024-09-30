@@ -24,7 +24,7 @@ if (mysqli_query($con, $purchase_query)) {
         $cd_amount = $_POST['cd_amount'][$key];
         $tax_percentage = $_POST['tax_percentage'][$key];
         $tax_amount = $_POST['tax_amount'][$key];
-        $total = $_POST['total'][$key];
+        $total = $_POST['total'][$key];  
 
         $item_query = "INSERT INTO purchase_items (purchase_id, item_id, price, quantity, cd_percentage, cd_amount,tax_percentage, tax_amount, total)  VALUES ('$purchase_id', '$item_id', '$selling_price', '$qty', '$cd_percentage', '$cd_amount', '$tax_percentage', '$tax_amount', '$total')";
 
