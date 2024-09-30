@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 include "config.php";
-$id  = $_GET['id'];
+$id = $_GET['id'];
 $purchases = $con->query("SELECT a.*, b.supplier_name, b.city FROM purchase a INNER JOIN suppliers b ON a.supplier = b.supplier_id WHERE a.purchase_id = $id GROUP BY a.purchase_id")->fetch_object();
 $purchase_items = $con->query("SELECT a.*, b.name, b.hsn, b.brand, (a.quantity) AS max_qty, b.item_id FROM purchase_items a INNER JOIN items b ON a.item_id = b.item_id WHERE a.purchase_id = $id GROUP BY a.item_id")->fetch_all(MYSQLI_ASSOC);
 
@@ -14,8 +14,6 @@ $purchasedQuantities = [];
 foreach ($purchase_items as $row) {
     $purchasedQuantities[$row['item_id']] = $row['max_qty'];
 }
-
-   
 
 ?>
 
@@ -55,7 +53,7 @@ foreach ($purchase_items as $row) {
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form method="post" name="myForm" action="purchase-store.php" enctype="multipart/form-data">
+                                <form method="post" name="myForm" action="purchase-return-store.php" enctype="multipart/form-data">
                                     <div class="card card-primary">
                                         <div class="card-header">
                                             <h4 class="col-deep-purple m-0">Purchase Return</h4>
@@ -102,7 +100,7 @@ foreach ($purchase_items as $row) {
                                               
                                                <div class="col-md-3 form-group">
                                                     <label class="col-blue">Spare Name</label>
-                                                    <select class="form-control form-control-sm select2" id="parts">
+                                                    <select class="form-control form-control-sm select2" id="parts" name="purchase_items[]">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($purchase_items as $row) { ?>
                                                             <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
@@ -163,6 +161,7 @@ foreach ($purchase_items as $row) {
                                                         </tbody>
 
                                                     </table><br>
+                                                    <input type="hidden" name="purchase_items" id="purchase_items" />
                                                     <hr>
                                                     <div class="row">
                                                         <div class="col-md-3 form-group">
@@ -359,6 +358,52 @@ foreach ($purchase_items as $row) {
     });
 });
 
+
+$('#addItemButton').on('click', function() {
+    // existing code ...
+
+    const newRow = `...`; // Your existing newRow definition
+
+    // Add the row to the table
+    $('#itemsTable tbody').append(newRow);
+
+    // Collect the added items
+    let purchaseItems = [];
+    $('#itemsTable tbody tr').each(function() {
+        const row = $(this);
+        purchaseItems.push({
+            item_id: row.find('td').eq(1).text().split('-')[0], // Extract item_id
+            rate: parseFloat(row.find('td').eq(2).text()),
+            quantity: parseInt(row.find('td').eq(3).text()),
+            tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+            tax_amount: parseFloat(row.find('td').eq(5).text()),
+            total: parseFloat(row.find('td').eq(6).text())
+        });
+    });
+
+    // Store the purchase items in a hidden input before submitting
+    $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
+
+    // existing code to clear fields...
+});
+
+        // Collect the added items
+        let purchaseItems = [];
+        $('#itemsTable tbody tr').each(function() {
+            const row = $(this);
+            purchaseItems.push({
+                item_id: row.find('td').eq(1).text().split('-')[0], // Extract item_id
+                rate: parseFloat(row.find('td').eq(2).text()),
+                quantity: parseInt(row.find('td').eq(3).text()),
+                tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+                tax_amount: parseFloat(row.find('td').eq(5).text()),
+                total: parseFloat(row.find('td').eq(6).text())
+            });
+        });
+
+        // Store the purchase items in a hidden input
+        $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
+ 
 
     </script>
 
