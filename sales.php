@@ -119,7 +119,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 </div>
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Customer Type</label>
-                                                    <input type="text" name="customer_type" x-model="customer_type" class="form-control form-control-sm"  />
+                                                    <input type="text" name="customer_type" x-model="customer_type" class="form-control form-control-sm"  readonly/>
+                                                </div>
+
+                                                <div class="col-md-3 form-group">
+                                                    <label class="col-blue">GST No</label>
+                                                    <input type="text" name="gst" x-model="gst" class="form-control form-control-sm"  readonly/>
                                                 </div>
                                                 
                                               
@@ -247,6 +252,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
           cgst : 0,
           tax_amount : 0,
           net_total : 0,
+          gst:'',
           sale_items : JSON.parse('<?php echo $sale_items; ?>'),
           customer : JSON.parse('<?php echo $customer_json; ?>'),
           items:[{item: '',qty:'',rate:'',discount:0}],
@@ -296,6 +302,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         getCustomer(value){
             let customer = this.customer.find(c => c.id == value);
             this.customer_type = customer.type;
+            this.gst = customer.gst_no;
         },
           init(){
             setTimeout(() => this.initTomSelect(), 0);

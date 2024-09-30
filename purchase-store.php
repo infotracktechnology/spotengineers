@@ -32,7 +32,4 @@ if (mysqli_query($con, $purchase_query)) {
    }
 }
 
-header("Location: purchase.php");
-exit;
-?>
 

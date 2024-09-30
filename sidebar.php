@@ -68,7 +68,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Reports</span></a>
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="sales_report.php">Sales Register</a></li>
                     <li><a class="nav-link" href="purchase-report.php">Purchase Register</a></li>
