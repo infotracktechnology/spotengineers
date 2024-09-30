@@ -53,92 +53,80 @@ foreach ($purchase_items as $row) {
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form method="post" name="myForm" action="purchase-return-store.php" enctype="multipart/form-data">
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h4 class="col-deep-purple m-0">Purchase Return</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                
-                                                    <div class="col-md-2 form-group">
-                                                        <label class="col-blue">Return No</label>
-                                                        <input type="number" name="return_no" class="form-control form-control-sm" value="1" readonly />
-                                                    </div>
-
-
-                                                    <div class="col-md-2 form-group">
-                                                        <label class="col-blue">Return Date</label>
-                                                        <input type="date" name="return_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
-                                                    </div>
-
-                                                    <div class="col-md-2 form-group">
-                                                        <label class="col-blue">Receipt No</label>
-                                                        <input type="text" name="receipt_no" id="receipt_no" class="form-control form-control-sm" value="<?= $purchases->receipt_no; ?>" readonly />
-                                                    </div>
-
-                                                    <div class="col-md-3 form-group">
-                                                        <label class="col-blue">Supplier Name</label>
-                                                        <input type="text" id="supplier" name="supplier_name" class="form-control form-control-sm" value="<?= $purchases->supplier_name; ?>" readonly />
-                                                    </div>
-
-                                                    <div class="col-md-2 form-group">
-                                                        <label class="col-blue">Invoice No</label>
-                                                        <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" readonly />
-                                                    </div>
-
-                                                    <div class="col-md-3 form-group">
-                                                        <label class="col-blue">City</label>
-                                                        <input type="text" value="<?= $purchases->city; ?>" class="form-control form-control-sm" readonly />
-                                                    </div>
-
+                            <form method="post" name="myForm" action="purchase-return-store.php" enctype="multipart/form-data">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h4 class="col-deep-purple m-0">Purchase Return</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Return No</label>
+                    <input type="number" name="return_no" class="form-control form-control-sm" value="1" readonly />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Return Date</label>
+                    <input type="date" name="return_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Receipt No</label>
+                    <input type="text" name="receipt_no" id="receipt_no" class="form-control form-control-sm" value="<?= $purchases->receipt_no; ?>" readonly />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="col-blue">Supplier Name</label>
+                    <input type="text" id="supplier" class="form-control form-control-sm" value="<?= $purchases->supplier_name; ?>" readonly />
+                    <input type="hidden" name="supplier_id" id="supplier_id" value="<?= $purchases->supplier; ?>" />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Invoice No</label>
+                    <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="col-blue">City</label>
+                    <input type="text" value="<?= $purchases->city; ?>" class="form-control form-control-sm" readonly />
+                </div>
 
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
                                                 </div>
                                               
-                                               <div class="col-md-3 form-group">
-                                                    <label class="col-blue">Spare Name</label>
-                                                    <select class="form-control form-control-sm select2" id="parts" name="purchase_items[]">
-                                                        <option value="">Select Parts</option>
-                                                        <?php foreach ($purchase_items as $row) { ?>
-                                                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-md-1 form-group">
-    <label class="col-blue">Quantity</label>
-    <input type="number" class="form-control form-control-sm" id="quantity" name="quantity" min="1" />
-</div>
-
-                                    <div class="col-md-2 form-group">
-                                        <label class="col-blue">Buy Rate</label>
-                                        <input type="number" class="form-control form-control-sm" id="price" name="mrp" />
-                                    </div>
-                                    
-
-                                    <div class="col-md-1 form-group">
-                                        <label class="col-blue">Tax%</label>
-                                        <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" />
-                                    </div>
-
-                                    <div class="col-md-2 form-group">
-                                        <label class="col-blue">Tax₹</label>
-                                        <input type="number" min="0" step="any" id="taxAmount" class="form-control form-control-sm" readonly />
-                                    </div>
-
-                                                <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Total</label>
-                                                    <input type="text" class="form-control form-control-sm" name="total" readonly />
-                                                </div>
-
-                                                <div class="col-md-1 form-group">
-                                                <button type="button" class="btn btn-warning mt-3 btn-lg px-3 py-2" id="addItemButton">
-        <i class="fa fa-plus small-icon"></i> <!-- Add a class here -->
-    </button>
-                                                </div>
+                                                <div class="row">
+                <div class="col-md-3 form-group">
+                    <label class="col-blue">Spare Name</label>
+                    <select class="form-control form-control-sm select2" id="parts">
+                        <option value="">Select Parts</option>
+                        <?php foreach ($purchase_items as $row) { ?>
+                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+                <div class="col-md-1 form-group">
+                    <label class="col-blue">Quantity</label>
+                    <input type="number" class="form-control form-control-sm" id="quantity"  min="1" />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Buy Rate</label>
+                    <input type="number" class="form-control form-control-sm" id="price" />
+                </div>
+                <div class="col-md-1 form-group">
+                    <label class="col-blue">Tax%</label>
+                    <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm"  />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Tax₹</label>
+                    <input type="number" min="0" step="any" id="taxAmount" class="form-control form-control-sm" readonly  />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Total</label>
+                    <input type="text"  id="total" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-1 form-group">
+                    <button type="button" class="btn btn-warning mt-3 btn-lg px-3 py-2" id="addItemButton">
+                        <i class="fa fa-plus small-icon"></i>
+                    </button>
+                </div>
+            </div>
 
                                                 <div class="col-md-12 table-responsive form-group">
                                                     <table class="table table-sm table-striped text-right" id="itemsTable">
@@ -160,31 +148,28 @@ foreach ($purchase_items as $row) {
 
                                                         </tbody>
 
-                                                    </table><br>
-                                                    <input type="hidden" name="purchase_items" id="purchase_items" />
+                                                    </table>
+                                                  
                                                     <hr>
                                                     <div class="row">
-                                                        <div class="col-md-3 form-group">
-                                                            <label class="col-blue"> Total Price: </label>
-                                                            <input type="hidden" name="total_price" value="" id="total_price" />
-                                                            <span id="mrpTotal">0.00</span>
-                                                        </div>
-                                        
-
-                                                        <div class="col-md-3 form-group ">
-                                                            <label class="col-blue">Total Tax: </label>
-                                                            <input type="hidden" name="total_tax" value="" id="total_tax" />
-                                                            <span id="taxTotal">0.00</span>
-                                                        </div>
-                                                        <div class="col-md-3 form-group">
-                                                            <label class="col-blue">Grand Total: </label>
-                                                            <input type="hidden" name="grand_total" value="" id="grand_total" />
-                                                            <span id="overallTotal">0.00</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-3 form-group">
+                    <div class="col-md-3 form-group">
+                        <label class="col-blue"> Total Price: </label>
+                        <input type="hidden" name="total_price" value="" id="total_price" />
+                        <span id="mrpTotal">0.00</span>
+                    </div>
+                    <div class="col-md-3 form-group ">
+                        <label class="col-blue">Total Tax: </label>
+                        <input type="hidden" name="total_tax" value="" id="total_tax" />
+                        <span id="taxTotal">0.00</span>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="col-blue">Grand Total: </label>
+                        <input type="hidden" name="grand_total" value="" id="grand_total" />
+                        <span id="overallTotal">0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 form-group">
                                                     <button type="submit" ng-disabled="myForm.$submitted" class="btn btn-success">Submit</button>
                                                 </div>
                                             </div>
@@ -230,7 +215,7 @@ foreach ($purchase_items as $row) {
 
         $('#amount').val(amount.toFixed(2));
         $('#taxAmount').val(taxAmount.toFixed(2));
-        $('input[name="total"]').val(total.toFixed(2));
+        $('#total').val(total.toFixed(2));
     }
 
     function updateOverallTotals() {
@@ -255,36 +240,7 @@ foreach ($purchase_items as $row) {
         updateOverallTotals();
     }
 
-    $('#receipt_no').on('input', function() {
-        const receipt_no = $(this).val();
-        if (receipt_no) {
-            $.post('get_purchase_details.php', { receipt_no }, function(response) {
-                const data = JSON.parse(response);
-                if (data.error) {
-                    alert(data.error);
-                } else {
-                    $('#supplier').val(data.supplier_name);
-                    $('#address').val(data.address);
-                }
-            });
-        } else {
-            $('#supplier, #address').val('');
-        }
-    });
 
-    $('#parts').change(function() {
-        const item_id = $(this).val();
-        if (item_id) {
-            $.post('get_spare_details.php', { id: item_id }, function(response) {
-                $('input[name="unit"]').val(response.unit);
-                $('input[name="mrp"]').val(response.mrp);
-                $('input[name="rate"]').val(response.rate);
-                updateCalculations();
-            }, 'json');
-        } else {
-            clearFields();
-        }
-    });
 
     $('#quantity, #price, #taxPercentage').on('input', updateCalculations);
 
@@ -313,13 +269,13 @@ foreach ($purchase_items as $row) {
         const newRow = `
             <tr>
                 <td>${itemCounter++}</td>
-                <td>${productName}</td>
-                <td>${price.toFixed(2)}</td>
-                <td>${quantity}</td>
-                <td>${((taxAmount / total) * 100).toFixed(2)}%</td>
-                <td>${taxAmount.toFixed(2)}</td>
-                <td>${total.toFixed(2)}</td>
-                <td><button class="btn btn-danger btn-sm removeItem">Remove</button></td>
+                <td>${productName} <input type="hidden" name="item_id[]" value="${item_id}"></td>
+                <td>${price.toFixed(2)} <input type="hidden" name="rate[]" value="${price}"></td>
+                <td>${quantity} <input type="hidden" name="qty[]" value="${quantity}"></td>
+                <td>${((taxAmount / total) * 100).toFixed(2)}% <input type="hidden" name="tax_percentage[]" value="0"></td>
+                <td>${taxAmount.toFixed(2)} <input type="hidden" name="tax_amount[]" value="${taxAmount}"></td>
+                <td>${total.toFixed(2)} <input type="hidden" name="total[]" value="${total}"></td>
+                <td><button class="btn btn-danger btn-sm removeItem"><i class="fa fa-trash"></i></button></td>
             </tr>`;
         $('#itemsTable tbody').append(newRow);
 
@@ -404,6 +360,24 @@ $('#addItemButton').on('click', function() {
         // Store the purchase items in a hidden input
         $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
  
+        $('#addItemButton').on('click', function() {
+    let purchaseItems = [];
+    
+    $('#itemsTable tbody tr').each(function() {
+        const row = $(this);
+        purchaseItems.push({
+            item_id: row.find('td').eq(1).text().split('-')[0],  // Extract item_id
+            rate: parseFloat(row.find('td').eq(2).text()),
+            quantity: parseInt(row.find('td').eq(3).text()),
+            tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+            tax_amount: parseFloat(row.find('td').eq(5).text()),
+            total: parseFloat(row.find('td').eq(6).text())
+        });
+    });
+
+    // Store the purchase items in the hidden input field before form submission
+    $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
+});
 
     </script>
 

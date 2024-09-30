@@ -32,4 +32,4 @@ if (mysqli_query($con, $purchase_query)) {
    }
 }
 
-
+?>

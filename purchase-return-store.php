@@ -1,54 +1,47 @@
 <?php
 ob_start();
 session_start();
-include "config.php";
+include "config.php"; 
 
 if (!isset($_SESSION['username'])) {
     header("location:index.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    extract($_POST);
-    
- 
-    if (isset($_POST['purchase_items']) && !empty($_POST['purchase_items'])) {
-        $purchase_returns_query = "INSERT INTO `purchase_returns` 
-            (`return_no`, `return_date`, `supplier_id`, `receipt_no`, `total_price`, `total_tax`, `grand_total`, `created_at`) 
-            VALUES ('$return_no', '$return_date', (SELECT supplier_id FROM suppliers WHERE supplier_name = '$supplier_name'), '$receipt_no', '$total_price', '$total_tax', '$grand_total', NOW())";
-        
-        if (mysqli_query($con, $purchase_returns_query)) {
-            $return_no = mysqli_insert_id($con);
-            
-        
-            $purchase_items = json_decode($_POST['purchase_items'], true);
+$return_no = $_POST['return_no'] ;
+$return_date = $_POST['return_date'] ;
+$supplier_id = $_POST['supplier_id'] ; 
+$receipt_no = $_POST['receipt_no'] ;
+$total_price = $_POST['total_price'] ;
+$total_tax = $_POST['total_tax'] ;
 
-            foreach ($purchase_items as $item) {
-                $item_id = $item['item_id'];
-                $rate = $item['rate'];
-                $qty = $item['quantity'];
-                $tax_percentage = $item['tax_percentage'];
-                $tax_amount = $item['tax_amount'];
-                $total = $item['total'];
-                $created_at = date('Y-m-d H:i:s');
+$grand_total = isset($_POST['total']) && is_array($_POST['total']) ? array_sum($_POST['total']) : 0; // 
+$created_at = date('Y-m-d H:i:s');
+$purchase_query = "INSERT INTO purchase_returns (return_no, return_date, supplier_id, receipt_no, total_price, created_at, total_tax, grand_total) 
+VALUES ('$return_no', '$return_date', '$supplier_id', '$receipt_no', '$total_price', '$created_at', '$total_tax', '$grand_total')";
 
-                $purchase_returns_items_query = "INSERT INTO `purchase_returns_items` 
-                    (`return_no`, `item_id`, `rate`, `qty`, `tax_percentage`, `tax_amount`, `total`, `created_at`) 
-                    VALUES ('$return_no', '$item_id', '$rate', '$qty', '$tax_percentage', '$tax_amount', '$total', '$created_at')";
-                
-                mysqli_query($con, $purchase_returns_items_query);
+if (mysqli_query($con, $purchase_query)) {
+    $purchase_returns_items_id = mysqli_insert_id($con); 
+   
+        foreach ($_POST['item_id'] as $key => $item_id) {
+            $item_id = $_POST['item_id'][$key] ;
+            $rate = $_POST['rate'][$key] ;
+            $qty = $_POST['qty'][$key] ;
+            $tax_percentage = $_POST['tax_percentage'][$key] ;
+            $tax_amount = $_POST['tax_amount'][$key] ;
+            $total = $_POST['total'][$key] ;
 
-             
-                mysqli_query($con, "UPDATE `purchase_items` SET `quantity` = `quantity` - '$qty' WHERE `item_id` = '$item_id'");
-            }
+          
+        $purchase_returns_items = "INSERT INTO `purchase_returns_items`(`return_no`, `item_id`, `rate`, `qty`, `tax_percentage`, `tax_amount`, `total`) VALUES ('$return_no', '$item_id', '$rate', '$qty', '$tax_percentage', '$tax_amount', '$total')";
 
             
-        } else {
-            echo "Error: " . mysqli_error($con);
+            mysqli_query($con, $purchase_returns_items);
         }
-    } else {
-        echo "No items to process.";
-    }
+    
 }
+header("location:purchases.php");
+exit;
+
+
 
 ?>
