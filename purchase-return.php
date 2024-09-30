@@ -15,8 +15,6 @@ foreach ($purchase_items as $row) {
     $purchasedQuantities[$row['item_id']] = $row['max_qty'];
 }
 
-   
-
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +53,7 @@ foreach ($purchase_items as $row) {
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form method="post" name="myForm" action="purchase-store.php" enctype="multipart/form-data">
+                                <form method="post" name="myForm" action="purchase-return-store.php" enctype="multipart/form-data">
                                     <div class="card card-primary">
                                         <div class="card-header">
                                             <h4 class="col-deep-purple m-0">Purchase Return</h4>
