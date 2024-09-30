@@ -34,7 +34,7 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
         width: 100%;
       }
 
-      .table th, .table thead th, .table td{
+      .table th, .table thead th{
         border-top: none;
         border-bottom: .1rem solid #000;
         padding: 5px 0px 5px 0px;
@@ -55,34 +55,20 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
 
     <table style="margin: 5px 0px 0px 0px;">
         <thead>
-           <tr>
-              <td width="40%"></td>
-              <!-- <td width="30%"><img src="asset('ecommerce/images/logo.png')" alt="Molla Logo"  style="height: 50px;"></td> -->
-              <td width="30%"></td>
+              <tr>
+              <td><h2 style="margin:5px 0px;text-align: center;">Spot At Engineers</h2></td>
               </tr>
               <tr>
-              <td width="40%"></td>
-              <td width="30%"><h2 style="margin:5px 0px;">Spot At Engineers</h2></td>
-              <td width="30%"></td>
+              <td><p style="margin:0px;text-align: center;">49, Vengatesha Colony,Old Bus Stand Back Side,</p></td>
+              </tr>
+              <td><p style="margin:0px;text-align: center;">Pollachi - 642001.</p></td>
               </tr>
               <tr>
-              <td width="40%"></td>
-              <td width="30%"><span>49, Vengatesha Colony,<br>Old Bus Stand Back Side,<br>Pollachi - 642001.</span></td>
-              <td width="30%"></td>
-              </tr>
-
-              
+                <td><h5 style="margin:5px 0px;text-align: center;">Tax Invoice</h5></td>   
+            </tr>
         </thead>
      </table>
 
-     <table style="margin: 0px 0px 0px 0px;">
-        <tbody>
-            <tr>
-                <td width="100%"><h5 style="text-align: center;">Tax Invoice</h5></td>   
-
-            </tr>
-        </tbody>
-     </table>
      <table>
             <tr>
               <td width="50%">Bill No: <?php echo $sale->bill_no; ?></td>
@@ -94,30 +80,28 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
               </tr>
               
               <tr>
-                <td width="50%">Customer Type: <?php echo $sale->type; ?></td>
-                <td width="50%">Address: <?php echo $sale->address_line_1." ".$sale->address_line_2; ?></td>
-              </tr>
-              <tr>
+                <td width="50%">Address: <?php echo $sale->address_line_1.",".$sale->address_line_2; ?></td>
                 <td width="50%">City: <?php echo $sale->city; ?></td>
-                <td width="50%">GST No: <?php echo $sale->gst_no; ?></td>
               </tr>
               <tr>
-              <td width="50%">Bill Type: <?php echo $sale->bill_type; ?></td>
+                <td width="50%">GST No: <?php echo $sale->gst_no; ?></td>
+                <td width="50%"></td>
               </tr>
+              
         </tbody>
      </table>
 
      <h5 style="text-align: center;">Items Details</h5>
      <table class="table" style="margin: 5px 0px 5px 0px;">
             <tr>
-                <td>#</td>
-                <td>Name</td>
-                <td>HSN</td>
-                <td>Brand</td>
-                <td>Qty</td>
-                <td>Rate</td>
-                <td>Discount</td>
-                <td>Total</td>
+                <th>#</th>
+                <th>Name</th>
+                <th>HSN</th>
+                <th>Brand</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Discount</th>
+                <th>Total</th>
             </tr>
             <?php
             $sale_items = $con->query("SELECT a.*,b.name,b.hsn,b.brand FROM sales_items a inner join items b on a.item_id=b.item_id where a.bill_id=$id");
@@ -169,7 +153,7 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
      <script>
         window.print();
         window.onafterprint = () => {
-            location.href = "sales.php";
+          location.href = "sales.php";
         }
      </script>
 </body>

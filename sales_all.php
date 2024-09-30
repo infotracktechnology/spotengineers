@@ -55,8 +55,8 @@ include "config.php";
         <th>S.No</th>
         <th>Bill No</th>
         <th>Bill Date</th>
-        <th>Bill Type</th>
         <th>Customer Name</th>
+        <th>Bill Type</th>
         <th>Customer Mobile</th>
         <th>Net Total</th>
         <th>Tax Total</th>
@@ -71,12 +71,12 @@ include "config.php";
       ?>
 
       <?php foreach ($sales as $key => $sale): ?>
-        <tr>
+        <tr <?php if ($sale['bill_type'] == 'Credit') echo 'style="background-color: yellow;"'; ?>>
           <td><?php echo $key+1; ?></td>
           <td><?php echo $sale['bill_no']; ?></td>
           <td><?php echo $sale['bill_date']; ?></td>
           <td><?php echo $sale['name']; ?></td>
-          <td><?php echo $sale['type']; ?></td>
+          <td><?php echo $sale['bill_type']; ?></td>
           <td><?php echo $sale['phone']; ?></td>
           <td><?php echo $sale['net_total']; ?></td>
           <td><?php echo $sale['tax_total']; ?></td>
