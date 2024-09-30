@@ -53,18 +53,14 @@
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
                 </ul>
             </li>
-            <!-- <li class="dropdown">
-                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="credit-card"></i><span>Service</span></a>
-                <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="#">Item</a></li>
-                </ul>
-            </li> -->
+           
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Inventory</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="purchase.php">Purchase (Inward) </a></li>
                     <li><a class="nav-link" href="purchases.php">Purchase Return</a></li>
                     <li><a class="nav-link" href="sales.php">Sales (Billing)</a></li>
+                    <li><a class="nav-link" href="sales_all.php">Sales Return(Edit)</a></li>
                 </ul>
             </li>
             <li class="dropdown">

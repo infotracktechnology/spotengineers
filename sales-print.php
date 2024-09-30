@@ -94,12 +94,15 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
               </tr>
               
               <tr>
+                <td width="50%">Customer Type: <?php echo $sale->type; ?></td>
                 <td width="50%">Address: <?php echo $sale->address_line_1." ".$sale->address_line_2; ?></td>
-                <td width="50%">Bill Type: <?php echo $sale->bill_type; ?></td>
               </tr>
               <tr>
                 <td width="50%">City: <?php echo $sale->city; ?></td>
                 <td width="50%">GST No: <?php echo $sale->gst_no; ?></td>
+              </tr>
+              <tr>
+              <td width="50%">Bill Type: <?php echo $sale->bill_type; ?></td>
               </tr>
         </tbody>
      </table>
