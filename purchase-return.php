@@ -7,8 +7,16 @@ if (!isset($_SESSION['username'])) {
 }
 include "config.php";
 $id  = $_GET['id'];
-$purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inner join suppliers b on a.supplier=b.supplier_id where a.purchase_id = $id GROUP by a.purchase_id")->fetch_object();
-$purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_qty,b.item_id from purchase_items a inner join items b on a.item_id=b.item_id where a.purchase_id=$id GROUP by a.item_id")->fetch_all(MYSQLI_ASSOC);
+$purchases = $con->query("SELECT a.*, b.supplier_name, b.city FROM purchase a INNER JOIN suppliers b ON a.supplier = b.supplier_id WHERE a.purchase_id = $id GROUP BY a.purchase_id")->fetch_object();
+$purchase_items = $con->query("SELECT a.*, b.name, b.hsn, b.brand, (a.quantity) AS max_qty, b.item_id FROM purchase_items a INNER JOIN items b ON a.item_id = b.item_id WHERE a.purchase_id = $id GROUP BY a.item_id")->fetch_all(MYSQLI_ASSOC);
+
+$purchasedQuantities = [];
+foreach ($purchase_items as $row) {
+    $purchasedQuantities[$row['item_id']] = $row['max_qty'];
+}
+
+   
+
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +63,7 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                         <div class="card-body">
                                             <div class="row">
                                                 
-                                                <div class="col-md-2 form-group">
+                                                    <div class="col-md-2 form-group">
                                                         <label class="col-blue">Return No</label>
                                                         <input type="number" name="return_no" class="form-control form-control-sm" value="1" readonly />
                                                     </div>
@@ -81,17 +89,10 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                         <input type="text" value="<?= $purchases->invoice_no; ?>" name="invoice_no" class="form-control form-control-sm" readonly />
                                                     </div>
 
-
-
-
                                                     <div class="col-md-3 form-group">
                                                         <label class="col-blue">City</label>
                                                         <input type="text" value="<?= $purchases->city; ?>" class="form-control form-control-sm" readonly />
                                                     </div>
-
-                                                   
-
-                                              
 
 
                                                 <div class="col-md-12 form-group m-0">
@@ -109,12 +110,11 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     </select>
                                                 </div>
 
-                                               
+                                                <div class="col-md-1 form-group">
+    <label class="col-blue">Quantity</label>
+    <input type="number" class="form-control form-control-sm" id="quantity" name="quantity" min="1" />
+</div>
 
-                                    <div class="col-md-1 form-group">
-                                        <label class="col-blue">Quantity</label>
-                                        <input type="number" class="form-control form-control-sm" id="quantity" name="quantity" />
-                                    </div>
                                     <div class="col-md-2 form-group">
                                         <label class="col-blue">Buy Rate</label>
                                         <input type="number" class="form-control form-control-sm" id="price" name="mrp" />
@@ -137,9 +137,9 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                 </div>
 
                                                 <div class="col-md-1 form-group">
-                                                    <button type="button" class="btn btn-warning mt-4 btn-lg px-3 py-2" id="addItemButton">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
+                                                <button type="button" class="btn btn-warning mt-3 btn-lg px-3 py-2" id="addItemButton">
+        <i class="fa fa-plus small-icon"></i> <!-- Add a class here -->
+    </button>
                                                 </div>
 
                                                 <div class="col-md-12 table-responsive form-group">
@@ -167,16 +167,19 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
                                                     <div class="row">
                                                         <div class="col-md-3 form-group">
                                                             <label class="col-blue"> Total Price: </label>
+                                                            <input type="hidden" name="total_price" value="" id="total_price" />
                                                             <span id="mrpTotal">0.00</span>
                                                         </div>
-                                                     
+                                        
 
                                                         <div class="col-md-3 form-group ">
                                                             <label class="col-blue">Total Tax: </label>
+                                                            <input type="hidden" name="total_tax" value="" id="total_tax" />
                                                             <span id="taxTotal">0.00</span>
                                                         </div>
                                                         <div class="col-md-3 form-group">
                                                             <label class="col-blue">Grand Total: </label>
+                                                            <input type="hidden" name="grand_total" value="" id="grand_total" />
                                                             <span id="overallTotal">0.00</span>
                                                         </div>
                                                     </div>
@@ -206,10 +209,12 @@ $purchase_items = $con->query("select a.*,b.name,b.hsn,b.brand,(a.quantity)max_q
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script>
       
-$(document).ready(function() {
+      $(document).ready(function() {
     let itemCounter = 1;
     let totalPrice = 0;
     let totalTax = 0;
+    let purchasedQuantity = <?= json_encode($purchasedQuantities); ?>;
+    let addedQuantities = {}; // Track quantities added for each item
 
     function clearFields() {
         $('input[name="unit"], input[name="mrp"], input[name="rate"], #quantity, #price, #amount, #taxPercentage, #taxAmount, input[name="total"]').val('');
@@ -218,8 +223,9 @@ $(document).ready(function() {
     function updateCalculations() {
         const quantity = parseFloat($('#quantity').val()) || 0;
         const price = parseFloat($('#price').val()) || 0;
-        const amount = quantity * price;
         const taxPercentage = parseFloat($('#taxPercentage').val()) || 0;
+
+        const amount = quantity * price;
         const taxAmount = (amount * taxPercentage) / 100;
         const total = amount + taxAmount;
 
@@ -232,6 +238,22 @@ $(document).ready(function() {
         $('#mrpTotal').text(totalPrice.toFixed(2));
         $('#taxTotal').text(totalTax.toFixed(2));
         $('#overallTotal').text((totalPrice + totalTax).toFixed(2));
+    }
+
+    function handleRowRemoval(row) {
+        const rowTotal = parseFloat(row.find('td').eq(6).text());
+        const rowTax = parseFloat(row.find('td').eq(5).text());
+        const rowQuantity = parseFloat(row.find('td').eq(3).text());
+
+        totalPrice -= rowTotal;
+        totalTax -= rowTax;
+        row.remove();
+
+       
+        const item_id = $('#parts').val();
+        addedQuantities[item_id] -= rowQuantity;
+
+        updateOverallTotals();
     }
 
     $('#receipt_no').on('input', function() {
@@ -273,9 +295,19 @@ $(document).ready(function() {
         const quantity = parseFloat($('#quantity').val()) || 0;
         const taxAmount = parseFloat($('#taxAmount').val()) || 0;
         const total = parseFloat($('input[name="total"]').val()) || 0;
+        const item_id = $('#parts').val();
 
-        if (!productName || quantity <= 0 || price <= 0) {
+        if (!productName || quantity <= 0 || price <= 0 || !item_id) {
             alert('Please fill out all required fields.');
+            return;
+        }
+
+       
+        addedQuantities[item_id] = addedQuantities[item_id] || 0;
+
+      
+        if (addedQuantities[item_id] + quantity > purchasedQuantity[item_id]) {
+            alert(`You cannot return more than ${purchasedQuantity[item_id]} items for ${productName}.`);
             return;
         }
 
@@ -285,26 +317,22 @@ $(document).ready(function() {
                 <td>${productName}</td>
                 <td>${price.toFixed(2)}</td>
                 <td>${quantity}</td>
-                <td>${(taxAmount / total * 100).toFixed(2)}%</td>
+                <td>${((taxAmount / total) * 100).toFixed(2)}%</td>
                 <td>${taxAmount.toFixed(2)}</td>
                 <td>${total.toFixed(2)}</td>
                 <td><button class="btn btn-danger btn-sm removeItem">Remove</button></td>
             </tr>`;
         $('#itemsTable tbody').append(newRow);
 
+      
         totalPrice += (price * quantity);
         totalTax += taxAmount;
+        addedQuantities[item_id] += quantity;
         updateOverallTotals();
 
-        // Remove item from the table
+     
         $('.removeItem').last().on('click', function() {
-            const row = $(this).closest('tr');
-            const rowTotal = parseFloat(row.find('td').eq(6).text());
-            const rowTax = parseFloat(row.find('td').eq(5).text());
-            totalPrice -= rowTotal;
-            totalTax -= rowTax;
-            row.remove();
-            updateOverallTotals();
+            handleRowRemoval($(this).closest('tr'));
         });
 
         clearFields();
@@ -316,6 +344,17 @@ $(document).ready(function() {
             window.location.href = 'get_purchase_details.php?receipt_no=' + receiptNo;
         } else {
             alert('Please enter a receipt number.');
+        }
+    });
+
+   
+    $('#quantity').on('input', function() {
+        const item_id = $('#parts').val();
+        const quantity = parseInt($(this).val(), 10) || 0;
+
+        if (item_id && purchasedQuantity[item_id] < quantity) {
+            alert(`You cannot return more than ${purchasedQuantity[item_id]} items for ${$('#parts option:selected').text()}.`);
+            $(this).val(purchasedQuantity[item_id]); 
         }
     });
 });

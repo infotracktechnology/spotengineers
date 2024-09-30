@@ -31,7 +31,25 @@ if (mysqli_query($con, $purchase_query)) {
         mysqli_query($con, $item_query);
    }
 }
-
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+     extract($_POST);
+ 
+     $purchase_returns = mysqli_query($con,"INSERT INTO purchase_returns (return_no,return_date,supplier_id,receipt_no,total_price,total_tax,grand_total,cyear) VALUES ('$return_no','$return_date','$supplier_id','$receipt_no','$total_price','$total_tax','$grand_total','$cyear')");
+     $id = mysqli_insert_id($con);
+     foreach($_POST['item'] as $key => $value){
+         $qty = $_POST['qty'][$key];
+         $rate = $_POST['rate'][$key];
+         $amount = $_POST['total'][$key];
+         $tax_percentage = $_POST['tax_percentage'][$key];
+         $tax_amount = $_POST['tax_amount'][$key];
+         $total = $_POST['total'][$key];
+         $item_id = $_POST['item'][$key];
+         $tax = $_POST['tax'][$key];
+ 
+         $purchase_returns = mysqli_query($con,"INSERT INTO purchase_returns_items(return_no, item_id,	rate, qty, tax_percentage, tax_amount,	total) VALUES ('$return_no', '$item_id', '$rate', '$qty', '$tax_percentage', '$tax_amount','$total')");
+     }
+ }
 header("Location: purchase.php");
 exit;
 ?>
+
