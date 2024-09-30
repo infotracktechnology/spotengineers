@@ -121,11 +121,10 @@ if ($result) {
                                                     <label class="col-blue">State</label>
                                                     <span class="text-danger">*</span>
                                                     <select type="text" name="State" value="" class="form-control form-control-sm select2">
-                                                        <option value="<?= $suppliers[0]->state; ?>"><?= $suppliers[0]->state; ?></option>
                                                         <?php
                                                         foreach ($states as $state) {
                                                         ?>
-                                                            <option value="<?php echo $state->State; ?>"><?php echo $state->State; ?></option>
+                                                            <option value="<?php echo $state->State; ?>" <?= $suppliers[0]->state == $state->State ? 'selected' : ''; ?>><?php echo $state->State; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
@@ -133,11 +132,11 @@ if ($result) {
                                                     <label class="col-blue">District</label>
                                                     <span class="text-danger">*</span>
                                                     <select type="text" name="District" value="" class="form-control form-control-sm select2">
-                                                        <option value="<?php echo $state->State; ?>"><?php echo $state->State; ?></option>
+                                                        
                                                         <?php
                                                         foreach ($districts as $district) {
                                                         ?>
-                                                            <option value="<?php echo $district->District; ?>"><?php echo $district->District; ?></option>
+                                                            <option value="<?php echo $district->District; ?>" <?= $suppliers[0]->district == $district->District ? 'selected' : ''; ?>><?php echo $district->District; ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
