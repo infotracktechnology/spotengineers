@@ -93,7 +93,7 @@ foreach ($purchase_items as $row) {
                                               
                                                 <div class="row">
                 <div class="col-md-3 form-group">
-                    <label class="col-blue">Spare Name</label>
+                    <label class="col-blue">Brand/Spares</label>
                     <select class="form-control form-control-sm select2" id="parts">
                         <option value="">Select Parts</option>
                         <?php foreach ($purchase_items as $row) { ?>
@@ -128,8 +128,8 @@ foreach ($purchase_items as $row) {
                 </div>
             </div>
 
-            <div class="col-md-12 table-responsive">
-            <table class="table table-sm table-striped" id="itemsTable">
+                                                <div class="col-md-12 table-responsive form-group">
+                                                    <table class="table table-sm table-striped text-right" id="itemsTable">
                                                         <thead>
                                                             
                                                             <tr>
@@ -192,8 +192,6 @@ foreach ($purchase_items as $row) {
     <script src="assets/bundles/datatables/datatables.min.js"></script>
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script>
-      
-      $(document).ready(function() {
     let itemCounter = 1;
     let totalPrice = 0;
     let totalTax = 0;
@@ -208,7 +206,8 @@ foreach ($purchase_items as $row) {
         const quantity = parseFloat($('#quantity').val()) || 0;
         const price = parseFloat($('#price').val()) || 0;
         const taxPercentage = parseFloat($('#taxPercentage').val()) || 0;
-    const amount = quantity * price;
+
+        const amount = quantity * price;
         const taxAmount = (amount * taxPercentage) / 100;
         const total = amount + taxAmount;
 
@@ -227,14 +226,12 @@ foreach ($purchase_items as $row) {
         const rowTotal = parseFloat(row.find('td').eq(6).text());
         const rowTax = parseFloat(row.find('td').eq(5).text());
         const rowQuantity = parseFloat(row.find('td').eq(3).text());
-       totalPrice -= rowTotal;
+
+        totalPrice -= rowTotal;
         totalTax -= rowTax;
         row.remove();
-
-       
         const item_id = $('#parts').val();
         addedQuantities[item_id] -= rowQuantity;
-
         updateOverallTotals();
     }
  $('#quantity, #price, #taxPercentage').on('input', updateCalculations);
@@ -244,7 +241,7 @@ foreach ($purchase_items as $row) {
     const quantity = parseFloat($('#quantity').val()) || 0;
     const taxAmount = parseFloat($('#taxAmount').val()) || 0;
     const item_id = $('#parts').val();
-
+    const taxPercentage = parseFloat($('#taxPercentage').val()) || 0;
     if (!productName || quantity <= 0 || price <= 0 || !item_id) {
         alert('Please fill out all required fields.');
         return;
@@ -272,7 +269,8 @@ foreach ($purchase_items as $row) {
         </tr>`;
     
     $('#itemsTable tbody').append(newRow);
-    $('#total').val(total);
+    $('input[name="total"]').val(total); // Update the total input
+
     totalPrice += (price * quantity);
     totalTax += taxAmount;
     addedQuantities[item_id] += quantity;
@@ -288,12 +286,75 @@ foreach ($purchase_items as $row) {
     $('#quantity').on('input', function() {
         const item_id = $('#parts').val();
         const quantity = parseInt($(this).val(), 10) || 0;
-
         if (item_id && purchasedQuantity[item_id] < quantity) {
             alert(`You cannot return more than ${purchasedQuantity[item_id]} items for ${$('#parts option:selected').text()}.`);
             $(this).val(purchasedQuantity[item_id]); 
         }
     });
+});
+
+
+$('#addItemButton').on('click', function() {
+
+
+    const newRow = ``; 
+
+   
+    $('#itemsTable tbody').append(newRow);
+
+  
+    let purchaseItems = [];
+    $('#itemsTable tbody tr').each(function() {
+        const row = $(this);
+        purchaseItems.push({
+            item_id: row.find('td').eq(1).text().split('-')[0], 
+            rate: parseFloat(row.find('td').eq(2).text()),
+            quantity: parseInt(row.find('td').eq(3).text()),
+            tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+            tax_amount: parseFloat(row.find('td').eq(5).text()),
+            total: parseFloat(row.find('td').eq(6).text())
+        });
+    });
+
+    $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
+
+  
+});
+
+     
+        let purchaseItems = [];
+        $('#itemsTable tbody tr').each(function() {
+            const row = $(this);
+            purchaseItems.push({
+                item_id: row.find('td').eq(1).text().split('-')[0], // Extract item_id
+                rate: parseFloat(row.find('td').eq(2).text()),
+                quantity: parseInt(row.find('td').eq(3).text()),
+                tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+                tax_amount: parseFloat(row.find('td').eq(5).text()),
+                total: parseFloat(row.find('td').eq(6).text())
+            });
+        });
+
+        
+        $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
+ 
+        $('#addItemButton').on('click', function() {
+    let purchaseItems = [];
+    
+    $('#itemsTable tbody tr').each(function() {
+        const row = $(this);
+        purchaseItems.push({
+            item_id: row.find('td').eq(1).text().split('-')[0],  
+            rate: parseFloat(row.find('td').eq(2).text()),
+            quantity: parseInt(row.find('td').eq(3).text()),
+            tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
+            tax_amount: parseFloat(row.find('td').eq(5).text()),
+            total: parseFloat(row.find('td').eq(6).text())
+        });
+    });
+
+
+    $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
 });
 
     </script>
