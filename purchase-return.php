@@ -291,7 +291,7 @@ foreach ($purchase_items as $row) {
             $(this).val(purchasedQuantity[item_id]); 
         }
     });
-});
+
 
 
 $('#addItemButton').on('click', function() {
@@ -357,6 +357,18 @@ $('#addItemButton').on('click', function() {
     $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
 });
 
+
+function updateOverallTotals() {
+    const totalPriceFormatted = totalPrice.toFixed(2);
+    const totalTaxFormatted = totalTax.toFixed(2);
+    const grandTotalFormatted = (totalPrice + totalTax).toFixed(2);
+    $('#mrpTotal').text(totalPriceFormatted);
+    $('#taxTotal').text(totalTaxFormatted);
+    $('#overallTotal').text(grandTotalFormatted);
+    $('#total_price').val(totalPriceFormatted);
+    $('#total_tax').val(totalTaxFormatted);
+    $('#grand_total').val(grandTotalFormatted);
+}
     </script>
 
 </body>
