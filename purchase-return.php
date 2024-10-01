@@ -291,7 +291,7 @@ foreach ($purchase_items as $row) {
             $(this).val(purchasedQuantity[item_id]); 
         }
     });
-});
+
 
 
 $('#addItemButton').on('click', function() {
