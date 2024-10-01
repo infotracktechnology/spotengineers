@@ -93,7 +93,7 @@ foreach ($purchase_items as $row) {
                                               
                                                 <div class="row">
                 <div class="col-md-3 form-group">
-                    <label class="col-blue">Spare Name</label>
+                    <label class="col-blue">Brand/Spares</label>
                     <select class="form-control form-control-sm select2" id="parts">
                         <option value="">Select Parts</option>
                         <?php foreach ($purchase_items as $row) { ?>
