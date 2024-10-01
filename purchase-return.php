@@ -89,7 +89,7 @@ foreach ($purchase_items as $row) {
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
-                                                </div>
+                                                
                                               
                                                 <div class="row">
                 <div class="col-md-3 form-group">
