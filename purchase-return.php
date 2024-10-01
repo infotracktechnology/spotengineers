@@ -243,55 +243,54 @@ foreach ($purchase_items as $row) {
 
 
     $('#quantity, #price, #taxPercentage').on('input', updateCalculations);
-
     $('#addItemButton').on('click', function() {
-        const productName = $('#parts option:selected').text();
-        const price = parseFloat($('#price').val()) || 0;
-        const quantity = parseFloat($('#quantity').val()) || 0;
-        const taxAmount = parseFloat($('#taxAmount').val()) || 0;
-        const total = parseFloat($('input[name="total"]').val()) || 0;
-        const item_id = $('#parts').val();
+    const productName = $('#parts option:selected').text();
+    const price = parseFloat($('#price').val()) || 0;
+    const quantity = parseFloat($('#quantity').val()) || 0;
+    const taxAmount = parseFloat($('#taxAmount').val()) || 0;
+    const item_id = $('#parts').val();
 
-        if (!productName || quantity <= 0 || price <= 0 || !item_id) {
-            alert('Please fill out all required fields.');
-            return;
-        }
+    if (!productName || quantity <= 0 || price <= 0 || !item_id) {
+        alert('Please fill out all required fields.');
+        return;
+    }
 
-       
-        addedQuantities[item_id] = addedQuantities[item_id] || 0;
+    addedQuantities[item_id] = addedQuantities[item_id] || 0;
 
-      
-        if (addedQuantities[item_id] + quantity > purchasedQuantity[item_id]) {
-            alert(`You cannot return more than ${purchasedQuantity[item_id]} items for ${productName}.`);
-            return;
-        }
+    if (addedQuantities[item_id] + quantity > purchasedQuantity[item_id]) {
+        alert(`You cannot return more than ${purchasedQuantity[item_id]} items for ${productName}.`);
+        return;
+    }
 
-        const newRow = `
-            <tr>
-                <td>${itemCounter++}</td>
-                <td>${productName} <input type="hidden" name="item_id[]" value="${item_id}"></td>
-                <td>${price.toFixed(2)} <input type="hidden" name="rate[]" value="${price}"></td>
-                <td>${quantity} <input type="hidden" name="qty[]" value="${quantity}"></td>
-                <td>${((taxAmount / total) * 100).toFixed(2)}% <input type="hidden" name="tax_percentage[]" value="0"></td>
-                <td>${taxAmount.toFixed(2)} <input type="hidden" name="tax_amount[]" value="${taxAmount}"></td>
-                <td>${total.toFixed(2)} <input type="hidden" name="total[]" value="${total}"></td>
-                <td><button class="btn btn-danger btn-sm removeItem"><i class="fa fa-trash"></i></button></td>
-            </tr>`;
-        $('#itemsTable tbody').append(newRow);
+    const total = totalPrice + (price * quantity); // Update total based on items being added
 
-      
-        totalPrice += (price * quantity);
-        totalTax += taxAmount;
-        addedQuantities[item_id] += quantity;
-        updateOverallTotals();
+    const newRow = `
+        <tr>
+            <td>${itemCounter++}</td>
+            <td>${productName} <input type="hidden" name="item_id[]" value="${item_id}"></td>
+            <td>${price.toFixed(2)} <input type="hidden" name="rate[]" value="${price}"></td>
+            <td>${quantity} <input type="hidden" name="qty[]" value="${quantity}"></td>
+            <td>${total > 0 ? ((taxAmount / total) * 100).toFixed(2) : '0.00'} <input type="hidden" name="tax_percentage[]" value="${total > 0 ? ((taxAmount / total) * 100).toFixed(2) : '0.00'}"></td>
+            <td>${taxAmount.toFixed(2)} <input type="hidden" name="tax_amount[]" value="${taxAmount}"></td>
+            <td>${total.toFixed(2)} <input type="hidden" name="total[]" value="${total}"></td>
+            <td><button class="btn btn-danger btn-sm removeItem"><i class="fa fa-trash"></i></button></td>
+        </tr>`;
+    
+    $('#itemsTable tbody').append(newRow);
+    $('input[name="total"]').val(total); // Update the total input
 
-     
-        $('.removeItem').last().on('click', function() {
-            handleRowRemoval($(this).closest('tr'));
-        });
+    totalPrice += (price * quantity);
+    totalTax += taxAmount;
+    addedQuantities[item_id] += quantity;
+    updateOverallTotals();
 
-        clearFields();
+    $('.removeItem').last().on('click', function() {
+        handleRowRemoval($(this).closest('tr'));
     });
+
+    clearFields();
+});
+
 
     $('#submitReceipt').on('click', function() {
         const receiptNo = $('#receipt_no').val();
@@ -316,19 +315,19 @@ foreach ($purchase_items as $row) {
 
 
 $('#addItemButton').on('click', function() {
-    // existing code ...
 
-    const newRow = `...`; // Your existing newRow definition
 
-    // Add the row to the table
+    const newRow = ``; 
+
+   
     $('#itemsTable tbody').append(newRow);
 
-    // Collect the added items
+  
     let purchaseItems = [];
     $('#itemsTable tbody tr').each(function() {
         const row = $(this);
         purchaseItems.push({
-            item_id: row.find('td').eq(1).text().split('-')[0], // Extract item_id
+            item_id: row.find('td').eq(1).text().split('-')[0], 
             rate: parseFloat(row.find('td').eq(2).text()),
             quantity: parseInt(row.find('td').eq(3).text()),
             tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
@@ -337,13 +336,12 @@ $('#addItemButton').on('click', function() {
         });
     });
 
-    // Store the purchase items in a hidden input before submitting
     $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
 
-    // existing code to clear fields...
+  
 });
 
-        // Collect the added items
+     
         let purchaseItems = [];
         $('#itemsTable tbody tr').each(function() {
             const row = $(this);
@@ -357,7 +355,7 @@ $('#addItemButton').on('click', function() {
             });
         });
 
-        // Store the purchase items in a hidden input
+        
         $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
  
         $('#addItemButton').on('click', function() {
@@ -366,7 +364,7 @@ $('#addItemButton').on('click', function() {
     $('#itemsTable tbody tr').each(function() {
         const row = $(this);
         purchaseItems.push({
-            item_id: row.find('td').eq(1).text().split('-')[0],  // Extract item_id
+            item_id: row.find('td').eq(1).text().split('-')[0],  
             rate: parseFloat(row.find('td').eq(2).text()),
             quantity: parseInt(row.find('td').eq(3).text()),
             tax_percentage: parseFloat(row.find('td').eq(4).text().replace('%', '')),
@@ -375,7 +373,7 @@ $('#addItemButton').on('click', function() {
         });
     });
 
-    // Store the purchase items in the hidden input field before form submission
+
     $('input[name="purchase_items"]').val(JSON.stringify(purchaseItems));
 });
 
