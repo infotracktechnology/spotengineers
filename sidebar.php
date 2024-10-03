@@ -42,7 +42,11 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Main</li>
             <li class="dropdown">
-                <a href="dashboard.php" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="monitor"></i><span>Dashboard</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="dashboard.php">Sales</a></li>
+                    <li><a class="nav-link" href="dashboard-service.php">Service</a></li>
+                </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
