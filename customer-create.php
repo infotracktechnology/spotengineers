@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   extract($_POST);
-  $customer = mysqli_query($con,"INSERT INTO customer(name,type,appliance,brand,appliance_name,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$appliance','$brand','$appliance_name','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
+  $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
   header("location:customer.php");
   exit;
 }
