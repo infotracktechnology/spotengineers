@@ -98,9 +98,48 @@ if ($result) {
                                <input type="text" name="gst_no" id="gst_no" value="<?= $customer[0]->gst_no; ?>" class="form-control form-control-sm">
                            </div>
 
-                           <div class="col-md-3 mt-4 form-group">
-                               <button type="submit" id="Submit" class="btn btn-success text-white" name="submit">Submit</button>
-                           </div>
+                           <div class="col-md-12 form-group m-0">
+    <h6 class="col-deep-purple m-0"></h6>
+    <hr class="bg-dark-gray" />
+</div>
+
+<div class="col-md-12 form-group mt-0">
+    <button type="button" class="btn btn-warning" id="addItemBtn"><i class="fa fa-plus"></i> Add Item</button>
+</div>
+<div id="itemContainer" class="col-md-12"></div>
+<div class="col-md-12 row item-row" id="initialItemRow">
+    <div class="col-md-4 form-group">
+        <label class="col-blue">Appliance List</label>
+        <select name="appliance" class="form-control form-control-sm" required>
+            <option value="">Select Appliance</option>
+            <option value="Air Conditioner">Air Conditioner</option>
+            <option value="Deep Freezer">Deep Freezer</option>
+            <option value="Refrigerator">Refrigerator</option>
+            <option value="Washing Machine">Washing Machine</option>
+            <option value="Water Purifier">Water Purifier (RO)</option>
+            <option value="Water Heater">Water Heater</option>
+            <option value="UPS">UPS</option>
+            <option value="Dish">Dish (DTH)</option>
+        </select>
+    </div>
+    <div class="col-md-3 form-group">
+        <label class="col-blue">Brand</label>
+        <input type="text" name="brand"  class="form-control form-control-sm" required>
+    </div>
+    <div class="col-md-3 form-group">
+        <label class="col-blue">Appliance Name</label>
+        <input type="text" name="appliance_name"  class="form-control form-control-sm" required>
+    </div>
+    
+    <div class="col-md-1 form-group">
+        <button type="button" class="btn btn-danger mt-4 removeItemBtn"><i class="fa fa-times"></i></button>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <button type="submit" class="btn btn-success">Submit</button>
+</div>
+   
                        </div>
                    </form>
 
@@ -121,5 +160,34 @@ if ($result) {
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
+<script>
 
+document.addEventListener('DOMContentLoaded', function () {
+    const addItemBtn = document.getElementById('addItemBtn');
+    const itemContainer = document.getElementById('itemContainer');
+    const initialItemRow = document.getElementById('initialItemRow');
+
+ 
+    function addRemoveButtonListener(row) {
+        const removeBtn = row.querySelector('.removeItemBtn');
+        removeBtn.addEventListener('click', function () {
+            if (confirm('Are you sure you want to delete this item?')) {
+                row.remove();
+            }
+        });
+    }
+
+    addRemoveButtonListener(initialItemRow);
+
+    addItemBtn.addEventListener('click', function () {
+        const newItemRow = initialItemRow.cloneNode(true);
+        newItemRow.removeAttribute('id');
+        itemContainer.appendChild(newItemRow);
+        addRemoveButtonListener(newItemRow); 
+    });
+});
+
+
+
+</script>
 </html>
