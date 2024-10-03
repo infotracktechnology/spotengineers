@@ -74,6 +74,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                         <th>S.No</th>
                                                         <th>Name</th>
                                                         <th>Type</th>
+                                                        <th>Appliance</th>
+                                                        
                                                         <th>Phone No</th>
                                                         <th>Address Line 1</th>
                                                         <th>Address Line 2</th>
@@ -83,18 +85,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php foreach ($customer as $key => $value) { ?>
-                                                        <tr>
-                                                            <td><?= $key + 1 ?></td>
-                                                            <td><?= $value->name ?></td>
-                                                            <td><?= $value->type ?></td>
-                                                            <td><?= $value->phone ?></td>
-                                                            <td><?= $value->address_line_1 ?></td>
-                                                            <td><?= $value->address_line_2 ?></td>
-                                                            <td><?= $value->city ?></td>
-                                                            <td><a href="customer-edit.php?id=<?= $value->id ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
-                                                            <td><form action="customer.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');"><input type="hidden" name="id" value="<?= $value->id ?>"><button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button></form></td>
-                                                        </tr>
+                                                <?php foreach ($customer as $key => $value) { ?>
+        <tr>
+            <td><?= $key + 1 ?></td>
+            <td><?= $value->name ?></td>
+            <td><?= $value->type ?></td>
+            <td><?= $value->appliance ?></td> 
+        
+            <td><?= $value->phone ?></td>
+            <td><?= $value->address_line_1 ?></td>
+            <td><?= $value->address_line_2 ?></td>
+            <td><?= $value->city ?></td>
+            <td><a href="customer-edit.php?id=<?= $value->id ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
+            <td>
+                <form action="customer.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                    <input type="hidden" name="id" value="<?= $value->id ?>">
+                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                </form>
+            </td>
+        </tr>
                                                     <?php } ?>
                                                 </tbody>
                                             </table>
@@ -118,6 +127,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     [10, 25, 50, "All"]
                 ],
             });
+            
+          
         </script>
 </body>
 
