@@ -110,7 +110,7 @@ if ($result) {
 <div class="col-md-12 row item-row" id="initialItemRow">
     <div class="col-md-4 form-group">
         <label class="col-blue">Appliance List</label>
-        <select name="appliance" class="form-control form-control-sm" required>
+        <select name="appliance" class="form-control form-control-sm" value="<?= $customer[0]->appliance; ?>" required>
             <option value="">Select Appliance</option>
             <option value="Air Conditioner">Air Conditioner</option>
             <option value="Deep Freezer">Deep Freezer</option>
@@ -124,11 +124,11 @@ if ($result) {
     </div>
     <div class="col-md-3 form-group">
         <label class="col-blue">Brand</label>
-        <input type="text" name="brand"  class="form-control form-control-sm" required>
+        <input type="text" name="brand" value="<?= $customer[0]->brand; ?>"  class="form-control form-control-sm" required>
     </div>
     <div class="col-md-3 form-group">
         <label class="col-blue">Appliance Name</label>
-        <input type="text" name="appliance_name"  class="form-control form-control-sm" required>
+        <input type="text" name="appliance_name" value="<?= $customer[0]->appliance_name; ?>"  class="form-control form-control-sm" required>
     </div>
     
     <div class="col-md-1 form-group">
