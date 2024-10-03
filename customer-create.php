@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addItemBtn = document.getElementById('addItemBtn');
     const itemContainer = document.getElementById('itemContainer');
     const initialItemRow = document.getElementById('initialItemRow');
-    const submitBtn = document.querySelector('.btn-success'); // Assuming this is your submit button
+    const submitBtn = document.querySelector('.btn-success'); 
 
     function addRemoveButtonListener(row) {
         const removeBtn = row.querySelector('.removeItemBtn');
@@ -192,23 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addRemoveButtonListener(newItemRow);
     });
 
-    submitBtn.addEventListener('click', function () {
-        const items = [];
-        const rows = itemContainer.querySelectorAll('.item-row'); // Select all item rows
-
-        rows.forEach(row => {
-            const appliance = row.querySelector('select[name="appliance"]').value;
-            const brand = row.querySelector('input[name="brand"]').value;
-            const applianceName = row.querySelector('input[name="appliance_name"]').value;
-
-            if (appliance && brand && applianceName) { // Ensure fields are not empty
-                items.push({ appliance, brand, applianceName });
-            }
-        });
-
-    
-        localStorage.setItem('items', JSON.stringify(items));
-    });
+ 
 });
 
 
