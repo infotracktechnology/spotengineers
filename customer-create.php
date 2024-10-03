@@ -9,6 +9,12 @@ if (!isset($_SESSION['username'])) {
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   extract($_POST);
   $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
+  $id = mysqli_insert_id($con);
+
+foreach($_POST['item'] as $key => $value){
+  
+}
+
   header("location:customer.php");
   exit;
 }
