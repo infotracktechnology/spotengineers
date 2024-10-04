@@ -138,7 +138,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
           <input type="text" x-model="appliance.appliance_name" name="appliance_name[]" class="form-control form-control-sm" required>
         </div>
         <div class="col-md-1 form-group">
-          <button type="button" class="btn btn-danger mt-4" @click="removeAppliance(appliance.id)" :disabled="appliances.length === 1">
+          <button type="button" class="btn btn-danger mt-4" @click="removeAppliance(index)" :disabled="appliances.length === 1">
             <i class="fa fa-times"></i>
           </button>
         </div>
@@ -173,12 +173,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <script>
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
-
+    
     appliances: [{
       id: 1,
       brand: '',
       appliance_name: '',
     }],
+
     addAppliance() {
       this.appliances.push({
         id: this.appliances.length + 1,
@@ -189,8 +190,8 @@ document.addEventListener('alpine:init', () => {
 
     removeAppliance(id) {
       if(confirm ('Are you sure?')){
-      this.appliances = this.appliances.filter(appliance => appliance.id !== id);
-    }
+        this.appliances.splice(id, 1);
+      }
     }
 
   }))
