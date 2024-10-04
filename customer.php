@@ -74,7 +74,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                         <th>S.No</th>
                                                         <th>Name</th>
                                                         <th>Type</th>
-                                                        <th>Appliance</th>
                                                         
                                                         <th>Phone No</th>
                                                         <th>Address Line 1</th>
@@ -90,7 +89,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <td><?= $key + 1 ?></td>
             <td><?= $value->name ?></td>
             <td><?= $value->type ?></td>
-            <td><?= $value->appliance ?></td> 
         
             <td><?= $value->phone ?></td>
             <td><?= $value->address_line_1 ?></td>

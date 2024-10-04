@@ -49,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="main-wrapper main-wrapper-1">
       <?php require('sidebar.php'); ?>
       <!-- Main Content -->
-      <div class="main-content">
+      <div class="main-content" x-data="app">
         <section class="section">
           <div class="section-body">
             <div class="row">
@@ -109,14 +109,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 <div class="col-md-12 form-group mt-0">
-    <button type="button" class="btn btn-warning" id="addItemBtn"><i class="fa fa-plus"></i> Add Item</button>
-</div>
-<div id="itemContainer" class="col-md-12"></div>
+      <button type="button" class="btn btn-warning" @click="addAppliance"><i class="fa fa-plus"></i> Add Item</button>
+  </div>
 
-<div class="col-md-12 row item-row" id="initialItemRow">
-    <div class="col-md-4 form-group">
-        <label class="col-blue">Appliance List</label>
-        <select name="appliance[]" class="form-control form-control-sm" required>
+  <div class="col-md-12" id="itemContainer">
+    <template x-for="(appliance, index) in appliances" :key="appliance.id">
+      <div class="row item-row" id="initialItemRow">
+        <div class="col-md-4 form-group">
+          <label class="col-blue">Appliance List</label>
+          <select name="appliance[]" class="form-control form-control-sm" required>
             <option value="">Select Appliance</option>
             <option value="Air Conditioner">Air Conditioner</option>
             <option value="Deep Freezer">Deep Freezer</option>
@@ -126,24 +127,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <option value="Water Heater">Water Heater</option>
             <option value="UPS">UPS</option>
             <option value="Dish">Dish (DTH)</option>
-        </select>
-    </div>
-    <div class="col-md-3 form-group">
-        <label class="col-blue">Brand</label>
-        <input type="text" name="brand" class="form-control form-control-sm" required>
-    </div>
-    <div class="col-md-3 form-group">
-        <label class="col-blue">Appliance Name</label>
-        <input type="text" name="appliance_name" class="form-control form-control-sm" required>
-    </div>
-    <div class="col-md-1 form-group">
-        <button type="button" class="btn btn-danger mt-4 removeItemBtn"><i class="fa fa-times"></i></button>
-    </div>
-</div>
+          </select>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="col-blue">Brand</label>
+          <input type="text" x-model="appliance.brand" name="brand[]" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="col-blue">Appliance Name</label>
+          <input type="text" x-model="appliance.appliance_name" name="appliance_name[]" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-md-1 form-group">
+          <button type="button" class="btn btn-danger mt-4" @click="removeAppliance(appliance.id)" :disabled="appliances.length === 1">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+  </div>
 
-<div class="col-md-12">
-    <button type="submit" class="btn btn-success">Submit</button>
-</div>
+  <div class="col-md-12">
+      <button type="submit" class="btn btn-success">Submit</button>
+  </div>
                </form>
 
 
@@ -166,37 +171,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/app.js"></script>
 </body>
 <script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('app', () => ({
 
+    appliances: [{
+      id: 1,
+      brand: '',
+      appliance_name: '',
+    }],
+    addAppliance() {
+      this.appliances.push({
+        id: this.appliances.length + 1,
+        brand: '',
+        appliance_name: '',
+      });
+    },
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addItemBtn = document.getElementById('addItemBtn');
-    const itemContainer = document.getElementById('itemContainer');
-    const initialItemRow = document.getElementById('initialItemRow');
-    const submitBtn = document.querySelector('.btn-success'); 
-
-    function addRemoveButtonListener(row) {
-        const removeBtn = row.querySelector('.removeItemBtn');
-        removeBtn.addEventListener('click', function () {
-            if (confirm('Are you sure you want to delete this item?')) {
-                row.remove();
-            }
-        });
+    removeAppliance(id) {
+      this.appliances = this.appliances.filter(appliance => appliance.id !== id);
     }
 
-    addRemoveButtonListener(initialItemRow);
+  }))
+})
+</script>
 
-    addItemBtn.addEventListener('click', function () {
-        const newItemRow = initialItemRow.cloneNode(true);
-        newItemRow.removeAttribute('id');
-        itemContainer.appendChild(newItemRow);
-        addRemoveButtonListener(newItemRow);
-    });
-
- 
-});
-
-
-
-    
-  </script>
 </html>
