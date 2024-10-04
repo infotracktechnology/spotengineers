@@ -113,7 +113,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   </div>
 
   <div class="col-md-12" id="itemContainer">
-    <template x-for="(appliance, index) in appliances" :key="appliance.id">
+    <template x-for="(appliance, index) in appliances">
       <div class="row item-row" id="initialItemRow">
         <div class="col-md-4 form-group">
           <label class="col-blue">Appliance List</label>
@@ -173,7 +173,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <script>
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
-    
+
     appliances: [{
       id: 1,
       brand: '',
