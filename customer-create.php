@@ -188,7 +188,9 @@ document.addEventListener('alpine:init', () => {
     },
 
     removeAppliance(id) {
+      if(confirm ('Are you sure?')){
       this.appliances = this.appliances.filter(appliance => appliance.id !== id);
+    }
     }
 
   }))
