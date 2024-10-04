@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $appliance_name = $_POST['appliance_name'][$key];
     mysqli_query($con,"INSERT INTO customer_appliance(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
   }
-  header("location:customer.php");
+  header("location:customer.php?id=$id", true, 303);
   exit;
 }
 ?>
