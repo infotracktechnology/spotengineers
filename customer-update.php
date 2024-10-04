@@ -18,17 +18,9 @@ if(isset($_POST['submit'])) {
 
     $sql = "UPDATE `customer` SET `name` = '$name', `type` = '$type', `appliance` = '$appliance', `brand` = '$brand',`appliance_name` = '$appliance_name', `phone` = '$phone', `address_line_1` = '$address_line_1', `address_line_2` = '$address_line_2', `city` = '$city', `gst_no` = '$gst_no' WHERE `id` = '$_GET[id]';";
 
-    $id = mysqli_insert_id($con);
-    foreach($_POST['appliance'] as $key => $value){
-      $appliance = $_POST['appliance'][$key];
-      $brand = $_POST['brand'][$key];
-      $appliance_name = $_POST['appliance_name'][$key];
-      mysqli_query($con,"INSERT INTO customer_appliances(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
-    }
-    if (mysqli_query($con, $sql)) {
-        echo "<script>alert('Customer Updated.');</script>";
-        header("location:customer.php");
-    }
+    $result = mysqli_query($con, $sql);
+    header("location:customer.php");
+    exit;
     
 }
 else {
