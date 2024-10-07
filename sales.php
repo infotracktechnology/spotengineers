@@ -117,6 +117,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                         <?php } ?>
                                                     </select>
                                                 </div>
+                                                
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Customer Type</label>
                                                     <input type="text" name="customer_type" x-model="customer_type" class="form-control form-control-sm"  readonly/>
@@ -127,8 +128,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                     <input type="text" name="gst" x-model="gst" class="form-control form-control-sm"  readonly/>
                                                 </div>
                                                 
-                                              
-
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />

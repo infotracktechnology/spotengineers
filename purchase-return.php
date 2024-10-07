@@ -254,9 +254,9 @@ foreach ($purchase_items as $row) {
         return;
     }
 
-    const total = totalPrice + (price * quantity);
+const total = totalPrice + (price * quantity);
 
-    const newRow = `
+const newRow = `
         <tr>
             <td>${itemCounter++}</td>
             <td>${productName} <input type="hidden" name="item_id[]" value="${item_id}"></td>
@@ -269,7 +269,7 @@ foreach ($purchase_items as $row) {
         </tr>`;
     
     $('#itemsTable tbody').append(newRow);
-    $('input[name="total"]').val(total); // Update the total input
+    $('input[name="total"]').val(total); 
 
     totalPrice += (price * quantity);
     totalTax += taxAmount;

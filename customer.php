@@ -5,13 +5,10 @@ if (!isset($_SESSION['username'])) {
     header("location:index.php");
     exit;
 }
-
 include "config.php";
-
 $customer = [];
 $query = "SELECT * FROM customer";
 $result = mysqli_query($con, $query);
-
 if ($result) {
     while ($row = mysqli_fetch_object($result)) {
         $customer[] = $row;
@@ -75,8 +72,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                         <th>Name</th>
                                                         <th>Type</th>
                                                         <th>Appliance</th>
-                                                        
-                                                        <th>Phone No</th>
+                                                         <th>Phone No</th>
                                                         <th>Address Line 1</th>
                                                         <th>Address Line 2</th>
                                                         <th>City</th>
@@ -91,7 +87,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <td><?= $value->name ?></td>
             <td><?= $value->type ?></td>
             <td><?= $value->appliance ?></td> 
-        
             <td><?= $value->phone ?></td>
             <td><?= $value->address_line_1 ?></td>
             <td><?= $value->address_line_2 ?></td>

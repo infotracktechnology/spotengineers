@@ -8,14 +8,7 @@ if (!isset($_SESSION['username'])) {
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   extract($_POST);
-  $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
-  $id = mysqli_insert_id($con);
-  foreach($_POST['appliance'] as $key => $value){
-    $appliance = $_POST['appliance'][$key];
-    $brand = $_POST['brand'][$key];
-    $appliance_name = $_POST['appliance_name'][$key];
-    mysqli_query($con,"INSERT INTO customer_appliance(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
-  }
+  $customer = mysqli_query($con,"INSERT INTO customer(name,type,appliance,brand,appliance_name,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$appliance','$brand','$appliance_name','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
   header("location:customer.php");
   exit;
 }
@@ -112,7 +105,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 <div class="col-md-12 row item-row" id="initialItemRow">
     <div class="col-md-4 form-group">
         <label class="col-blue">Appliance List</label>
-        <select name="appliance[]" class="form-control form-control-sm" required>
+        <select name="appliance" class="form-control form-control-sm" required>
             <option value="">Select Appliance</option>
             <option value="Air Conditioner">Air Conditioner</option>
             <option value="Deep Freezer">Deep Freezer</option>
@@ -142,8 +135,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 </div>
                </form>
 
-
-               
                   </div>
                 </div> 
               </div>
@@ -166,6 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addItemBtn = document.getElementById('addItemBtn');
     const itemContainer = document.getElementById('itemContainer');
     const initialItemRow = document.getElementById('initialItemRow');
+    const submitBtn = document.querySelector('.btn-success'); // Assuming this is your submit button
 
     function addRemoveButtonListener(row) {
         const removeBtn = row.querySelector('.removeItemBtn');
@@ -184,6 +176,25 @@ document.addEventListener('DOMContentLoaded', function () {
         itemContainer.appendChild(newItemRow);
         addRemoveButtonListener(newItemRow);
     });
+
+    submitBtn.addEventListener('click', function () {
+        const items = [];
+        const rows = itemContainer.querySelectorAll('.item-row'); s
+
+        rows.forEach(row => {
+            const appliance = row.querySelector('select[name="appliance"]').value;
+            const brand = row.querySelector('input[name="brand"]').value;
+            const applianceName = row.querySelector('input[name="appliance_name"]').value;
+
+            if (appliance && brand && applianceName) { 
+                items.push({ appliance, brand, applianceName });
+            }
+        });
+
+    
+        localStorage.setItem('items', JSON.stringify(items));
+    });
 });
+
   </script>
 </html>
