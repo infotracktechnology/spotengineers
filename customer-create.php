@@ -14,9 +14,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $appliance = $_POST['appliance'][$key];
     $brand = $_POST['brand'][$key];
     $appliance_name = $_POST['appliance_name'][$key];
-    mysqli_query($con,"INSERT INTO customer_appliance(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
+    mysqli_query($con,"INSERT INTO customer_appliances(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
   }
-  header("location:customer.php");
+  header("location:customer.php?id=$id", true, 303);
   exit;
 }
 ?>
@@ -75,6 +75,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                      </select>
                    </div>
                   
+
+
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Phone</label>
                      <input type="text" name="phone" class="form-control form-control-sm" required>
@@ -104,14 +106,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h6 class="col-deep-purple m-0"></h6>
     <hr class="bg-dark-gray" />
 </div>
+
+
 <div class="col-md-12 form-group mt-0">
       <button type="button" class="btn btn-warning" @click="addAppliance"><i class="fa fa-plus"></i> Add Item</button>
   </div>
 
-<div class="col-md-12 row item-row" id="initialItemRow">
-    <div class="col-md-4 form-group">
-        <label class="col-blue">Appliance List</label>
-        <select name="appliance[]" class="form-control form-control-sm" required>
+  <div class="col-md-12" id="itemContainer">
+    <template x-for="(appliance, index) in appliances">
+      <div class="row item-row" id="initialItemRow">
+        <div class="col-md-4 form-group">
+          <label class="col-blue">Appliance List</label>
+          <select name="appliance[]" class="form-control form-control-sm" required>
             <option value="">Select Appliance</option>
             <option value="Air Conditioner">Air Conditioner</option>
             <option value="Deep Freezer">Deep Freezer</option>
@@ -145,6 +151,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
   </div>
                </form>
 
+
+               
                   </div>
                 </div> 
               </div>
@@ -163,37 +171,31 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/app.js"></script>
 </body>
 <script>
+document.addEventListener('alpine:init', () => {
+  Alpine.data('app', () => ({
 
+    appliances: [{
+      id: 1,
+      brand: '',
+      appliance_name: '',
+    }],
 
-document.addEventListener('DOMContentLoaded', function () {
-    const addItemBtn = document.getElementById('addItemBtn');
-    const itemContainer = document.getElementById('itemContainer');
-    const initialItemRow = document.getElementById('initialItemRow');
-    const submitBtn = document.querySelector('.btn-success'); 
+    addAppliance() {
+      this.appliances.push({
+        id: this.appliances.length + 1,
+        brand: '',
+        appliance_name: '',
+      });
+    },
 
-    function addRemoveButtonListener(row) {
-        const removeBtn = row.querySelector('.removeItemBtn');
-        removeBtn.addEventListener('click', function () {
-            if (confirm('Are you sure you want to delete this item?')) {
-                row.remove();
-            }
-        });
+    removeAppliance(id) {
+      if(confirm ('Are you sure?')){
+        this.appliances.splice(id, 1);
+      }
     }
 
-    addRemoveButtonListener(initialItemRow);
+  }))
+})
+</script>
 
-    addItemBtn.addEventListener('click', function () {
-        const newItemRow = initialItemRow.cloneNode(true);
-        newItemRow.removeAttribute('id');
-        itemContainer.appendChild(newItemRow);
-        addRemoveButtonListener(newItemRow);
-    });
-
- 
-});
-
-
-
-    
-  </script>
 </html>
