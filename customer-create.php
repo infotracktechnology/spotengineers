@@ -75,8 +75,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                      </select>
                    </div>
                   
-
-
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Phone</label>
                      <input type="text" name="phone" class="form-control form-control-sm" required>
@@ -106,8 +104,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h6 class="col-deep-purple m-0"></h6>
     <hr class="bg-dark-gray" />
 </div>
-
-
 <div class="col-md-12 form-group mt-0">
     <button type="button" class="btn btn-warning" id="addItemBtn"><i class="fa fa-plus"></i> Add Item</button>
 </div>
@@ -166,13 +162,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/app.js"></script>
 </body>
 <script>
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const addItemBtn = document.getElementById('addItemBtn');
     const itemContainer = document.getElementById('itemContainer');
     const initialItemRow = document.getElementById('initialItemRow');
-    const submitBtn = document.querySelector('.btn-success'); 
 
     function addRemoveButtonListener(row) {
         const removeBtn = row.querySelector('.removeItemBtn');
@@ -191,12 +184,6 @@ document.addEventListener('DOMContentLoaded', function () {
         itemContainer.appendChild(newItemRow);
         addRemoveButtonListener(newItemRow);
     });
-
- 
 });
-
-
-
-    
   </script>
 </html>
