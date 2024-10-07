@@ -60,10 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-10 mb-3">
+                                            <div class="col-md-10 col-sm-12 mb-3">
                                                 <h6 class="col-deep-purple">Work Schedule Master Details</h6>
                                             </div>
-                                            <div class="col-2 mb-3">
+                                            <div class="col-md-2 col-sm-12 mb-3">
                                                 <a href="work-master-create.php" class="btn btn-success text-white btn-block">Add Work</a>
                                             </div>
                                         </div>

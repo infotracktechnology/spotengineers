@@ -52,10 +52,10 @@ if ($result) {
                                     <!-- Add card hedaer -->
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-10 mb-3">
+                                            <div class="col-md-10 col-sm-12 mb-3">
                                                 <h6 class="col-deep-purple">Supplier Details</h6>
                                             </div>
-                                            <div class="col-2 mb-3">
+                                            <div class="col-md-2 col-sm-12 mb-3">
                                                 <a href="supplier-create.php" class="btn btn-success text-white btn-block">Add Supplier</a>
                                             </div>
                                         </div>
