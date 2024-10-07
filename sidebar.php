@@ -55,7 +55,7 @@
                     <li><a class="nav-link" href="supplier.php">Supplier </a></li>
                     <li><a class="nav-link" href="items.php">Spares Part</a></li>
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
-                    <li><a class="nav-link" href="work-master.php">Work Master</a></li>
+                    <li><a class="nav-link" href="work-master.php">Work Schedule</a></li>
                 </ul>
             </li>
            
