@@ -7,14 +7,15 @@ if (!isset($_SESSION['username'])) {
   exit;
 }
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    extract($_POST);
-    $work_master = mysqli_query($con, "INSERT INTO work(title,category,amount) VALUES('$title','$category','$amount')");
-    header("location:work-master.php");
-    exit;
+$id = $_GET['id'];
+$work = [];
+$query = "SELECT * FROM work WHERE id = '$id'";
+$result = mysqli_query($con, $query);
+if ($result) {
+  while ($row = mysqli_fetch_object($result)) {
+    $work[] = $row;
   }
-
-
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,27 +56,28 @@ if (!isset($_SESSION['username'])) {
                     <h4 class="col-deep-purple m-0">Work Schedule Master</h4>
                   </div>
                   <div class="card-body">
-                  <form method="post" id="myForm" action="work-master-create.php" enctype="multipart/form-data" x-data="{ customerType: '' }">
+                  <form method="post" id="myForm" action="work-master-update.php" enctype="multipart/form-data">
                  <div class="row">
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Title</label>
-                     <input type="text" name="title" id="name" class="form-control form-control-sm" required>
+                     <input type="hidden" name="id" value="<?= $work[0]->id; ?>">
+                     <input type="text" name="title" value="<?= $work[0]->title; ?>" id="name" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Category</label>
-                     <input type="text" name="category" class="form-control form-control-sm" >
+                     <input type="text" name="category" value="<?= $work[0]->category; ?>" class="form-control form-control-sm" >
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Amount</label>
-                     <input type="number" step="any" min="0" name="amount" class="form-control form-control-sm" required>
+                     <input type="number" step="any" min="0" name="amount" value="<?= $work[0]->amount; ?>" class="form-control form-control-sm" required>
                    </div>
 
                 
 
   <div class="col-md-12">
-      <button type="submit" class="btn btn-success">Submit</button>
+      <button type="submit" name="submit" class="btn btn-success">Submit</button>
   </div>
                </form>
 
