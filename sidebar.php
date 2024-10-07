@@ -55,6 +55,7 @@
                     <li><a class="nav-link" href="supplier.php">Supplier </a></li>
                     <li><a class="nav-link" href="items.php">Spares Part</a></li>
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
+                    <li><a class="nav-link" href="work-master.php">Work Master</a></li>
                 </ul>
             </li>
            
@@ -66,6 +67,10 @@
                     <li><a class="nav-link" href="sales.php">Sales (Billing)</a></li>
                     <li><a class="nav-link" href="sales_all.php">Sales Return(Edit)</a></li>
                 </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Service</span></a>
+                
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
