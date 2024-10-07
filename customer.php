@@ -16,14 +16,26 @@ if ($result) {
 } else {
     echo "Error: " . mysqli_error($con);
 }
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $id = $_POST['id'];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = mysqli_real_escape_string($con, $_POST['id']);
+    
+    $delete_items = mysqli_query($con, "DELETE FROM customer_appliances WHERE customer_id = $id");
+    if (!$delete_items) {
+        echo "Error deleting from customer_appliances: " . mysqli_error($con);
+    }
+
     $query = "DELETE FROM customer WHERE id = $id";
     $result = mysqli_query($con, $query);
-    header("location:customer.php");
-    exit;
+    if (!$result) {
+        echo "Error deleting from customer: " . mysqli_error($con);
+    } else {
+        header("location:customer.php");
+        exit;
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,8 +83,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                                         <th>S.No</th>
                                                         <th>Name</th>
                                                         <th>Type</th>
-                                                        <th>Appliance</th>
-                                                         <th>Phone No</th>
+                                                        
+                                                        <th>Phone No</th>
                                                         <th>Address Line 1</th>
                                                         <th>Address Line 2</th>
                                                         <th>City</th>
@@ -86,7 +98,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             <td><?= $key + 1 ?></td>
             <td><?= $value->name ?></td>
             <td><?= $value->type ?></td>
-            <td><?= $value->appliance ?></td> 
+        
             <td><?= $value->phone ?></td>
             <td><?= $value->address_line_1 ?></td>
             <td><?= $value->address_line_2 ?></td>

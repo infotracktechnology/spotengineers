@@ -8,7 +8,14 @@ if (!isset($_SESSION['username'])) {
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
   extract($_POST);
-  $customer = mysqli_query($con,"INSERT INTO customer(name,type,appliance,brand,appliance_name,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$appliance','$brand','$appliance_name','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
+  $customer = mysqli_query($con,"INSERT INTO customer(name,type,phone,address_line_1,address_line_2,city,gst_no) VALUES('$name','$type','$phone','$address_line_1','$address_line_2','$city','$gst_no')");
+  $id = mysqli_insert_id($con);
+  foreach($_POST['appliance'] as $key => $value){
+    $appliance = $_POST['appliance'][$key];
+    $brand = $_POST['brand'][$key];
+    $appliance_name = $_POST['appliance_name'][$key];
+    mysqli_query($con,"INSERT INTO customer_appliance(customer_id,appliance,brand,appliance_name) VALUES('$id','$value','$brand','$appliance_name')");
+  }
   header("location:customer.php");
   exit;
 }
@@ -42,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class="main-wrapper main-wrapper-1">
       <?php require('sidebar.php'); ?>
       <!-- Main Content -->
-      <div class="main-content">
+      <div class="main-content" x-data="app">
         <section class="section">
           <div class="section-body">
             <div class="row">
@@ -98,14 +105,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <hr class="bg-dark-gray" />
 </div>
 <div class="col-md-12 form-group mt-0">
-    <button type="button" class="btn btn-warning" id="addItemBtn"><i class="fa fa-plus"></i> Add Item</button>
-</div>
-<div id="itemContainer" class="col-md-12"></div>
+      <button type="button" class="btn btn-warning" @click="addAppliance"><i class="fa fa-plus"></i> Add Item</button>
+  </div>
 
 <div class="col-md-12 row item-row" id="initialItemRow">
     <div class="col-md-4 form-group">
         <label class="col-blue">Appliance List</label>
-        <select name="appliance" class="form-control form-control-sm" required>
+        <select name="appliance[]" class="form-control form-control-sm" required>
             <option value="">Select Appliance</option>
             <option value="Air Conditioner">Air Conditioner</option>
             <option value="Deep Freezer">Deep Freezer</option>
@@ -115,24 +121,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             <option value="Water Heater">Water Heater</option>
             <option value="UPS">UPS</option>
             <option value="Dish">Dish (DTH)</option>
-        </select>
-    </div>
-    <div class="col-md-3 form-group">
-        <label class="col-blue">Brand</label>
-        <input type="text" name="brand" class="form-control form-control-sm" required>
-    </div>
-    <div class="col-md-3 form-group">
-        <label class="col-blue">Appliance Name</label>
-        <input type="text" name="appliance_name" class="form-control form-control-sm" required>
-    </div>
-    <div class="col-md-1 form-group">
-        <button type="button" class="btn btn-danger mt-4 removeItemBtn"><i class="fa fa-times"></i></button>
-    </div>
-</div>
+          </select>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="col-blue">Brand</label>
+          <input type="text" x-model="appliance.brand" name="brand[]" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-md-3 form-group">
+          <label class="col-blue">Appliance Name</label>
+          <input type="text" x-model="appliance.appliance_name" name="appliance_name[]" class="form-control form-control-sm" required>
+        </div>
+        <div class="col-md-1 form-group">
+          <button type="button" class="btn btn-danger mt-4" @click="removeAppliance(index)" :disabled="appliances.length === 1">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+  </div>
 
-<div class="col-md-12">
-    <button type="submit" class="btn btn-success">Submit</button>
-</div>
+  <div class="col-md-12">
+      <button type="submit" class="btn btn-success">Submit</button>
+  </div>
                </form>
 
                   </div>
@@ -153,11 +163,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/app.js"></script>
 </body>
 <script>
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const addItemBtn = document.getElementById('addItemBtn');
     const itemContainer = document.getElementById('itemContainer');
     const initialItemRow = document.getElementById('initialItemRow');
-    const submitBtn = document.querySelector('.btn-success'); // Assuming this is your submit button
+    const submitBtn = document.querySelector('.btn-success'); 
 
     function addRemoveButtonListener(row) {
         const removeBtn = row.querySelector('.removeItemBtn');
@@ -177,24 +189,11 @@ document.addEventListener('DOMContentLoaded', function () {
         addRemoveButtonListener(newItemRow);
     });
 
-    submitBtn.addEventListener('click', function () {
-        const items = [];
-        const rows = itemContainer.querySelectorAll('.item-row'); s
-
-        rows.forEach(row => {
-            const appliance = row.querySelector('select[name="appliance"]').value;
-            const brand = row.querySelector('input[name="brand"]').value;
-            const applianceName = row.querySelector('input[name="appliance_name"]').value;
-
-            if (appliance && brand && applianceName) { 
-                items.push({ appliance, brand, applianceName });
-            }
-        });
-
-    
-        localStorage.setItem('items', JSON.stringify(items));
-    });
+ 
 });
 
+
+
+    
   </script>
 </html>
