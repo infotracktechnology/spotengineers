@@ -69,7 +69,7 @@ if (!isset($_SESSION['username'])) {
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Phone</label>
-                     <input type="number" name="Phone" value="" class="form-control form-control-sm">
+                     <input type="number" name="Phone" value="" class="form-control form-control-sm" required>
                      <div class="invalid-feedback">Please Enter 10 digits Mobile Number.</div>
                      </div>
 
@@ -91,12 +91,12 @@ if (!isset($_SESSION['username'])) {
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Date of Joining</label>
-                     <input type="date"  name="doj" class="form-control form-control-sm" required>
+                     <input type="date"  name="doj" class="form-control form-control-sm" >
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Experience</label>
-                     <input type="text"  name="experience" class="form-control form-control-sm" required>
+                     <input type="text"  name="experience" class="form-control form-control-sm" >
                    </div>
 
 
