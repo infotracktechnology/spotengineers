@@ -6,33 +6,24 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 include "config.php";
-$customer = [];
-$query = "SELECT * FROM customer";
+$work = [];
+$query = "SELECT * FROM work";
 $result = mysqli_query($con, $query);
 if ($result) {
     while ($row = mysqli_fetch_object($result)) {
-        $customer[] = $row;
+        $work[] = $row;
     }
 } else {
     echo "Error: " . mysqli_error($con);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = mysqli_real_escape_string($con, $_POST['id']);
-    
-    $delete_items = mysqli_query($con, "DELETE FROM customer_appliances WHERE customer_id = $id");
-    if (!$delete_items) {
-        echo "Error deleting from customer_appliances: " . mysqli_error($con);
-    }
-
-    $query = "DELETE FROM customer WHERE id = $id";
-    $result = mysqli_query($con, $query);
-    if (!$result) {
-        echo "Error deleting from customer: " . mysqli_error($con);
-    } else {
-        header("location:customer.php");
-        exit;
-    }
+   $id = mysqli_real_escape_string($con, $_POST['id']);
+   $delete_items = mysqli_query($con, "DELETE FROM work WHERE id = $id");
+   if ($delete_items) {
+       header("Location: work-master.php");
+       exit;
+   }
 }
 ?>
 
@@ -42,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>>Work Master</title>
+    <title>Work Master</title>
     <link rel="stylesheet" href="assets/css/app.min.css">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
@@ -69,10 +60,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-10 mb-3">
-                                                <h6 class="col-deep-purple">Work Master Details</h6>
+                                            <div class="col-md-10 col-sm-12 mb-3">
+                                                <h6 class="col-deep-purple">Work Schedule Master Details</h6>
                                             </div>
-                                            <div class="col-2 mb-3">
+                                            <div class="col-md-2 col-sm-12 mb-3">
                                                 <a href="work-master-create.php" class="btn btn-success text-white btn-block">Add Work</a>
                                             </div>
                                         </div>
@@ -89,24 +80,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach ($customer as $key => $value) { ?>
-        <tr>
-            <td><?= $key + 1 ?></td>
-            <td><?= $value->title ?></td>
-            <td><?= $value->category ?></td>
-                                                       
-           <td><?= $value->amount ?></td>
-           
-           
-            <td><a href="customer-edit.php?id=<?= $value->id ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
-            <td>
-                <form action="customer.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                    <input type="hidden" name="id" value="<?= $value->id ?>">
-                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
-                </form>
-            </td>
-        </tr>
-                                                    <?php } ?>
+                                                <?php foreach ($work as $key => $value) { ?>
+                                                    <tr>
+                                                        <td><?= $key + 1 ?></td>
+                                                        <td><?= $value->title ?></td>
+                                                        <td><?= $value->category ?></td>
+                                                        <td><?= $value->amount ?></td>
+                                                        <td><a href="work-master-edit.php?id=<?= $value->id ?>" class="btn btn-success text-white"><i class="fas fa-edit"></i></a></td>
+                                                        <td><form action="work-master.php" method="post" onsubmit="return confirm('Are you sure you want to delete this work?');"><button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button><input type="hidden" name="id" value="<?= $value->id ?>"></ /></form></td>
+                                                    </tr>
+                                                <?php } ?>
+                                               
                                                 </tbody>
                                             </table>
                                         </div>

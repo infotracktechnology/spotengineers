@@ -55,7 +55,7 @@
                     <li><a class="nav-link" href="supplier.php">Supplier </a></li>
                     <li><a class="nav-link" href="items.php">Spares Part</a></li>
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
-                    <li><a class="nav-link" href="work-master.php">Work Master</a></li>
+                    <li><a class="nav-link" href="work-master.php">Work Schedule</a></li>
                 </ul>
             </li>
            
@@ -70,7 +70,11 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Service</span></a>
-                
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="labour-entry.php">Labour Entry</a></li>
+                    <li><a class="nav-link" href="spare-issue.php">Spare Issue</a></li>
+                    <li><a class="nav-link" href="spare-return.php">Spare Return</a></li>
+                </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
