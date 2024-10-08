@@ -6,25 +6,24 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 include "config.php";
-$work = [];
-$query = "SELECT * FROM work";
+$query = "SELECT * FROM employee";
 $result = mysqli_query($con, $query);
+
 if ($result) {
-    while ($row = mysqli_fetch_object($result)) {
-        $work[] = $row;
-    }
+    $employee = mysqli_fetch_all($result, MYSQLI_ASSOC);
 } else {
     echo "Error: " . mysqli_error($con);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-   $id = mysqli_real_escape_string($con, $_POST['id']);
-   $delete_items = mysqli_query($con, "DELETE FROM work WHERE id = $id");
-   if ($delete_items) {
-       header("Location: work-master.php");
-       exit;
-   }
+    $id = mysqli_real_escape_string($con, $_POST['id']);
+    $query = "DELETE FROM employee WHERE id = $id";
+    $result = mysqli_query($con, $query);
+    if (!$result) {
+        echo "Error deleting from employee: " . mysqli_error($con);
+    }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <?php foreach ($work as $key => $value) { ?>
+                                                <?php foreach ($employee as $key => $value) { ?>
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
                                                         <td><?= $value->Name ?></td>

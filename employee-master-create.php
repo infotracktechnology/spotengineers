@@ -9,8 +9,8 @@ if (!isset($_SESSION['username'])) {
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $work_master = mysqli_query($con, "INSERT INTO work(title,category,amount) VALUES('$title','$category','$amount')");
-    header("location:work-master.php");
+    $employee = mysqli_query($con, "INSERT INTO employee(name,dob,Phone,address_line_1,address_line_2,city,doj,experience) VALUES( '$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience')");
+    header("location:employee.php");
     exit;
   }
 
@@ -75,12 +75,12 @@ if (!isset($_SESSION['username'])) {
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 1</label>
-                     <input type="text"  name="address1" class="form-control form-control-sm" required>
+                     <input type="text"  name="address_line_1" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 2</label>
-                     <input type="text"  name="address2" class="form-control form-control-sm" required>
+                     <input type="text"  name="address_line_2" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
