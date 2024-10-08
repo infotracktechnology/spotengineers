@@ -69,9 +69,8 @@ if (!isset($_SESSION['username'])) {
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Phone</label>
-                     <input type="number" name="Phone" value="" class="form-control form-control-sm" required>
-                     <div class="invalid-feedback">Please Enter 10 digits Mobile Number.</div>
-                     </div>
+                     <input type="text" name="phone" class="form-control form-control-sm" required>
+                   </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 1</label>
@@ -122,12 +121,12 @@ if (!isset($_SESSION['username'])) {
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
-<script>
+<!--<script>
 const phoneInput = document.querySelector('input[name="Phone"]');
 phoneInput.addEventListener('input', function () {
   phoneInput.classList.toggle('is-invalid', phoneInput.value.length !== 10 || !/^\d{10}$/.test(phoneInput.value));
 });
 
 
-  </script>
+  </script>-->
 </html>

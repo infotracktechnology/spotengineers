@@ -17,12 +17,12 @@ if ($result) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = mysqli_real_escape_string($con, $_POST['id']);
-    $query = "DELETE FROM employee WHERE id = $id";
-    $result = mysqli_query($con, $query);
-    if (!$result) {
-        echo "Error deleting from employee: " . mysqli_error($con);
+    $delete_items = mysqli_query($con, "DELETE FROM employee WHERE id = $id");
+    if ($delete_items) {
+        header("Location: employee.php");
+        exit;
     }
-}
+ }
 
 ?>
 
@@ -74,12 +74,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <th>Name</th>
                                                         <th>DOB</th>
                                                         <th>Phone</th>
-                                                       <th> Address Line 1</th>
-                                                       <th> Address Line 2</th>
-                                                        <th>city</th>
-                                                        <th> Date of joining</th>
-                                                       <th>experience</th>
-                                                         <th>Edit</th>
+                                                        <th>Address Line 1</th>
+                                                        <th>Address Line 2</th>
+                                                        <th>City</th>
+                                                        <th>Date of joining</th>
+                                                        <th>Experience</th>
+                                                        <th>Edit</th>
                                                         <th>Delete</th>
                                                     </tr>
                                                 </thead>
@@ -87,24 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 <?php foreach ($employee as $key => $value) { ?>
                                                     <tr>
                                                         <td><?= $key + 1 ?></td>
-                                                        <td><?= $value->Name ?></td>
-                                                        <td><?= $value->DOB ?></td>
-                                                        <td><?= $value->Phone ?></td>
-                                                        <td><?= $value->Address_line_1 ?></td>
-                                                        <td><?= $value->Address_line_2 ?></td>
-                                                        <td><?= $value->city ?></td>
-                                                        <td><?= $value->Date_of_joining ?></td>
-                                                        <td><?= $value->experience ?></td>
-                                                        <td><a href="employee-master-edit.php?id=<?= $value->id ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
-            <td>
-                <form action="employee.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                    <input type="hidden" name="id" value="<?= $value->id ?>">
-                    <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
-                </form>
-            </td>
+                                                        <td><?= $value['name'] ?></td>
+                                                        <td><?= $value['dob'] ?></td>
+                                                        <td><?= $value['phone'] ?></td>
+                                                        <td><?= $value['address_line_1'] ?></td>
+                                                        <td><?= $value['address_line_2'] ?></td>
+                                                        <td><?= $value['city'] ?></td>
+                                                        <td><?= $value['doj'] ?></td>
+                                                        <td><?= $value['experience'] ?></td>
+                                                        <td><a href="employee-master-edit.php?id=<?= $value['id'] ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
+                                                        <td>
+                                                            <form action="employee.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                                                <input type="hidden" name="id" value="<?= $value['id'] ?>">
+                                                                <button class="btn btn-danger" type="submit"><i class="fa fa-trash"></i></button>
+                                                            </form>
+                                                        </td>
                                                     </tr>
                                                 <?php } ?>
-                                               
                                                 </tbody>
                                             </table>
                                         </div>
@@ -127,8 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     [10, 25, 50, "All"]
                 ],
             });
-            
-          
         </script>
 </body>
 
