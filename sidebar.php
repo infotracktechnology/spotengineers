@@ -70,7 +70,11 @@
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Service</span></a>
-                
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="labour-entry.php">Labour Entry</a></li>
+                    <li><a class="nav-link" href="spare-issue.php">Spare Issue</a></li>
+                    <li><a class="nav-link" href="spare-return.php">Spare Return</a></li>
+                </ul>
             </li>
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
