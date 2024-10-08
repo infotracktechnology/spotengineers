@@ -64,7 +64,7 @@ if (!isset($_SESSION['username'])) {
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">DOB</label>
-                     <input type="number" name="dob" class="form-control form-control-sm" >
+                     <input type="date" name="dob" class="form-control form-control-sm" >
                    </div>
 
                    <div class="col-md-3 form-group">
