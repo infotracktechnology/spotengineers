@@ -25,6 +25,12 @@ if ($result) {
     }
 }
 
+$customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
+
+
+$customer_id = $_GET['id'];
+$customer_appliances = $con->query("SELECT * FROM customer_appliances WHERE customer_id = '$customer_id'") -> fetch_all(MYSQLI_ASSOC);
+
 
 ?>
 
@@ -49,7 +55,8 @@ if ($result) {
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
-    
+    <script src="//unpkg.com/alpinejs" defer></script>
+
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> -->
 </head>
 
@@ -59,7 +66,7 @@ if ($result) {
         <div class="main-wrapper main-wrapper-1">
             <?php require('sidebar.php'); ?>
             <!-- Main Content -->
-            <div class="main-content">
+            <div class="main-content" x-data="app">
                 <section class="section">
                     <div class="section-body">
                         <div class="row">
@@ -81,7 +88,7 @@ if ($result) {
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
-                    <select id="customer" name="customer" class="form-control form-control-sm select2" required>
+                    <select id="customer" name="customer" @change="getCustomer " class="form-control form-control-sm select2" required>
                         <option value="">Select Customer</option>
                         <?php
                         foreach ($customers as $key => $customer) {
@@ -91,18 +98,11 @@ if ($result) {
                     </select>
                 </div>
 
-                
                 <div class="col-md-3 form-group">
                     <label class="col-blue">City</label>
-                    <select id="city" name="city" class="form-control form-control-sm select2" required>
-                        <option value="">Select City</option>
-                        <?php
-                        foreach ($customers as $key => $customer) {
-                            echo '<option value="' . $customer->id . '">' . $customer->city . '</option>';
-                        }
-                        ?>
-                    </select>
+                    <input type="text"  name="city" x-model="city" class="form-control form-control-sm" required />
                 </div>
+          
                 <div class="col-md-3 form-group">
                     <label class="col-blue">GST No</label>
                     <input type="text" value="" name="gst_no" class="form-control form-control-sm" readonly />
@@ -126,14 +126,17 @@ if ($result) {
 
 
                 <div class="col-md-3 form-group">
-                    <label class="col-blue">Brand/Spares</label>
-                    <select class="form-control form-control-sm select2" id="parts">
-                        <option value="">Select Parts</option>
-                        <?php foreach ($purchase_items as $row) { ?>
-                            <option value="<?php echo $row['item_id']; ?>"><?php echo $row['item_id'].'-'.$row['name'].'/'.$row['brand']; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
+    <label class="col-blue">Appliances</label>
+    <select class="form-control form-control-sm select2" id="parts">
+        <option value="">Select Appliances</option>
+        <?php
+        foreach ($customer_appliances as $appliance) {
+            echo '<option value="' . $appliance['id'] . '">' . $appliance['appliance_name'] . '</option>';
+        }
+        ?>
+    </select>
+</div>
+
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Work</label>
                     <input type="text" class="form-control form-control-sm" id="Work"  min="1" required />
@@ -217,7 +220,19 @@ if ($result) {
    
    
    <script>
-   
+   document.addEventListener('alpine:init', () => {
+    Alpine.data('app', () => ({
+
+
+          customer : JSON.parse('<?php echo $customer_json; ?>'),
+
+        getCustomer(value){
+            let customer = this.customer.find(c => c.id == value);
+            this.city = customer.city;
+        },
+
+    }));
+});
 
 
 </script>
