@@ -217,8 +217,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                             <span  x-html="grandtotal.toFixed(2)"></span>
                                                             <input type="hidden" name="grandtotal" x-model="grandtotal">
                                                         </div>
-                                                   
-
+                                                
                                             <div class="col-md-12">
                                                 <button type="submit" class="btn btn-success">Submit</button>
                                             </div>
