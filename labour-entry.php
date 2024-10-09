@@ -75,11 +75,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Service Date</label>
-<<<<<<< HEAD
-                    <input type="date" name="service_date" value=" <?= date('Y-m-d'); ?>" class="form-control form-control-sm" required />
-=======
                     <input type="date" name="service_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
->>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
@@ -111,7 +107,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
-                                
+                                                
                   
                     <div class="row">
                    
@@ -137,63 +133,73 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                     </select> 
                 </div>
                 <div class="col-md-1 form-group">
-                    <label class="col-blue">Qty</label>
-                    <input type="number" class="form-control form-control-sm" id="Qty"  required/>
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="col-blue">Rate</label>
-<<<<<<< HEAD
-                    <input type="number" min="0" step="any" id="rate" class="form-control form-control-sm" required />
-=======
-                    <input type="number" name="amount" x-model="amount" class="form-control form-control-sm" readonly />
->>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
-                </div>
-               
-                <div class="col-md-2 form-group">
-                    <label class="col-blue">Total</label>
-                    <input type="text"  id="total" class="form-control form-control-sm" readonly />
-                </div>
-                <div class="col-md-2 form-group d-flex align-items-end"> 
-                 <button type="button" class="btn btn-warning btn-lg px-3 py-2" id="addItemButton">
-                  <i class="fa fa-plus"></i>
-                </button>
-            </div>
-           
+            <label class="col-blue">Qty</label>
+            <input type="number" x-model="qty" @input="calculateTotal" class="form-control form-control-sm" required />
+        </div>
 
-                                                <div class="col-md-12 table-responsive form-group">
-                                                    <table class="table table-sm table-striped text-right" id="itemsTable">
-                                                        <thead>
-                                                            
-                                                            <tr>
-                                                                <th>S.No</th>
-                                                                <th>Appliance</th>
-                                                                <th>work</th>
-                                                                <th>Qty</th>
-                                                                <th>Rate</th>
-                                                                <th>Total</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                           
-                                                        </thead>
-                                                        <tbody>
+        <div class="col-md-1 form-group">
+            <label class="col-blue">Rate</label>
+            <input type="number" x-model="amount" class="form-control form-control-sm" readonly />
+        </div>
 
-                                                        </tbody>
+        <div class="col-md-2 form-group">
+            <label class="col-blue">Total</label>
+            <input type="text" x-bind:value="total.toFixed(2)" class="form-control form-control-sm" readonly />
+        </div>
+        <div class="col-md-2 form-group d-flex align-items-end"> 
+            <button type="button" class="btn btn-warning btn-lg px-3 py-2" @click="addItem">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </div>
 
-                                                    </table>
+    <div class="col-md-12 table-responsive form-group">
+        <table class="table table-sm table-striped text-right">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Appliance</th>
+                    <th>Work</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="(item, index) in items" :key="index">
+                    <tr>
+                        <td x-text="index + 1"></td>
+                        <td x-text="item.appliance"></td>
+                        <td x-text="item.work"></td>
+                        <td x-text="item.qty"></td>
+                        <td x-text="item.rate"></td>
+                        <td x-text="item.total.toFixed(2)"></td>
+                        <td>
+                            <button @click="removeItem(index)" class="btn btn-danger btn-sm">Remove</button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
                                                   
                                                     <hr>
                                                     <div class="row">
-                    <div class="col-md-3 form-group">
-                        <label class="col-blue"> Total Price: </label>
-                        <input type="hidden" name="total_price" value="" id="total_price" />
-                        <span id="mrpTotal">0.00</span>
-                    </div>
+                                                    <div class="col-md-3 form-group">
+            <label class="col-blue">Grand Total: </label>
+            <input type="hidden" name="grand_total" value="" id="grand_total" />
+            <span x-text="grandTotal.toFixed(2)">0.00</span>
+        </div>
                    
-                    <div class="col-md-3 form-group">
-                        <label class="col-blue">Grand Total: </label>
-                        <input type="hidden" name="grand_total" value="" id="grand_total" />
-                        <span id="overallTotal">0.00</span>
-                    </div>
+                   
+        <div class="col-md-3 form-group">
+            <label class="col-blue"> Grand Total: </label>
+            <input type="hidden" name="grand_total" value="" id="grand_total" />
+            <span x-text="grandTotal.toFixed(2)">0.00</span>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
             <div class="col-md-3 form-group">
@@ -251,8 +257,10 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 });
 
 
+    </script>    
 
-</script>
+
+
 
 </body>
 
