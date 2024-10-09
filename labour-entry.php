@@ -125,11 +125,9 @@ include "config.php";
                     <label class="col-blue">Total</label>
                     <input type="text"  id="total" class="form-control form-control-sm" readonly />
                 </div>
-                <div class="col-md-1 form-group">
-                    <button type="button" class="btn btn-warning mt-3 btn-lg px-3 py-2" id="addItemButton">
-                        <i class="fa fa-plus small-icon"></i>
-                    </button>
-                </div>
+                <div class="col-md-3 form-group">
+                                                    <button type="button" class="btn btn-warning mt-4" id="addItemButton"><i class="fa fa-plus"></i></button>
+                                                </div>
             </div>
 
                                                 <div class="col-md-12 table-responsive form-group">
@@ -191,13 +189,12 @@ include "config.php";
     <script src="assets/bundles/datatables/datatables.min.js"></script>
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
    
-    <script>
-                       
+   
+   <script>
+   
+
+
 </script>
-
-
-
- 
 
 </body>
 
