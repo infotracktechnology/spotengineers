@@ -110,15 +110,15 @@ include "config.php";
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Work</label>
-                    <input type="text" class="form-control form-control-sm" id="Work"  min="1" />
+                    <input type="text" class="form-control form-control-sm" id="Work"  min="1" required />
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Qty</label>
-                    <input type="number" class="form-control form-control-sm" id="Qty" />
+                    <input type="number" class="form-control form-control-sm" id="Qty"  required/>
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Rate</label>
-                    <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm"  />
+                    <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" required />
                 </div>
                
                 <div class="col-md-2 form-group">
