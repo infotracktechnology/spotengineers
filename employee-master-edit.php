@@ -56,10 +56,9 @@ if ($result) {
                     <h4 class="col-deep-purple m-0">Employee Details</h4>
                   </div>
                   <div class="card-body">
-                  <form method="post" id="myForm" action="work-master-update.php" enctype="multipart/form-data">
+                  <form method="post" id="myForm" action="employee-master-update.php" enctype="multipart/form-data">
                  <div class="row">
                   
-
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Name</label>
                      <input type="text" name="name" id="name" class="form-control form-control-sm" required>
@@ -128,6 +127,10 @@ if ($result) {
     <script src="assets/js/app.js"></script>
 </body>
 <script>
+    const phoneInput = document.querySelector('input[name="Phone"]');
+phoneInput.addEventListener('input', function () {
+  phoneInput.classList.toggle('is-invalid', phoneInput.value.length !== 10 || !/^\d{10}$/.test(phoneInput.value));
+});
  
   </script>
 </html>
