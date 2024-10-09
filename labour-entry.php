@@ -114,7 +114,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                 <label class="col-blue">Appliances</label>
-                  <select name="appliance" class="form-control form-control-sm" id="appliance">
+                  <select name="appliance"  id="appliance">
                     <option value="">Select Appliances</option>
                     <template x-for="(appliance, index) in appliances">
                     <option x-bind:value="appliance.appliance_id" x-text="appliance.appliance + ' - ' + appliance.brand"></option>
@@ -215,6 +215,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
    <script>
 
    const customerSelect = new TomSelect('#customer', {});
+   const applianceSelect  = new TomSelect('#appliance', {});
 
    document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
