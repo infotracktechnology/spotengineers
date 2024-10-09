@@ -16,7 +16,7 @@ include "config.php";
 // }
 
 $customers = [];
-$query = "SELECT * FROM customer ORDER BY name ASC";
+$query = "SELECT * FROM customer";
 $result = mysqli_query($con, $query);
 
 if ($result) {
@@ -26,10 +26,6 @@ if ($result) {
 }
 
 $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
-
-
-$customer_id = $_GET['id'];
-$customer_appliances = $con->query("SELECT * FROM customer_appliances WHERE customer_id = '$customer_id'") -> fetch_all(MYSQLI_ASSOC);
 
 
 ?>
@@ -88,7 +84,7 @@ $customer_appliances = $con->query("SELECT * FROM customer_appliances WHERE cust
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
-                    <select id="customer" name="customer" @change="getCustomer " class="form-control form-control-sm select2" required>
+                    <select id="customer" name="customer" @change="getCustomer($el.value) " class="form-control form-control-sm select2" required>
                         <option value="">Select Customer</option>
                         <?php
                         foreach ($customers as $key => $customer) {
