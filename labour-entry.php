@@ -74,9 +74,9 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-2 form-group">
+                <div class="col-md-1 form-group">
                     <label class="col-blue">job no</label>
-                    <input type="number" name="job_no" class="form-control form-control-sm" value="1" required />
+                    <input type="text" name="job_no" class="form-control form-control-sm" value="1" required />
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Service Date</label>
@@ -115,18 +115,14 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
                                                 
                   
                     <div class="row">
-                    <div class="col-md-1 form-group">
-                    <label class="col-blue">S.No</label>
-                    <input type="text" class="form-control form-control-sm" id="S.No"  min="1" />
-                </div>
-
+                   
 
                 <div class="col-md-3 form-group">
-    <label class="col-blue">Appliances</label>
-    <select class="form-control form-control-sm select2" id="parts">
-        <option value="">Select Appliances</option>
-        <?php
-        foreach ($customer_appliances as $appliance) {
+                <label class="col-blue">Appliances</label>
+                  <select class="form-control form-control-sm select2" id="parts">
+                    <option value="">Select Appliances</option>
+                           <?php
+                           foreach ($customer_appliances as $appliance) {
             echo '<option value="' . $appliance['id'] . '">' . $appliance['appliance_name'] . '</option>';
         }
         ?>
@@ -137,11 +133,11 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
                     <label class="col-blue">Work</label>
                     <input type="text" class="form-control form-control-sm" id="Work"  min="1" required />
                 </div>
-                <div class="col-md-2 form-group">
+                <div class="col-md-1 form-group">
                     <label class="col-blue">Qty</label>
                     <input type="number" class="form-control form-control-sm" id="Qty"  required/>
                 </div>
-                <div class="col-md-2 form-group">
+                <div class="col-md-1 form-group">
                     <label class="col-blue">Rate</label>
                     <input type="number" min="0" step="any" id="taxPercentage" class="form-control form-control-sm" required />
                 </div>
@@ -150,10 +146,12 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
                     <label class="col-blue">Total</label>
                     <input type="text"  id="total" class="form-control form-control-sm" readonly />
                 </div>
-                <div class="col-md-3 form-group">
-                                                    <button type="button" class="btn btn-warning mt-4" id="addItemButton"><i class="fa fa-plus"></i></button>
-                                                </div>
+                <div class="col-md-2 form-group d-flex align-items-end"> 
+                 <button type="button" class="btn btn-warning btn-lg px-3 py-2" id="addItemButton">
+                  <i class="fa fa-plus"></i>
+                </button>
             </div>
+           
 
                                                 <div class="col-md-12 table-responsive form-group">
                                                     <table class="table table-sm table-striped text-right" id="itemsTable">
