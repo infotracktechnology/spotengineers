@@ -270,7 +270,7 @@ mysqli_close($con);
                     clearSupplierDetails();
                 }
             });
-
+ 
             
             $('#parts').change(function() {
                 var item_id = $(this).val();

@@ -15,6 +15,17 @@ include "config.php";
 //     $purchasedQuantities[$row['item_id']] = $row['max_qty'];
 // }
 
+$customers = [];
+$query = "SELECT * FROM customer ORDER BY name ASC";
+$result = mysqli_query($con, $query);
+
+if ($result) {
+    while ($row = mysqli_fetch_object($result)) {
+        $customers[] = $row; 
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,14 +79,29 @@ include "config.php";
                     <label class="col-blue">Service Date</label>
                     <input type="date" name="service_date" value="" class="form-control form-control-sm" required />
                 </div>
-                <div class="col-md-2 form-group">
+                <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
-                    <input type="text" name="Customer" id="Customer" class="form-control form-control-sm" value="" required />
+                    <select id="customer" name="customer" class="form-control form-control-sm select2" required>
+                        <option value="">Select Customer</option>
+                        <?php
+                        foreach ($customers as $key => $customer) {
+                            echo '<option value="' . $customer->id . '">' . $customer->name . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
+
                 
-                <div class="col-md-2 form-group">
-                    <label class="col-blue">C.City</label>
-                    <input type="text" value="" name="c.city" class="form-control form-control-sm" required />
+                <div class="col-md-3 form-group">
+                    <label class="col-blue">City</label>
+                    <select id="city" name="city" class="form-control form-control-sm select2" required>
+                        <option value="">Select City</option>
+                        <?php
+                        foreach ($customers as $key => $customer) {
+                            echo '<option value="' . $customer->id . '">' . $customer->city . '</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">GST No</label>
