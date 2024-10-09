@@ -75,7 +75,11 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Service Date</label>
+<<<<<<< HEAD
+                    <input type="date" name="service_date" value=" <?= date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+=======
                     <input type="date" name="service_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+>>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
@@ -107,7 +111,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                                                 <div class="col-md-12 form-group m-0">
                                                     <h6 class="col-deep-purple m-0"></h6>
                                                     <hr class="bg-dark-gray" />
-                                                
+                                
                   
                     <div class="row">
                    
@@ -138,7 +142,11 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                 </div>
                 <div class="col-md-1 form-group">
                     <label class="col-blue">Rate</label>
+<<<<<<< HEAD
+                    <input type="number" min="0" step="any" id="rate" class="form-control form-control-sm" required />
+=======
                     <input type="number" name="amount" x-model="amount" class="form-control form-control-sm" readonly />
+>>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
                 </div>
                
                 <div class="col-md-2 form-group">
