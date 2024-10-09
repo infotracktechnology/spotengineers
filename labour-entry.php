@@ -15,7 +15,7 @@ include "config.php";
 //     $purchasedQuantities[$row['item_id']] = $row['max_qty'];
 // }
 
-$customers = [];
+$cyear = $_SESSION['cyear'];
 $query = "SELECT * FROM customer";
 $result = mysqli_query($con, $query);
 
@@ -96,7 +96,7 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                     <label class="col-blue">City</label>
-                    <input type="text"  name="city" x-model="city" class="form-control form-control-sm" required />
+                    <input type="text"  name="city" x-model="city" class="form-control form-control-sm" readonly />
                 </div>
           
                 <div class="col-md-3 form-group">
