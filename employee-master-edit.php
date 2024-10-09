@@ -8,12 +8,12 @@ if (!isset($_SESSION['username'])) {
 }
 
 $id = $_GET['id'];
-$work = [];
-$query = "SELECT * FROM work WHERE id = '$id'";
+$employee = [];
+$query = "SELECT * FROM employee WHERE id = '$id'";
 $result = mysqli_query($con, $query);
 if ($result) {
   while ($row = mysqli_fetch_object($result)) {
-    $work[] = $row;
+    $employee[] = $row;
   }
 }
 ?>
@@ -61,44 +61,44 @@ if ($result) {
                   
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Name</label>
-                     <input type="text" name="name" id="name" class="form-control form-control-sm" required>
+                     <input type="hidden" name="id" value="<?= $employee[0]->id; ?>">
+                     <input type="text" name="name" value="<?= $employee[0]->name; ?>" id="name" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">DOB</label>
-                     <input type="number" name="dob" class="form-control form-control-sm" >
+                     <input type="date" name="dob" value="<?= $employee[0]->dob; ?>" class="form-control form-control-sm" >
                    </div>
 
                    <div class="col-md-3 form-group">
-                     <label class="col-blue">Phone</label>
-                     <input type="number" name="Phone" value="" class="form-control form-control-sm" required>
-                     <div class="invalid-feedback">Please Enter 10 digits Mobile Number.</div>
-                   </div>
+                               <label class="col-blue">Phone</label>
+                               <input type="text" name="phone" value="<?= $employee[0]->phone; ?>" class="form-control form-control-sm" required>
+                           </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 1</label>
-                     <input type="text"  name="address1" class="form-control form-control-sm" required>
+                     <input type="text"  name="address_line_1" value="<?= $employee[0]->address_line_1; ?>" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 2</label>
-                     <input type="text"  name="address2" class="form-control form-control-sm" required>
+                     <input type="text"  name="address_line_2" value="<?= $employee[0]->address_line_2; ?>" class="form-control form-control-sm" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">City</label>
-                     <input type="text"  name="city" class="form-control form-control-sm" required>
+                     <input type="text"  name="city" value="<?= $employee[0]->city; ?>" class="form-control form-control-sm" required>
                    </div>
 
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Date of Joining</label>
-                     <input type="date"  name="doj" class="form-control form-control-sm" >
+                     <input type="date"  name="doj" value="<?= $employee[0]->doj; ?>" class="form-control form-control-sm" >
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Experience</label>
-                     <input type="text"  name="experience" class="form-control form-control-sm" >
+                     <input type="text"  name="experience" value="<?= $employee[0]->experience; ?>" class="form-control form-control-sm" >
                    </div>
 
 
