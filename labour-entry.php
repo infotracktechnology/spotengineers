@@ -114,7 +114,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                 <label class="col-blue">Appliances</label>
-                  <select name="appliance" class="form-control form-control-sm" id="appliance">
+                  <select name="appliance"  id="appliance">
                     <option value="">Select Appliances</option>
                     <template x-for="(appliance, index) in appliances">
                     <option x-bind:value="appliance.appliance_id" x-text="appliance.appliance + ' - ' + appliance.brand"></option>
@@ -133,9 +133,24 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                     </select> 
                 </div>
                 <div class="col-md-1 form-group">
-            <label class="col-blue">Qty</label>
-            <input type="number" x-model="qty" @input="calculateTotal" class="form-control form-control-sm" required />
-        </div>
+                    <label class="col-blue">Qty</label>
+                    <input type="number" class="form-control form-control-sm" id="Qty"  required/>
+                </div>
+                <div class="col-md-1 form-group">
+                    <label class="col-blue">Rate</label>
+                    <input type="number" name="amount" x-model="amount" class="form-control form-control-sm" readonly />
+                </div>
+               
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Total</label>
+                    <input type="text"  id="total" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-2 form-group d-flex align-items-end"> 
+                 <button type="button" class="btn btn-warning btn-lg px-3 py-2" id="addItemButton">
+                  <i class="fa fa-plus"></i>
+                </button>
+            </div>
+           
 
         <div class="col-md-1 form-group">
             <label class="col-blue">Rate</label>
@@ -229,6 +244,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
    <script>
 
    const customerSelect = new TomSelect('#customer', {});
+   const applianceSelect  = new TomSelect('#appliance', {});
 
    document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
