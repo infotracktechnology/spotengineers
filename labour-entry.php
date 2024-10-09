@@ -6,28 +6,22 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 include "config.php";
-// $id = $_GET['id'];
-// $purchases = $con->query("SELECT a.*, b.supplier_name, b.city FROM purchase a INNER JOIN suppliers b ON a.supplier = b.supplier_id WHERE a.purchase_id = $id GROUP BY a.purchase_id")->fetch_object();
-// $purchase_items = $con->query("SELECT a.*, b.name, b.hsn, b.brand, (a.quantity) AS max_qty, b.item_id FROM purchase_items a INNER JOIN items b ON a.item_id = b.item_id WHERE a.purchase_id = $id GROUP BY a.item_id")->fetch_all(MYSQLI_ASSOC);
 
-// $purchasedQuantities = [];
-// foreach ($purchase_items as $row) {
-//     $purchasedQuantities[$row['item_id']] = $row['max_qty'];
-// }
-
-$customers = [];
-$query = "SELECT * FROM customer";
-$result = mysqli_query($con, $query);
-
-if ($result) {
-    while ($row = mysqli_fetch_object($result)) {
-        $customers[] = $row; 
-    }
+$cyear = $_SESSION['cyear'];
+$customers = "SELECT a.* FROM customer a join customer_appliances b on a.id=b.customer_id group by a.id";
+$customers = $con->query($customers)->fetch_all(MYSQLI_ASSOC);
+$customer_data = [];
+foreach ($customers as $row) {
+    $customer_data[$row['id']] = $row;
+    $customer_data[$row['id']]['appliances'] = $con->query("SELECT * FROM customer_appliances WHERE customer_id = '$row[id]'")->fetch_all(MYSQLI_ASSOC);
 }
 
-$customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
+$works = [];
+$works = "SELECT * FROM work";
+$works = $con->query($works)->fetch_all(MYSQLI_ASSOC);
 
-
+$customer_json = json_encode($customer_data, JSON_UNESCAPED_UNICODE);
+$work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +44,7 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
     <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css" />
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <script src="//unpkg.com/alpinejs" defer></script>
 
@@ -76,32 +71,36 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
             <div class="row">
                 <div class="col-md-1 form-group">
                     <label class="col-blue">job no</label>
-                    <input type="text" name="job_no" class="form-control form-control-sm" value="1" required />
+                    <input type="text" name="job_no" class="form-control form-control-sm" value="1" readonly />
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="col-blue">Service Date</label>
+<<<<<<< HEAD
                     <input type="date" name="service_date" value=" <?= date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+=======
+                    <input type="date" name="service_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+>>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Customer</label>
-                    <select id="customer" name="customer" @change="getCustomer($el.value) " class="form-control form-control-sm select2" required>
+                    <select id="customer" name="customer" @change="getCustomer($el.value) "  required>
                         <option value="">Select Customer</option>
                         <?php
                         foreach ($customers as $key => $customer) {
-                            echo '<option value="' . $customer->id . '">' . $customer->name . '</option>';
+                            echo '<option value="' . $customer['id'] . '">' . $customer['name'] . '</option>';
                         }
                         ?>
-                    </select>
+                    </select> 
                 </div>
 
                 <div class="col-md-3 form-group">
                     <label class="col-blue">City</label>
-                    <input type="text"  name="city" x-model="city" class="form-control form-control-sm" required />
+                    <input type="text"  name="city" x-model="city" class="form-control form-control-sm" readonly />
                 </div>
           
                 <div class="col-md-3 form-group">
                     <label class="col-blue">GST No</label>
-                    <input type="text" value="" name="gst_no" class="form-control form-control-sm" readonly />
+                    <input type="text" x-model="gst_no" name="gst_no" class="form-control form-control-sm" readonly />
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Technician</label>
@@ -119,19 +118,23 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                 <label class="col-blue">Appliances</label>
-                  <select class="form-control form-control-sm select2" id="parts">
+                  <select name="appliance" class="form-control form-control-sm" id="appliance">
                     <option value="">Select Appliances</option>
-                           <?php
-                           foreach ($customer_appliances as $appliance) {
-            echo '<option value="' . $appliance['id'] . '">' . $appliance['appliance_name'] . '</option>';
-        }
-        ?>
+                    <template x-for="(appliance, index) in appliances">
+                    <option x-bind:value="appliance.appliance_id" x-text="appliance.appliance + ' - ' + appliance.brand"></option>
+                    </template>
+                    
     </select>
 </div>
 
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Work</label>
-                    <input type="text" class="form-control form-control-sm" id="Work"  min="1" required />
+                    <select id="title" name="title" class="form-control form-control-sm" @change="getwork($el.value)" required>
+                        <option value="">Select Work</option>
+                        <template x-for="workItem in work" :key="workItem.id">
+                            <option :value="workItem.id" x-text="workItem.title"></option>
+                        </template>
+                    </select> 
                 </div>
                 <div class="col-md-1 form-group">
                     <label class="col-blue">Qty</label>
@@ -139,7 +142,11 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
                 </div>
                 <div class="col-md-1 form-group">
                     <label class="col-blue">Rate</label>
+<<<<<<< HEAD
                     <input type="number" min="0" step="any" id="rate" class="form-control form-control-sm" required />
+=======
+                    <input type="number" name="amount" x-model="amount" class="form-control form-control-sm" readonly />
+>>>>>>> 75f3516b8bc5d7da0fa07dc775b081d01253df88
                 </div>
                
                 <div class="col-md-2 form-group">
@@ -211,22 +218,38 @@ $customer_json = json_encode($customers, JSON_UNESCAPED_UNICODE);
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/bundles/datatables/datatables.min.js"></script>
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-   
-   
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
    <script>
+
+   const customerSelect = new TomSelect('#customer', {});
+
    document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
+        customer: JSON.parse('<?php echo $customer_json; ?>'),
+        work: JSON.parse('<?php echo $work_json; ?>'), 
+        appliances: [],
+        city: '',
+        gst_no: '',
+        amount: 0,
 
-
-          customer : JSON.parse('<?php echo $customer_json; ?>'),
-
-        getCustomer(value){
-            let customer = this.customer.find(c => c.id == value);
-            this.city = customer.city;
+        getCustomer(value) {
+            this.city = this.customer[value].city;
+            this.gst_no = this.customer[value].gst_no;
+            this.appliances = this.customer[value].appliances;
         },
 
+        getwork(value) {
+            const selectedWork = this.work.find(w => w.id == value);
+            if (selectedWork) {
+                this.amount = selectedWork.amount;
+            } else {
+                this.amount = 0; 
+            }
+        },
     }));
 });
+
 
 
 </script>
