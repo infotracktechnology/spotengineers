@@ -48,7 +48,6 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <script src="//unpkg.com/alpinejs" defer></script>
 
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> -->
 </head>
 
 <body>
