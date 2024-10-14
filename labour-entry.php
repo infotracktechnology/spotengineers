@@ -16,9 +16,12 @@ foreach ($customers as $row) {
     $customer_data[$row['id']]['appliances'] = $con->query("SELECT * FROM customer_appliances WHERE customer_id = '$row[id]'")->fetch_all(MYSQLI_ASSOC);
 }
 
-$works = [];
+
 $works = "SELECT * FROM work";
 $works = $con->query($works)->fetch_all(MYSQLI_ASSOC);
+
+$employees = "SELECT * FROM employee";
+$employees = $con->query($employees)->fetch_all(MYSQLI_ASSOC);
 
 $customer_json = json_encode($customer_data, JSON_UNESCAPED_UNICODE);
 $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
@@ -48,12 +51,11 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <script src="//unpkg.com/alpinejs" defer></script>
 
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> -->
 </head>
 
 <body>
     <div class="loader"></div>
-    <div id="app" ng-app="myApp" ng-controller="issueController">
+    <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <?php require('sidebar.php'); ?>
             <!-- Main Content -->
@@ -100,7 +102,14 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                 </div>
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Technician</label>
-                    <input type="text" value="" name="technician" class="form-control form-control-sm" required />
+                    <select name="technician" class="form-control form-control-sm" required>
+                        <option value="">Select Technician</option>
+                        <?php
+                        foreach ($employees as $key => $technician) {
+                            echo '<option value="'.$technician['id'].'">'.$technician['name'].'</option>';
+                        }
+                        ?>
+                    </select>
                 </div>
 
 
@@ -114,7 +123,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                 <label class="col-blue">Appliances</label>
-                  <select name="appliance"  id="appliance">
+                  <select name="appliance" class="form-control form-control-sm"  id="appliance">
                     <option value="">Select Appliances</option>
                     <template x-for="(appliance, index) in appliances">
                     <option x-bind:value="appliance.appliance_id" x-text="appliance.appliance + ' - ' + appliance.brand"></option>
@@ -125,7 +134,7 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 
                 <div class="col-md-3 form-group">
                     <label class="col-blue">Work</label>
-                    <select id="title" name="title" class="form-control form-control-sm" @change="getwork($el.value)" required>
+                    <select id="work"  class="form-control form-control-sm" @change="getwork($el.value)">
                         <option value="">Select Work</option>
                         <template x-for="workItem in work" :key="workItem.id">
                             <option :value="workItem.id" x-text="workItem.title"></option>
@@ -133,86 +142,72 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                     </select> 
                 </div>
                 <div class="col-md-1 form-group">
-                    <label class="col-blue">Qty</label>
-                    <input type="number" class="form-control form-control-sm" id="Qty"  required/>
-                </div>
-                <div class="col-md-1 form-group">
-                    <label class="col-blue">Rate</label>
-                    <input type="number" name="amount" x-model="amount" class="form-control form-control-sm" readonly />
-                </div>
-               
-                <div class="col-md-2 form-group">
-                    <label class="col-blue">Total</label>
-                    <input type="text"  id="total" class="form-control form-control-sm" readonly />
-                </div>
-                <div class="col-md-2 form-group d-flex align-items-end"> 
-                 <button type="button" class="btn btn-warning btn-lg px-3 py-2" id="addItemButton">
-                  <i class="fa fa-plus"></i>
-                </button>
-            </div>
+    <label class="col-blue">Qty</label>
+    <!-- Use x-model to bind the qty input -->
+    <input type="number" x-model="qty" class="form-control form-control-sm" required @input="calculateTotal" />
+</div>
+
+<div class="col-md-1 form-group">
+    <label class="col-blue">Rate</label>
+    <!-- Bind the amount with x-model to display the selected work rate -->
+    <input type="number" x-model="amount" class="form-control form-control-sm" readonly />
+</div>
+
+<div class="col-md-2 form-group">
+    <label class="col-blue">Total</label>
+    <!-- Dynamically update the total as qty and amount are calculated -->
+    <input type="text" x-bind:value="total.toFixed(2)" class="form-control form-control-sm" readonly />
+</div>
+
+<div class="ccol-md-1 form-group mt-4">
+    <button type="button" class="btn btn-warning " @click="addItem">
+        <i class="fa fa-plus"></i>
+    </button>
+</div>
            
-
-        <div class="col-md-1 form-group">
-            <label class="col-blue">Rate</label>
-            <input type="number" x-model="amount" class="form-control form-control-sm" readonly />
-        </div>
-
-        <div class="col-md-2 form-group">
-            <label class="col-blue">Total</label>
-            <input type="text" x-bind:value="total.toFixed(2)" class="form-control form-control-sm" readonly />
-        </div>
-        <div class="col-md-2 form-group d-flex align-items-end"> 
-            <button type="button" class="btn btn-warning btn-lg px-3 py-2" @click="addItem">
-                <i class="fa fa-plus"></i>
-            </button>
-        </div>
     </div>
 
     <div class="col-md-12 table-responsive form-group">
-        <table class="table table-sm table-striped text-right">
-            <thead>
+    <table class="table table-sm table-striped text-right">
+        <thead>
+            <tr>
+                <th>S.No</th>
+                <th>Appliance</th>
+                <th>Work</th>
+                <th>Qty</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through items and display them -->
+            <template x-for="(item, index) in items" :key="index">
                 <tr>
-                    <th>S.No</th>
-                    <th>Appliance</th>
-                    <th>Work</th>
-                    <th>Qty</th>
-                    <th>Rate</th>
-                    <th>Total</th>
-                    <th>Action</th>
+                    <td x-text="index + 1"></td>
+                    <td x-text="item.appliance"></td>
+                    <td x-text="item.work"></td>
+                    <td x-text="item.qty"></td>
+                    <td x-text="item.rate"></td>
+                    <td x-text="item.total.toFixed(2)"></td>
+                    <td>
+                        <button @click="removeItem(index)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <template x-for="(item, index) in items" :key="index">
-                    <tr>
-                        <td x-text="index + 1"></td>
-                        <td x-text="item.appliance"></td>
-                        <td x-text="item.work"></td>
-                        <td x-text="item.qty"></td>
-                        <td x-text="item.rate"></td>
-                        <td x-text="item.total.toFixed(2)"></td>
-                        <td>
-                            <button @click="removeItem(index)" class="btn btn-danger btn-sm">Remove</button>
-                        </td>
-                    </tr>
-                </template>
+            </template>
             </tbody>
         </table>
     </div>
                                                   
-                                                    <hr>
-                                                    <div class="row">
-                                                    <div class="col-md-3 form-group">
+                                                    
+    <div class="row">
+        <div class="col-md-3 form-group">
             <label class="col-blue">Grand Total: </label>
             <input type="hidden" name="grand_total" value="" id="grand_total" />
             <span x-text="grandTotal.toFixed(2)">0.00</span>
         </div>
                    
-                   
-        <div class="col-md-3 form-group">
-            <label class="col-blue"> Grand Total: </label>
-            <input type="hidden" name="grand_total" value="" id="grand_total" />
-            <span x-text="grandTotal.toFixed(2)">0.00</span>
-        </div>
+            
     </div>
 </div>
                 </div>
@@ -242,11 +237,9 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 
    <script>
-
    const customerSelect = new TomSelect('#customer', {});
-   const applianceSelect  = new TomSelect('#appliance', {});
 
-   document.addEventListener('alpine:init', () => {
+    document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
         customer: JSON.parse('<?php echo $customer_json; ?>'),
         work: JSON.parse('<?php echo $work_json; ?>'), 
@@ -254,8 +247,10 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
         city: '',
         gst_no: '',
         amount: 0,
-
+        items:[],
+        grandTotal:0,
         getCustomer(value) {
+            this.appliances = [];
             this.city = this.customer[value].city;
             this.gst_no = this.customer[value].gst_no;
             this.appliances = this.customer[value].appliances;
@@ -271,7 +266,79 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
         },
     }));
 });
+document.addEventListener('alpine:init', () => {
+    Alpine.data('app', () => ({
+        customer: JSON.parse('<?php echo $customer_json; ?>'),
+        work: JSON.parse('<?php echo $work_json; ?>'),
+        appliances: [],
+        city: '',
+        gst_no: '',
+        amount: 0,
+        qty: 0,
+        total: 0,
+        totalPrice: 0,
+        grandTotal: 0,
+        items: [],
 
+        getCustomer(value) {
+            this.city = this.customer[value].city;
+            this.gst_no = this.customer[value].gst_no;
+            this.appliances = this.customer[value].appliances;
+        },
+
+        getwork(value) {
+            const selectedWork = this.work.find(w => w.id == value);
+            if (selectedWork) {
+                this.amount = selectedWork.amount;
+            } else {
+                this.amount = 0;
+            }
+            this.calculateTotal();
+        },
+
+        calculateTotal() {
+            this.total = this.qty * this.amount;
+            this.updateGrandTotal();
+        },
+
+        addItem() {
+            if (this.qty > 0 && this.amount > 0) {
+                this.items.push({
+                    appliance: document.getElementById('appliance').selectedOptions[0].text,
+                    work: document.getElementById('title').selectedOptions[0].text,
+                    qty: this.qty,
+                    rate: this.amount,
+                    total: this.total
+                });
+                this.calculateTotals();
+                this.resetInputs(); 
+            } else {
+                alert("Please fill in valid Quantity and Rate");
+            }
+        },
+
+        calculateTotals() {
+           
+            this.totalPrice = this.items.reduce((sum, item) => sum + item.total, 0);
+            this.updateGrandTotal();
+        },
+
+        updateGrandTotal() {
+            this.grandTotal = this.totalPrice; 
+        },
+
+        removeItem(index) {
+            this.items.splice(index, 1);
+            this.calculateTotals();
+        },
+
+        resetInputs() {
+            this.qty = 0;
+            this.amount = 0;
+            this.total = 0;
+        }
+    }));
+});
 
     </script>    
 
