@@ -38,6 +38,7 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
         border-top: none;
         border-bottom: .1rem solid #000;
         padding: 5px 0px 5px 0px;
+        text-align: left !important;
       }
 
       .break:before, .break:after{  
