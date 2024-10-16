@@ -187,50 +187,10 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                                                     </table>
                                                 </div>
 
-    <div class="col-md-12 table-responsive">
-        <table class="table table-sm table-striped">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>Appliance</th>
-                    <th>Work</th>
-                    <th>Qty</th>
-                    <th>Rate</th>
-                    <th>Total</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <template x-for="(item, index) in items" :key="index">
-                    <tr>
-                        <td x-text="index + 1"></td>
-                        <td x-text="item.appliance"></td>
-                        <td x-text="item.work"></td>
-                        <td x-text="item.qty"></td>
-                        <td x-text="item.rate"></td>
-                        <td x-text="item.total.toFixed(2)"></td>
-                        <td>
-                            <button @click="removeItem(index)" class="btn btn-danger btn-sm">Remove</button>
-                        </td>
-                    </tr>
-                </template>
-            </tbody>
-        </table>
-    </div>
-                                                  
-                                                    
-    <div class="row">
-        <div class="col-md-3 form-group">
-            <label class="col-blue">Grand Total: </label>
-            <input type="hidden" name="grand_total" value="" id="grand_total" />
-            <span x-text="grandTotal.toFixed(2)">0.00</span>
-        </div>
-    </div>
-</div>
-                </div>
-            </div>
-            <div class="col-md-3 form-group">
-                                                    <button type="submit" ng-disabled="myForm.$submitted" class="btn btn-success">Submit</button>
+                                            
+                                                <div class="col-md-3 form-group">
+                                                    <label class="col-blue">Grand Total: </label>
+                                                    <span x-text="grandTotal.toFixed(2)">0.00</span>
                                                 </div>
                                             </div>
 
