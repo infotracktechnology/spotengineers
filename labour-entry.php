@@ -142,47 +142,27 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
                     </select> 
                 </div>
                 <div class="col-md-1 form-group">
-    <label class="col-blue">Qty</label>
-    <!-- Use x-model to bind the qty input -->
-    <input type="number" x-model="qty" class="form-control form-control-sm" required @input="calculateTotal" />
-</div>
-
-<div class="col-md-1 form-group">
-    <label class="col-blue">Rate</label>
-    <!-- Bind the amount with x-model to display the selected work rate -->
-    <input type="number" x-model="amount" class="form-control form-control-sm" readonly />
-</div>
-
-<div class="col-md-2 form-group">
-    <label class="col-blue">Total</label>
-    <!-- Dynamically update the total as qty and amount are calculated -->
-    <input type="text" x-bind:value="total.toFixed(2)" class="form-control form-control-sm" readonly />
-</div>
-
-<div class="ccol-md-1 form-group mt-4">
-    <button type="button" class="btn btn-warning " @click="addItem">
-        <i class="fa fa-plus"></i>
-    </button>
-</div>
+                    <label class="col-blue">Qty</label>
+                    <input type="number" class="form-control form-control-sm" id="Qty" />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Rate</label>
+                    <input type="number" name="amount" x-model="amount" class="form-control form-control-sm"  />
+                </div>
+               
+                <div class="col-md-2 form-group">
+                    <label class="col-blue">Total</label>
+                    <input type="text"  id="total" class="form-control form-control-sm" readonly />
+                </div>
+                <div class="col-md-1 form-group mt-4"> 
+                 <button type="button" class="btn btn-warning" @click="addItem"><i class="fa fa-plus"></i></button>
+            </div>
            
     </div>
 
-    <div class="col-md-12 table-responsive form-group">
-    <table class="table table-sm table-striped text-right">
-        <thead>
-            <tr>
-                <th>S.No</th>
-                <th>Appliance</th>
-                <th>Work</th>
-                <th>Qty</th>
-                <th>Rate</th>
-                <th>Total</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Loop through items and display them -->
-            <template x-for="(item, index) in items" :key="index">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-sm table-striped">
+            <thead>
                 <tr>
                     <td x-text="index + 1"></td>
                     <td x-text="item.appliance"></td>
@@ -241,20 +221,6 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
 
     document.addEventListener('alpine:init', () => {
     Alpine.data('app', () => ({
-        customer: JSON.parse('<?php echo $customer_json; ?>'),
-        work: JSON.parse('<?php echo $work_json; ?>'), 
-        appliances: [],
-        city: '',
-        gst_no: '',
-        amount: 0,
-        items:[],
-        grandTotal:0,
-        getCustomer(value) {
-            this.appliances = [];
-            this.city = this.customer[value].city;
-            this.gst_no = this.customer[value].gst_no;
-            this.appliances = this.customer[value].appliances;
-        },
 
         getwork(value) {
             const selectedWork = this.work.find(w => w.id == value);
@@ -274,7 +240,6 @@ document.addEventListener('alpine:init', () => {
         city: '',
         gst_no: '',
         amount: 0,
-        qty: 0,
         total: 0,
         totalPrice: 0,
         grandTotal: 0,
@@ -298,7 +263,6 @@ document.addEventListener('alpine:init', () => {
 
         calculateTotal() {
             this.total = this.qty * this.amount;
-            this.updateGrandTotal();
         },
 
         addItem() {
@@ -317,12 +281,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        calculateTotals() {
-           
-            this.totalPrice = this.items.reduce((sum, item) => sum + item.total, 0);
-            this.updateGrandTotal();
-        },
-
         updateGrandTotal() {
             this.grandTotal = this.totalPrice; 
         },
@@ -331,7 +289,6 @@ document.addEventListener('alpine:init', () => {
             this.items.splice(index, 1);
             this.calculateTotals();
         },
-
         resetInputs() {
             this.qty = 0;
             this.amount = 0;
