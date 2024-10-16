@@ -198,13 +198,6 @@ $work_json = json_encode($works, JSON_UNESCAPED_UNICODE);
             <input type="hidden" name="grand_total" value="" id="grand_total" />
             <span x-text="grandTotal.toFixed(2)">0.00</span>
         </div>
-                   
-                   
-        <div class="col-md-3 form-group">
-            <label class="col-blue"> Grand Total: </label>
-            <input type="hidden" name="grand_total" value="" id="grand_total" />
-            <span x-text="grandTotal.toFixed(2)">0.00</span>
-        </div>
     </div>
 </div>
                 </div>
