@@ -110,7 +110,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Customer Phone</label>
-                                                    <input type="text" id="phone" @change="getCustomer($el.value)" class="form-control form-control-sm" required />
+                                                    <input type="text" id="phone" @keyup="getCustomer($el.value)" class="form-control form-control-sm" required />
                                                 </div>
 
                                                 <div class="col-md-3 form-group">
