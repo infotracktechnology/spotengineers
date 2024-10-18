@@ -109,13 +109,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 </div>
 
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">Customer <a href="customer-create.php"><i class="fa fa-plus"></i> Add</a></label>
-                                                    <select name="customer" id="customer" @change="getCustomer($el.value)"  required>
-                                                        <option value="">Select Customer</option>
-                                                        <?php foreach ($customers as $row) { ?>
-                                                            <option value="<?php echo $row->id; ?>"><?php echo $row->name; ?></option>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <label class="col-blue">Customer Phone</label>
+                                                    <input type="text" id="phone" @change="getCustomer($el.value)" class="form-control form-control-sm" required />
+                                                </div>
+
+                                                <div class="col-md-3 form-group">
+                                                    <label class="col-blue">Customer Name <a href="customer-create.php"><i class="fa fa-plus"></i> Add</a></label>
+                                                    <input type="text"  class="form-control form-control-sm" x-model="customer_name" readonly />
+                                                    <input type="hidden" name="customer" x-model="customer_id">
                                                 </div>
                                                 
                                                 <div class="col-md-3 form-group">
@@ -143,7 +144,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Brand / Spare Name</label>
-                                                    <select name="item[]"  x-model="item.item" @change="getItem(item)" class="items">
+                                                    <select name="item[]"  x-model="item.item" @change="getItem(item)" class="form-control form-control-sm">
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($items as $row) { ?>
                                                             <option value="<?php echo $row->item_id; ?>"><?php echo $row->brand. '/' . $row->name; ?></option>
@@ -240,12 +241,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
 
-    const customer = new TomSelect('#customer', {});
 
     document.addEventListener('alpine:init', () => {
         Alpine.data('app', () => ({
           grandtotal: 0,
           customer_type : '',
+          customer_id : '',
+          customer_name : '',
           sgst : 0,
           cgst : 0,
           tax_amount : 0,
@@ -292,21 +294,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             item.rate = sale_item.selling_price;
             item.mrp = sale_item.mrp;
           },
-          initTomSelect() {
-            document.querySelectorAll('.items').forEach((el) => {
-            if (el && !el.tomselect && typeof el.value !== 'undefined' && el.value !== null) 
-                new TomSelect(el, {});
-            });
-        },
+       
         getCustomer(value){
-            let customer = this.customer.find(c => c.id == value);
+            let customer = this.customer.find(c => c.phone == value);
+            console.log(customer);
+            this.customer_name = customer.name;
+            this.customer_id = customer.id;
             this.customer_type = customer.type;
             this.gst = customer.gst_no;
         },
-          init(){
-            setTimeout(() => this.initTomSelect(), 0);
-            console.log(this.customer);
-          },
+         
         }))
     })
 </script>
