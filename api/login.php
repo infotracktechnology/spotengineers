@@ -15,7 +15,7 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
             $_SESSION['username'] = $row['name'];
             $_SESSION['userid'] = $row['id'];
             $_SESSION['user_role'] = $row['role'];
-            header("Location: ../dashboard.php");
+            header("Location: ../welcome.php");
             exit;
         }else {
             $_SESSION['error'] = 'Enter the correct password';
