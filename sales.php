@@ -240,8 +240,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <script src="assets/js/custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
     <script>
-
-
     document.addEventListener('alpine:init', () => {
         Alpine.data('app', () => ({
           grandtotal: 0,
@@ -303,7 +301,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             this.customer_type = customer.type;
             this.gst = customer.gst_no;
         },
-         
+        initTomSelect() {
+            document.querySelectorAll('.items').forEach((el) => {
+            if (el && !el.tomselect && typeof el.value !== 'undefined' && el.value !== null) 
+                new TomSelect(el, {});
+            });
+        },
+        init(){
+            setTimeout(() => this.initTomSelect(), 0);
+            console.log(this.customer);
+          },
         }))
     })
 </script>
