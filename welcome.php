@@ -37,7 +37,7 @@ if(!isset($_SESSION['username'])) {
                 <div class="card-statistic-4">
                         <div class="card-body pr-4">
                           <h5 class="font-15">Hi <?php echo $_SESSION['username']; ?></h5>
-                          <h2 class="mb-3 font-18"> Welcome to Spot Engineers! Express yourself.</h2>
+                          <h2 class="mb-3 font-18"> Welcome to Spot At Engineers! Express yourself.</h2>
                           <img src="assets/img/logo.png" alt="" style="height: 380px;width: 380px;">
                           <div class="mt-2">
                           <a href="dashboard.php" class="btn btn-primary my-2">Go to Sales Dashboard</a>
