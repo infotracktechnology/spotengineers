@@ -31,67 +31,34 @@ if(!isset($_SESSION['username'])) {
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row ">
-            <div class="col-md-4 col-sm-12">
+        <div class="row">
+            <div class="col-sm-12 col-lg-6">
               <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">Today Service</h5>
-                          <h2 class="mb-3 font-18"></h2>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/1.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div class="card-header">
+                <a href="#">Total Pending Calls</a>
+                </div>
+                <div class="card-body">
+                  <div id="pending_calls" style="height: 350px;"></div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 col-sm-12">
+            <div class="col-sm-12 col-lg-6">
               <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">Total Customers</h5>
-                          <h2 class="mb-3 font-18"></h2>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/2.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div class="card-header">
+                <a href="#">Today Assignment</a>
+                </div>
+                <div class="card-body">
+                  <div id="today_assignment" style="height: 350px;"></div>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 col-sm-12">
+            <div class="col-sm-12 col-lg-6">
               <div class="card">
-                <div class="card-statistic-4">
-                  <div class="align-items-center justify-content-between">
-                    <div class="row ">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                        <div class="card-content">
-                          <h5 class="font-15">Total Employees</h5>
-                          <h2 class="mb-3 font-18"></h2>
-                        </div>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                        <div class="banner-img">
-                          <img src="assets/img/banner/3.png" alt="">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div class="card-header">
+                  <a href="#">Tomorrow Followup Calls</a>
+                </div>
+                <div class="card-body">
+                  <div id="tomorrow_follow_up" style="height: 350px;"></div>
                 </div>
               </div>
             </div>
@@ -114,5 +81,87 @@ if(!isset($_SESSION['username'])) {
   <!-- Custom JS File -->
   <script src="assets/js/custom.js"></script>
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <script>
+    var chartDom = document.getElementById('pending_calls');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: 0, name: 'Pending Calls' },
+          ],
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+    var chartDom = document.getElementById('today_assignment');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: 0, name: 'Today Assignment' },
+          ],
+          itemStyle: {
+            color:'#43b31a'
+          },
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+
+    var chartDom = document.getElementById('tomorrow_follow_up');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    option = {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left'
+      },
+      series: [
+        {
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: 0, name: 'Tomorrow Follow Up Calls' },
+          ],
+          itemStyle: {
+            color: '#f3b31a'
+          },
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+</script>
 </body>
 </html>
