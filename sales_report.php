@@ -4,6 +4,14 @@ session_start();
 
 include "config.php";
 
+$query = "SELECT * FROM customer";
+$result = mysqli_query($con, $query);
+if ($result) {
+  while ($row = mysqli_fetch_object($result)) {
+    $customers[] = $row;
+  }
+}
+
 
 $currentDate = date('Y-m-d');
 
@@ -31,6 +39,7 @@ $fromDate = date('Y-m-01');
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
@@ -61,6 +70,17 @@ $fromDate = date('Y-m-01');
                                             <div class="col-md-2 form-group">
                                                 <label class="col-blue">To Date</label>
                                                 <input type="date" name="to_date" class="form-control form-control-sm" value="<?php echo $currentDate; ?>" />
+                                            </div>
+
+                                            <div class="col-md-4 form-group">
+                                                <label class="col-blue">Customer</label>
+                                                <select name="customer" id="customer" required>
+                                                    <option value="">Select Customer</option>
+                                                    <option value="all">All Customers</option>
+                                                    <?php foreach ($customers as $row) { ?>
+                                                        <option value="<?php echo $row->id; ?>"><?php echo $row->name; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         
                                             <div class="col-md-2 form-group">
@@ -121,7 +141,7 @@ $fromDate = date('Y-m-01');
           <td><a href="sales-print.php?id=<?php echo $sale['bill_no']; ?>" class="btn btn-success text-white"><i class="fa fa-print"></i></a></td>
         </tr>
       <?php endforeach; ?>
-    </tbody>
+    </tbody>  
   </table>
 </div>
 
@@ -152,7 +172,7 @@ $fromDate = date('Y-m-01');
   <script src="assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
   <script src="assets/js/page/datatables.js"></script>
   <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
   <!-- Template JS File -->
   <script src="assets/js/scripts.js"></script>
   <!-- Custom JS File -->
@@ -160,7 +180,7 @@ $fromDate = date('Y-m-01');
   <script src="assets/js/custom.js"></script>
 
 <script>
-
+      let customer = new TomSelect('#customer', {}); 
 </script>
 
 </body>
