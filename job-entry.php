@@ -57,14 +57,14 @@ $job_status = array('pending' => 'bage-danger', 'spare issue' => 'bage-warning',
                                             </div>
                                         </div>
 
-                                        <form action="job-entry.php" class="row" method="get">
-                                                <div class="col-md-3 col-sm-12 mb-3">
+                                        <form action="job-entry.php" class="row mb-3" method="get">
+                                                <div class="col-md-3 col-sm-12">
                                                     <input type="date" name="start_date" value="<?php echo $start_date; ?>" class="form-control form-control-sm" />
                                                 </div>
-                                                <div class="col-md-3 col-sm-12 mb-3">
+                                                <div class="col-md-3 col-sm-12">
                                                     <input type="date" name="end_date" value="<?php echo $end_date; ?>" class="form-control form-control-sm" />
                                                 </div>
-                                                <div class="col-md-3 col-sm-12 mb-3">
+                                                <div class="col-md-3 col-sm-12">
                                                     <button type="submit" class="btn btn-success">Search</button>
                                                 </div>
                                         </form>
@@ -99,7 +99,7 @@ $job_status = array('pending' => 'bage-danger', 'spare issue' => 'bage-warning',
                                                                 <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>
                                                                
                                                                 <td>
-                                                                    <a href="item-edit.php?id=<?php echo $item->item_id; ?>" class="btn btn-success"><i class="fa fa-plus"></i></a>
+                                                                    <a href="#" class="btn btn-success"><i class="fa fa-plus"></i></a>
                                                                 </td>
                                                                 <td></td>
                                                             </tr>
