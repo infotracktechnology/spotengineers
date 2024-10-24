@@ -82,7 +82,7 @@ $job_status = array('pending' => 'bage-danger', 'spare issue' => 'bage-warning',
                                                         <th>Status</th>
                                                         <th>Spare Issue</th>
                                                         <th>Action</th>
-                                                    </tr>
+                                                    </tr> 
                                                 </thead>
                                                 <tbody>
                                                     <?php
