@@ -32,33 +32,45 @@ if(!isset($_SESSION['username'])) {
       <div class="main-content">
         <section class="section">
         <div class="row">
-            <div class="col-sm-12 col-lg-6">
-              <div class="card">
+            <div class="col-sm-12 col-lg-4">
+              <div class="card card-danger">
                 <div class="card-header">
                 <a href="#">Total Pending Calls</a>
                 </div>
                 <div class="card-body">
-                  <div id="pending_calls" style="height: 350px;"></div>
+                <h5 class="font-15">10</h5>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-6">
-              <div class="card">
+            <div class="col-sm-12 col-lg-4">
+              <div class="card card-warning">
                 <div class="card-header">
                 <a href="#">Today Assignment</a>
                 </div>
                 <div class="card-body">
-                  <div id="today_assignment" style="height: 350px;"></div>
+                <h5 class="font-15">4</h5>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-6">
-              <div class="card">
+            <div class="col-sm-12 col-lg-4">
+              <div class="card card-success">
                 <div class="card-header">
                   <a href="#">Tomorrow Followup Calls</a>
                 </div>
                 <div class="card-body">
-                  <div id="tomorrow_follow_up" style="height: 350px;"></div>
+                <h5 class="font-15">2</h5>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-12 col-lg-8">
+              <div class="card card-primary">
+                <div class="card-header">
+                <a href="#">Total Calls</a>
+                </div>
+                <div class="card-body">
+                  <div id="chart1" style="height: 400px;"></div>
                 </div>
               </div>
             </div>
@@ -82,7 +94,7 @@ if(!isset($_SESSION['username'])) {
   <script src="assets/js/custom.js"></script>
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
   <script>
-    var chartDom = document.getElementById('pending_calls');
+    var chartDom = document.getElementById('chart1');
     var myChart = echarts.init(chartDom);
     var option;
 
@@ -99,7 +111,9 @@ if(!isset($_SESSION['username'])) {
           type: 'pie',
           radius: '50%',
           data: [
-            { value: 0, name: 'Pending Calls' },
+            { value: 10, name: 'Pending Calls',itemStyle:{color:'#dc3545'} },
+            { value: 4, name: 'Today Assignment',itemStyle:{color:'#ffc107'} },
+            { value: 2, name: 'Tomorrow Followup Calls',itemStyle:{color:'#28a745'} },
           ],
         }
       ]
@@ -107,61 +121,7 @@ if(!isset($_SESSION['username'])) {
 
     option && myChart.setOption(option);
 
-    var chartDom = document.getElementById('today_assignment');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-      tooltip: {
-        trigger: 'item'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left'
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: '50%',
-          data: [
-            { value: 0, name: 'Today Assignment' },
-          ],
-          itemStyle: {
-            color:'#43b31a'
-          },
-        }
-      ]
-    };
-
-    option && myChart.setOption(option);
-
-    var chartDom = document.getElementById('tomorrow_follow_up');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
-      tooltip: {
-        trigger: 'item'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left'
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: '50%',
-          data: [
-            { value: 0, name: 'Tomorrow Follow Up Calls' },
-          ],
-          itemStyle: {
-            color: '#f3b31a'
-          },
-        }
-      ]
-    };
-
-    option && myChart.setOption(option);
+   
 </script>
 </body>
 </html>
