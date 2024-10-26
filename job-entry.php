@@ -14,7 +14,7 @@ if (isset($_GET['start_date'])) {
     $start_date = $_GET['start_date'];
     $end_date = $_GET['end_date'];
 }
-$job_status = array('pending' => 'bage-danger', 'spare issue' => 'bage-warning', 'completed' => 'bage-success');
+$job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning', 'completed' => 'badge-success');
 ?>
 <!DOCTYPE html>
 <html lang="en">
