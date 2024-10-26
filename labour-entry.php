@@ -185,7 +185,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                                     <td x-text="item.work"></td>
                                                                     <td x-text="item.category"></td>
                                                                     <td x-text="item.rate.toFixed(2)"></td>
-                                                                    <td><button @click="removeItem(index)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                                    <td><button type="button" @click="removeItem(index)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
                                                                     </td>
                                                                     <input type="hidden" name="rate[]" x-model="item.rate" />
                                                                     <input type="hidden" name="appliance_id[]" x-model="item.appliance_id" />
