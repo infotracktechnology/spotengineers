@@ -100,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     <option value="">Select Customer</option>
                                                     <?php
                                                     foreach ($customers as $key => $customer) {
-                                                        echo '<option value="' . $customer['id'] . '">' . $customer['name'] . '</option>';
+                                                        echo '<option value="' . $customer['id'] . '">' . $customer['phone'] . '</option>';
                                                     }
                                                     ?>
                                                 </select>
