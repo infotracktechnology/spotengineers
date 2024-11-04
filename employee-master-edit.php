@@ -101,8 +101,45 @@ if ($result) {
                      <input type="text"  name="experience" value="<?= $employee[0]->experience; ?>" class="form-control form-control-sm" >
                    </div>
 
-
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Aadhar</label>
+                     <input type="text"  name="aadhar" value="<?= $employee[0]->aadhar; ?>" class="form-control form-control-sm" >
+                   </div>
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Pan Card</label>
+                     <input type="text"  name="pan" value="<?= $employee[0]->pan; ?>" class="form-control form-control-sm" >
+                   </div> 
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Salary</label>
+                     <input type="text"  name="salary" value="<?= $employee[0]->salary; ?>" class="form-control form-control-sm" required>
+                   </div> 
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Photo</label>
+                     <input type="file"  name="photo" value="<?= $employee[0]->photo; ?>" class="form-control form-control-sm" >
+                   </div>
                 
+                   <div class="col-md-12 form-group m-0">
+                        <h6 class="col-deep-purple m-0">Bank Details</h6>
+                        <hr class="bg-dark-gray" />
+                    </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Account No</label>
+                     <input type="text"  name="acc_no" value="<?= $employee[0]->acc_no; ?>" class="form-control form-control-sm" >
+                   </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">IFSC Code</label>
+                     <input type="text"  name="ifsc" value="<?= $employee[0]->ifsc; ?>" class="form-control form-control-sm" >
+                   </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Branch</label>
+                     <input type="text"  name="branch" value="<?= $employee[0]->branch; ?>" class="form-control form-control-sm" >
+                   </div>
 
   <div class="col-md-12">
       <button type="submit" name="submit" class="btn btn-success">Submit</button>
