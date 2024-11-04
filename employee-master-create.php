@@ -9,6 +9,12 @@ if (!isset($_SESSION['username'])) {
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
+    $photo = '';
+    if (isset($_FILES['photo'])) {
+      $photo = $_FILES['photo']['name'];
+      move_uploaded_file($_FILES['photo']['tmp_name'], 'assets/upload/' . $photo);
+      $photo = 'assets/upload/' . $photo;
+    }
     $employee = mysqli_query($con, "INSERT INTO employee(name,dob,Phone,address_line_1,address_line_2,city,doj,experience,aadhar,pan,salary,photo,acc_no,ifsc,branch) VALUES( '$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience', '$aadhar', '$pan', '$salary', '$photo', '$acc_no', '$ifsc', '$branch')");
     header("location:employee.php");
     exit;
@@ -115,7 +121,7 @@ if (!isset($_SESSION['username'])) {
                    
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Photo</label>
-                     <input type="file"  name="photo" class="form-control form-control-sm" >
+                     <input type="file"  name="photo" class="form-control form-control-sm" accept="image/*">
                    </div>
 
                    <div class="col-md-12 form-group m-0">
