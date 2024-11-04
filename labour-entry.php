@@ -106,6 +106,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 </select>
                                             </div>
                                             <div class="col-md-3 form-group">
+                                                <label class="col-blue">Customer Name</label>
+                                                <input type="text" name="customer_name" x-model="customer_name" class="form-control form-control-sm" readonly />
+                                            </div>
+                                            <div class="col-md-3 form-group">
                                                 <label class="col-blue">City</label>
                                                 <input type="text" name="city" x-model="city" class="form-control form-control-sm" readonly />
                                             </div>
@@ -234,6 +238,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         customer: JSON.parse('<?php echo $customer_json; ?>'),
         work_list: JSON.parse('<?php echo $work_json; ?>'),
         appliances: [],
+        customer_name: '',
         city: '',
         gst_no: '',
         appliance: '',
@@ -243,6 +248,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         grandTotal: 0,
   
         getCustomer(value) {
+            this.customer_name = this.customer[value]?.name || '';
             this.city = this.customer[value]?.city || '';
             this.gst_no = this.customer[value]?.gst_no || '';
             this.appliances = this.customer[value]?.appliances || [];
