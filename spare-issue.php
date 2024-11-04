@@ -20,14 +20,9 @@ $job = $con->query("SELECT a.*,b.name,b.city,b.gst_no,c.name emp_name,b.id custo
 
 $appliances = $con->query("SELECT * FROM customer_appliances WHERE customer_id = $job->customer_id")->fetch_all(MYSQLI_ASSOC);
 
-$job_no = $con->query("SELECT max(job_no)job_no FROM job_entry WHERE cyear = '$cyear'")->fetch_array();
-$job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
+$issue_no = $con->query("SELECT max(issue_no)issue_no FROM spare_issue WHERE cyear = '$cyear'")->fetch_array();
+$issue_no = $issue_no['issue_no'] ? $issue_no['issue_no']+1 : 1;
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    extract($_POST);
-    header("location:spare-issue.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="section-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" name="myForm" action="spare-issue.php" enctype="multipart/form-data">
+                            <form method="post" name="myForm" action="spareissue-store.php" enctype="multipart/form-data">
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h4 class="col-deep-purple m-0">Spare Issue</h4>
@@ -82,7 +77,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                             <div class="col-md-1 form-group">
                                                 <label class="col-blue">Issue No</label>
-                                                <input type="text" name="issue_no" class="form-control form-control-sm" value="1" readonly />
+                                                <input type="text" name="issue_no" class="form-control form-control-sm" value="<?php echo $issue_no; ?>" readonly />
                                             </div>
                                             <div class="col-md-2 form-group">
                                                 <label class="col-blue">Issue Date</label>
@@ -91,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <div class="col-md-3 form-group">
                                                 <label class="col-blue">Customer</label>
                                                 <input type="text" name="customer" value="<?php echo $job->name; ?>"  class="form-control form-control-sm" readonly />
-                                                <input type="hidden" name="customer_id"  />
+                                                <input type="hidden" name="customer_id" value="<?php echo $job->customer_id; ?>"  />
                                             </div>
                                             <div class="col-md-2 form-group">
                                                 <label class="col-blue">City</label>
@@ -115,6 +110,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                    <div class="col-md-12 form-group m-0">
                                     <template x-for="(item, index) in items">
+
                                                 <div class="row">
                                                     <div class="col-md-3 form-group">
                                                         <label class="col-blue">Appliances</label>
@@ -151,14 +147,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                         <label class="col-blue">Total</label>
                                                         <input type="number" name="total[]" x-model="item.total" class="form-control form-control-sm" readonly/>
                                                     </div>
+                                                    
+                                                   
 
                                                     <div class="col-md-1 mt-4">
                                                         <button type="button" class="btn btn-danger" @click="deleteItem(index)">
                                                             <i class="fa fa-trash-alt"></i>
                                                         </button>
                                                     </div>
+
+                                                   
+                                                    
                                                 </div>
                                             </template>
+
 
                                             </div>
 
