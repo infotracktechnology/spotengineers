@@ -9,7 +9,7 @@ if (!isset($_SESSION['username'])) {
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $employee = mysqli_query($con, "INSERT INTO employee(name,dob,Phone,address_line_1,address_line_2,city,doj,experience) VALUES( '$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience')");
+    $employee = mysqli_query($con, "INSERT INTO employee(name,dob,Phone,address_line_1,address_line_2,city,doj,experience,aadhar,pan,salary,photo,acc_no,ifsc,branch) VALUES( '$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience', '$aadhar', '$pan', '$salary', '$photo', '$acc_no', '$ifsc', '$branch')");
     header("location:employee.php");
     exit;
   }
@@ -71,7 +71,7 @@ if (!isset($_SESSION['username'])) {
                      <label class="col-blue">Phone</label>
                      <input type="text" name="phone" class="form-control form-control-sm" required>
                    </div>
-
+ 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Address Line 1</label>
                      <input type="text"  name="address_line_1" class="form-control form-control-sm" required>
@@ -98,6 +98,45 @@ if (!isset($_SESSION['username'])) {
                      <input type="text"  name="experience" class="form-control form-control-sm" >
                    </div>
 
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Aadhar</label>
+                     <input type="text"  name="aadhar" class="form-control form-control-sm" >
+                   </div>
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Pan Card</label>
+                     <input type="text"  name="pan" class="form-control form-control-sm" >
+                   </div> 
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Salary</label>
+                     <input type="text"  name="salary" class="form-control form-control-sm" required>
+                   </div> 
+                   
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Photo</label>
+                     <input type="file"  name="photo" class="form-control form-control-sm" >
+                   </div>
+
+                   <div class="col-md-12 form-group m-0">
+                        <h6 class="col-deep-purple m-0">Bank Details</h6>
+                        <hr class="bg-dark-gray" />
+                    </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Account No</label>
+                     <input type="text"  name="acc_no" class="form-control form-control-sm" >
+                   </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">IFSC Code</label>
+                     <input type="text"  name="ifsc" class="form-control form-control-sm" >
+                   </div>
+
+                   <div class="col-md-3 form-group">
+                     <label class="col-blue">Branch</label>
+                     <input type="text"  name="branch" class="form-control form-control-sm" >
+                   </div>
 
   <div class="col-md-12">
       <button type="submit" class="btn btn-success">Submit</button>
