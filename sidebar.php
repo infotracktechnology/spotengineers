@@ -23,7 +23,7 @@
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user-8.png"
                     class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
             <div class="dropdown-menu dropdown-menu-right pullDown">
-                <div class="dropdown-title"><?php echo $_SESSION['username'];?></div>
+                <div class="dropdown-title"><?php echo $_SESSION['username']; ?></div>
                 <div class="dropdown-divider"></div>
                 <a href="logout.php" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
                     Logout
@@ -36,9 +36,9 @@
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
             <a href="#"> <img alt="image" src="assets/img/logo.png" class="header-logo" style="height: 70px;" />
-            <span class="logo-name small" style="font-size: 14px;">Spot Engineers</span>
+                <span class="logo-name small" style="font-size: 14px;">Spot Engineers</span>
             </a>
-            
+
         </div>
         <ul class="sidebar-menu">
             <li class="menu-header"></li>
@@ -60,7 +60,8 @@
                     <li><a class="nav-link" href="employee.php">Employee</a></li>
                 </ul>
             </li>
-           
+
+
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Inventory</span></a>
                 <ul class="dropdown-menu">
@@ -78,6 +79,21 @@
                     <li><a class="nav-link" href="spare-return.php">Spare Return</a></li> -->
                 </ul>
             </li>
+
+
+
+
+            <li class="dropdown">
+                <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>HR Management</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="attendance.php">Attendance</a></li>
+
+                </ul>
+            </li>
+
+
+
+
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
                 <ul class="dropdown-menu">
