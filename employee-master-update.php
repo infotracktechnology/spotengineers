@@ -24,6 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ifsc = $_POST['ifsc'];
     $branch = $_POST['branch'];
 
+    if (isset($_FILES['photo'])) {
+        $photo = $_FILES['photo']['name'];
+        move_uploaded_file($_FILES['photo']['tmp_name'], 'assets/upload/' . $photo);
+        $photo = 'assets/upload/' . $photo;
+    }
+
     $sql="UPDATE employee SET name='$name',dob='$dob',phone='$phone',address_line_1='$address_line_1',address_line_2='$address_line_2',city='$city',doj='$doj',experience='$experience',aadhar='$aadhar',pan='$pan',salary='$salary',photo='$photo',acc_no='$acc_no',ifsc='$ifsc',branch='$branch' WHERE id = '$id'";
     $result = mysqli_query($con, $sql);
     
