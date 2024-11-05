@@ -16,6 +16,7 @@ if ($result) {
     $employee[] = $row;
   }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
