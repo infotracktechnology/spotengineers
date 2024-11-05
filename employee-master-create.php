@@ -7,20 +7,34 @@ if (!isset($_SESSION['username'])) {
   exit;
 }
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    extract($_POST);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $name = $_POST['name'] ?? '';
+    $dob = $_POST['dob'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $address_line_1 = $_POST['address_line_1'] ?? '';
+    $address_line_2 = $_POST['address_line_2'] ?? '';
+    $city = $_POST['city'] ?? '';
+    $doj = $_POST['doj'] ?? '';
+    $experience = $_POST['experience'] ?? '';
+    $aadhar = $_POST['aadhar'] ?? '';
+    $pan = $_POST['pan'] ?? '';
+    $salary = $_POST['salary'] ?? '';
+    $acc_no = $_POST['acc_no'] ?? '';
+    $ifsc = $_POST['ifsc'] ?? '';
+    $branch = $_POST['branch'] ?? '';
+
+    // Handle photo upload
     $photo = '';
-    if (isset($_FILES['photo'])) {
-      $photo = $_FILES['photo']['name'];
-      move_uploaded_file($_FILES['photo']['tmp_name'], 'assets/upload/' . $photo);
-      $photo = 'assets/upload/' . $photo;
+    if (!empty($_FILES['photo']['name'])) {
+        $photo = 'assets/upload/' . $_FILES['photo']['name'];
+        move_uploaded_file($_FILES['photo']['tmp_name'], $photo);
     }
-    $employee = mysqli_query($con, "INSERT INTO employee(name,dob,Phone,address_line_1,address_line_2,city,doj,experience,aadhar,pan,salary,photo,acc_no,ifsc,branch) VALUES( '$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience', '$aadhar', '$pan', '$salary', '$photo', '$acc_no', '$ifsc', '$branch')");
+
+    $employee = mysqli_query($con, "INSERT INTO employee(name, dob, Phone, address_line_1, address_line_2, city, doj, experience, aadhar, pan, salary, photo, acc_no, ifsc, branch) VALUES('$name', '$dob', '$phone', '$address_line_1', '$address_line_2', '$city', '$doj', '$experience', '$aadhar', '$pan', '$salary', '$photo', '$acc_no', '$ifsc', '$branch')");
+
     header("location:employee.php");
     exit;
-  }
-
-
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
