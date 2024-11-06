@@ -41,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $discount = $_POST['discount'][$key];
         $sales = mysqli_query($con,"INSERT INTO sales_items(sale_id, item_id, qty, rate, amount, discount) VALUES ('$id', '$value', '$qty', '$rate', '$amount', '$discount')");
     }
-    header("Location: sales-print.php?id=$id", true, 303);
+    header("Location: bills.php?bill_by=Sale&value=$sale_no", true, 303);
     exit;
 }
 

@@ -10,6 +10,9 @@ if(!isset($_SESSION['username'])) {
 $cyear = $_SESSION['cyear'];
 $biil_no = $con->query("SELECT max(bill_no)bill_no FROM bills WHERE cyear = '$cyear'")->fetch_array();
 $bill_no = $biil_no['bill_no'] ? $biil_no['bill_no']+1 : 1;
+
+$bill_by = isset($_GET['bill_by']) ? $_POST['bill_by'] : '';
+$value = isset($_GET['value']) ? $_POST['value'] : '';
 ?>
 
 
@@ -62,14 +65,14 @@ $bill_no = $biil_no['bill_no'] ? $biil_no['bill_no']+1 : 1;
                                                 <label class="col-blue">Bill By </label>
                                                 <select name="search" class="form-control form-control-sm" required>
                                                     <option value="">Select Search</option>
-                                                    <option value="Sale">Sale No</option>
+                                                    <option value="Sale" <?= ($bill_by == 'Sale') ? 'selected' : ''; ?>>Sale No</option>
                                                     <!-- <option value="Job">Job No</option> -->
                                                 </select>
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Value To Search</label>
-                                                    <input type="number" name="value" placeholder="Value eg: 1" class="form-control form-control-sm" required/>
+                                                    <input type="number" name="value" placeholder="Value eg: 1" class="form-control form-control-sm" value="<?php echo $value; ?>"  required/>
                                                 </div>
 
                                             <div class="col-md-12">
