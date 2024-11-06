@@ -27,19 +27,19 @@ if ($result) {
 
 $sale_items = json_encode($items, JSON_UNESCAPED_UNICODE);
 
-$biil_no = $con->query("SELECT max(bill_no)bill_no FROM sales WHERE cyear = '$cyear'")->fetch_array();
-$bill_no = $biil_no['bill_no'] ? $biil_no['bill_no']+1 : 1;
+$biil_no = $con->query("SELECT max(sale_no)sale_no FROM sales WHERE cyear = '$cyear'")->fetch_array();
+$bill_no = $biil_no['sale_no'] ? $biil_no['sale_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     extract($_POST);
-    $sales = mysqli_query($con,"INSERT INTO sales (bill_no,bill_date,bill_type,customer,customer_type,total,tax_total,net_total,cyear) VALUES ('$bill_no','$bill_date','$bill_type','$customer','$customer_type','$grandtotal','$tax_amount','$net_total','$cyear')");
+    $sales = mysqli_query($con,"INSERT INTO sales (sale_no,sale_date,sale_type,customer,customer_type,total,tax_total,net_total,cyear) VALUES ('$sale_no','$sale_date','$sale_type','$customer','$customer_type','$grandtotal','$tax_amount','$net_total','$cyear')");
     $id = mysqli_insert_id($con);
     foreach($_POST['item'] as $key => $value){
         $qty = $_POST['qty'][$key];
         $rate = $_POST['rate'][$key];
         $amount = $_POST['total'][$key];
         $discount = $_POST['discount'][$key];
-        $sales = mysqli_query($con,"INSERT INTO sales_items(bill_id, item_id, qty, rate, amount, discount) VALUES ('$id', '$value', '$qty', '$rate', '$amount', '$discount')");
+        $sales = mysqli_query($con,"INSERT INTO sales_items(sale_id, item_id, qty, rate, amount, discount) VALUES ('$id', '$value', '$qty', '$rate', '$amount', '$discount')");
     }
     header("Location: sales-print.php?id=$id", true, 303);
     exit;
@@ -89,19 +89,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill No</label>
-                                                    <input type="number" name="bill_no" class="form-control form-control-sm" value="<?php echo $bill_no; ?>" readonly />
+                                                    <label class="col-blue">Sale No</label>
+                                                    <input type="number" name="sale_no" class="form-control form-control-sm" value="<?php echo $bill_no; ?>" readonly />
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill Date</label>
-                                                    <input type="date" name="bill_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
+                                                    <label class="col-blue">Sale Date</label>
+                                                    <input type="date" name="sale_date" value="<?php echo date('Y-m-d'); ?>" class="form-control form-control-sm" required />
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill Type</label>
-                                                    <select name="bill_type" class="form-control form-control-sm" required>
-                                                        <option value="">Select Bill Type</option>
+                                                    <label class="col-blue">Sale Type</label>
+                                                    <select name="sale_type" class="form-control form-control-sm" required>
+                                                        <option value="">Select Sale Type</option>
                                                         <option value="Cash">Cash</option>
                                                         <option value="Credit">Credit</option>
                                                         <option value="UPI">UPI</option>

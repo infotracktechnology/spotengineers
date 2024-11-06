@@ -9,13 +9,13 @@ if(!isset($_SESSION['username'])) {
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     extract($_POST);
     $sales = $con->query("UPDATE `sales` SET `tax_total`='$tax_amount',`net_total`='$net_total',`total`='$grandtotal' WHERE id=$id");
-    $delete_items = $con->query("DELETE FROM sales_items WHERE bill_id=$id");
+    $delete_items = $con->query("DELETE FROM sales_items WHERE sale_id=$id");
     foreach($_POST['item'] as $key => $value){
         $qty = $_POST['qty'][$key];
         $rate = $_POST['rate'][$key];
         $amount = $_POST['total'][$key];
         $discount = $_POST['discount'][$key];
-        $items = mysqli_query($con,"INSERT INTO sales_items(bill_id, item_id, qty, rate, amount, discount) VALUES ('$id', '$value', '$qty', '$rate', '$amount', '$discount')");
+        $items = mysqli_query($con,"INSERT INTO sales_items(sale_id, item_id, qty, rate, amount, discount) VALUES ('$id', '$value', '$qty', '$rate', '$amount', '$discount')");
     }
     header("Location: sales-print.php?id=$id", true, 303);
     exit;

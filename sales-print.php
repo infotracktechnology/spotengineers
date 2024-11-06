@@ -8,7 +8,9 @@ if(!isset($_SESSION['username'])) {
 }
 $id = $_GET['id'];
 $cyear = $_SESSION['cyear'];
-$sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer=b.id where a.id=$id")->fetch_object();
+
+$sale = $con->query("SELECT * FROM `bills` a inner join customer b on a.customer=b.id where a.id=$id")->fetch_object();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -105,7 +107,7 @@ $sale = $con->query("SELECT * FROM `sales` a inner join customer b on a.customer
                 <th>Total</th>
             </tr>
             <?php
-            $sale_items = $con->query("SELECT a.*,b.name,b.hsn,b.brand FROM sales_items a inner join items b on a.item_id=b.item_id where a.bill_id=$id");
+            $sale_items = $con->query("SELECT a.*,b.name,b.hsn,b.brand FROM sales_items a inner join items b on a.item_id=b.item_id where a.sale_id=$id");
             foreach($sale_items->fetch_all(MYSQLI_ASSOC) as $i => $item){?>
             <tr>
                 <td><?php echo $i+1; ?></td>

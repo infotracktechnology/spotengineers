@@ -13,7 +13,7 @@ if(!isset($id)) {
 }
 $cyear = $_SESSION['cyear'];
 $sale = $con->query("SELECT a.*,b.name,b.type,b.gst_no FROM `sales` a inner join customer b on a.customer=b.id where a.id=$id")->fetch_object();
-$items = $con->query("SELECT a.bill_id,a.item_id,a.qty,a.rate,a.amount,a.discount,b.name,b.hsn,b.brand,b.mrp FROM sales_items a inner join items b on a.item_id=b.item_id where a.bill_id=$id");
+$items = $con->query("SELECT a.sale_id,a.item_id,a.qty,a.rate,a.amount,a.discount,b.name,b.hsn,b.brand,b.mrp FROM sales_items a inner join items b on a.item_id=b.item_id where a.sale_id=$id");
 $item_json = json_encode($items->fetch_all(MYSQLI_ASSOC),JSON_UNESCAPED_UNICODE);
 
 $sale_items = $con->query("SELECT * FROM items")->fetch_all(MYSQLI_ASSOC);
@@ -62,19 +62,19 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill No</label>
-                                                    <input type="number" name="bill_no" class="form-control form-control-sm" value="<?php echo $sale->bill_no; ?>" readonly />
+                                                    <label class="col-blue">Sale No</label>
+                                                    <input type="number" name="bill_no" class="form-control form-control-sm" value="<?php echo $sale->sale_no; ?>" readonly />
                                                     <input type="hidden" name="id" value="<?= $sale->id ?>" />
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill Date</label>
-                                                    <input type="date" name="bill_date" value="<?= $sale->bill_date ?>" class="form-control form-control-sm" readonly />
+                                                    <label class="col-blue">Sale Date</label>
+                                                    <input type="date" name="bill_date" value="<?= $sale->sale_date ?>" class="form-control form-control-sm" readonly />
                                                 </div>
 
                                                 <div class="col-md-2 form-group">
-                                                    <label class="col-blue">Bill Type</label>
-                                                    <input type="text" name="customer_type" value="<?= $sale->bill_type ?>"  class="form-control form-control-sm"  readonly/>
+                                                    <label class="col-blue">Sale Type</label>
+                                                    <input type="text" name="customer_type" value="<?= $sale->sale_type ?>"  class="form-control form-control-sm"  readonly/>
                                                 </div>
 
                                                 <div class="col-md-3 form-group">
