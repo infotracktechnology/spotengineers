@@ -8,7 +8,7 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-
+// Fetch all employees
 $employees = [];
 $result = $con->query("SELECT id, name FROM employee");
 if ($result) {
@@ -17,42 +17,35 @@ if ($result) {
     }
 }
 
+// Check if a date is selected
+//$attendance_date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
+
+// Fetch attendance for the selected date
+// $attendanceData = [];
+// if ($attendance_date) {
+//     $query = "SELECT emp_id, attendance FROM attendance WHERE attendance_date = '$attendance_date'";
+//     $result = $con->query($query);
+//     if ($result) {
+//         while ($row = $result->fetch_assoc()) {
+//             $attendanceData[$row['emp_id']] = $row['attendance'];
+//         }
+//     }
+// }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $attendance_date = $_POST['date'];
+    $attendance_date = $_POST['attendance_date'];
 
-    // Check if attendance for this date already exists
-    $checkStmt = $con->prepare("SELECT COUNT(*) FROM attendance WHERE attendance_date = ?");
-    $checkStmt->bind_param("s", $attendance_date);
-    $checkStmt->execute();
-    $checkStmt->bind_result($count);
-    $checkStmt->fetch();
-    $checkStmt->close();
-
-    if ($count > 0) {
-
-        $_SESSION['attendance_alert'] = 'Attendance has already been recorded for this date.';
-        header("Location: attendance.php");
-        exit;
-    } else {
-        // Insert attendance for each employee if no record exists for the date
-        foreach ($_POST['status'] as $emp_id => $attendance) {
-            $stmt = $con->prepare("INSERT INTO attendance (emp_id, attendance_date, attendance, created_at) VALUES (?, ?, ?, NOW())");
-            $stmt->bind_param("iss", $emp_id, $attendance_date, $attendance);
-
-            if (!$stmt->execute()) {
-                echo "<script>alert('Error recording attendance for employee ID $emp_id: " . $stmt->error . "');</script>";
-            }
-
-            $stmt->close();
-        }
-
-
-        header("Location: attendance.php?success=1");
-        exit;
+    // Delete existing attendance for the selected date
+    $con->query("DELETE FROM attendance WHERE attendance_date = '$attendance_date'");
+    // Insert attendance for each employee without checking for existing attendance
+    foreach ($_POST['status'] as $emp_id => $attendance) {
+        echo "Inserting status for employee $emp_id: $attendance<br>"; // Debugging line
+        $attendance = $con->query("INSERT INTO attendance (emp_id, attendance_date, attendance) VALUES ($emp_id, '$attendance_date', '$attendance')");
     }
-}
 
+    header("Location: attendance.php?date=$attendance_date&success=1");
+    exit;
+}
 
 if (isset($_SESSION['attendance_alert'])) {
     echo "<script>alert('" . $_SESSION['attendance_alert'] . "');</script>";
@@ -94,14 +87,13 @@ if (isset($_SESSION['attendance_alert'])) {
                                         <h4 class="col-deep-purple m-0">Attendance</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form method="post" id="myForm" action="" enctype="multipart/form-data">
+                                        <form method="post" id="myForm" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Date</label>
-                                                    <input type="date" name="date" class="form-control form-control-sm" required
-                                                        value="<?php echo date('Y-m-d'); ?>">
-                                                </div>
+                                                    <input type="date" name="attendance_date" class="form-control form-control-sm" max="<?= date('Y-m-d') ?>"  value="<?= date('Y-m-d') ?>"   required />
 
+                                                </div>
                                             </div>
                                             <table class="table table-striped table-sm">
                                                 <thead>
@@ -120,10 +112,12 @@ if (isset($_SESSION['attendance_alert'])) {
                                                             <td><?= htmlspecialchars($employee['name']) ?></td>
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    <button type="button" class="btn btn-outline-info btn-sm active" onclick="setStatus('present', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">P</button>
-                                                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="setStatus('absent', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">A</button>
-                                                                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="setStatus('half_day', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">HL</button>
-                                                                    <input type="hidden" name="status[<?= htmlspecialchars($employee['id']) ?>]" value="present" id="status-<?= htmlspecialchars($employee['id']) ?>">
+                                                                    <button type="button" class="btn btn-outline-info btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'present' ? 'active' : ''; ?>" onclick="setStatus('present', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">P</button>
+                                                                    <button type="button" class="btn btn-outline-danger btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'absent' ? 'active' : ''; ?>" onclick="setStatus('absent', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">A</button>
+                                                                    <button type="button" class="btn btn-outline-warning btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'half_day' ? 'active' : ''; ?>" onclick="setStatus('half_day', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">HL</button>
+                                                                    
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'sick_leave' ? 'active' : ''; ?>" onclick="setStatus('sick_leave', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">SL</button>
+                                                                    <input type="hidden" name="status[<?= htmlspecialchars($employee['id']) ?>]" value="<?php echo isset($attendanceData[$employee['id']]) ? $attendanceData[$employee['id']] : 'present'; ?>" id="status-<?= htmlspecialchars($employee['id']) ?>">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -153,6 +147,9 @@ if (isset($_SESSION['attendance_alert'])) {
 
     <script>
         function setStatus(status, empId) {
+            // Log status and employee ID to the console
+            console.log('Setting status for empId ' + empId + ': ' + status);
+
             // Update the hidden input field with the selected status
             document.getElementById(`status-${empId}`).value = status;
 
@@ -163,8 +160,35 @@ if (isset($_SESSION['attendance_alert'])) {
             // Add the active class to the selected button
             event.target.classList.add('active');
         }
-    </script>
 
+        // Log form data before submitting to check if 'sick_leave' is sent
+        document.getElementById('myForm').addEventListener('submit', function(e) {
+            const selectedDate = document.querySelector('input[name="date"]').value;
+            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowDate = tomorrow.toISOString().split('T')[0]; // Get tomorrow's date in YYYY-MM-DD format
+
+            // Check if selected date is today or tomorrow
+            if (selectedDate !== today && selectedDate === tomorrowDate) {
+                alert("You cannot record attendance for tomorrow.");
+                e.preventDefault(); // Prevent form submission
+            }
+        });
+
+        // function getAttendanceData(date) {
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: 'attendance.php',
+        //         data: {
+        //             date: date
+        //             },
+        //             success: function(data) {
+        //                 $('#tableExport').html(data);
+        //             }
+        //             });
+        // }        
+    </script>
 
 </body>
 
