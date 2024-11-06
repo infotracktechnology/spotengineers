@@ -66,22 +66,22 @@ include "config.php";
     </thead>
     <tbody>
       <?php 
-      $result1 = $con->query("SELECT a.bill_no, a.bill_date, a.total, b.name, b.type, b.phone,a.net_total, a.tax_total, a.tax_total,a.bill_type FROM sales a INNER JOIN customer b ON a.customer = b.id GROUP BY a.id");
+      $result1 = $con->query("SELECT a.sale_no,a.id,a.sale_date, a.total, b.name, b.type, b.phone,a.net_total, a.tax_total, a.tax_total,a.sale_type FROM sales a INNER JOIN customer b ON a.customer = b.id GROUP BY a.id");
       $sales = $result1->fetch_all(MYSQLI_ASSOC);
       ?>
 
       <?php foreach ($sales as $key => $sale): ?>
-        <tr <?php if ($sale['bill_type'] == 'Credit') echo 'style="background-color: yellow;"'; ?>>
+        <tr <?php if ($sale['sale_type'] == 'Credit') echo 'style="background-color: yellow;"'; ?>>
           <td><?php echo $key+1; ?></td>
-          <td><?php echo $sale['bill_no']; ?></td>
-          <td><?php echo $sale['bill_date']; ?></td>
+          <td><?php echo $sale['sale_no']; ?></td>
+          <td><?php echo $sale['sale_date']; ?></td>
           <td><?php echo $sale['name']; ?></td>
-          <td><?php echo $sale['bill_type']; ?></td>
+          <td><?php echo $sale['sale_type']; ?></td>
           <td><?php echo $sale['phone']; ?></td>
           <td><?php echo $sale['net_total']; ?></td>
           <td><?php echo $sale['tax_total']; ?></td>
           <td><?php echo $sale['total']; ?></td>
-          <td><a href="sales_return.php?id=<?php echo $sale['bill_no']; ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
+          <td><a href="sales_return.php?id=<?php echo $sale['id']; ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
         </tr>
       <?php endforeach; ?>
     </tbody>
