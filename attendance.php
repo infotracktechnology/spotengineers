@@ -99,17 +99,21 @@ if (isset($_SESSION['attendance_alert'])) {
                                                 <tbody>
                                                     <?php
                                                     $si = 1;
-                                                    foreach ($employees as $employee): ?>
+                                                    foreach ($employees as $employee): 
+                                                        // Default attendance status set to 'present' (P)
+                                                        $attendanceStatus = isset($attendanceData[$employee['id']]) ? $attendanceData[$employee['id']] : 'present';
+                                                    ?>
                                                         <tr>
                                                             <td><?= $si++ ?></td>
                                                             <td><?= htmlspecialchars($employee['name']) ?></td>
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    <button type="button" class="btn btn-outline-info btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'present' ? 'active' : ''; ?>" onclick="setStatus('present', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">P</button>
-                                                                    <button type="button" class="btn btn-outline-danger btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'absent' ? 'active' : ''; ?>" onclick="setStatus('absent', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">A</button>
-                                                                    <button type="button" class="btn btn-outline-warning btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'half_day' ? 'active' : ''; ?>" onclick="setStatus('half_day', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">HL</button>
-                                                                    <button type="button" class="btn btn-outline-primary btn-sm <?php echo isset($attendanceData[$employee['id']]) && $attendanceData[$employee['id']] == 'sick_leave' ? 'active' : ''; ?>" onclick="setStatus('sick_leave', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">SL</button>
-                                                                    <input type="hidden" name="status[<?= htmlspecialchars($employee['id']) ?>]" value="<?php echo isset($attendanceData[$employee['id']]) ? $attendanceData[$employee['id']] : 'present'; ?>" id="status-<?= htmlspecialchars($employee['id']) ?>">
+                                                                    <!-- Add the 'active' class to the Present button if the status is 'present' -->
+                                                                    <button type="button" class="btn btn-outline-info btn-sm <?= $attendanceStatus == 'present' ? 'active' : '' ?>" onclick="setStatus('present', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">P</button>
+                                                                    <button type="button" class="btn btn-outline-danger btn-sm <?= $attendanceStatus == 'absent' ? 'active' : '' ?>" onclick="setStatus('absent', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">A</button>
+                                                                    <button type="button" class="btn btn-outline-warning btn-sm <?= $attendanceStatus == 'half_day' ? 'active' : '' ?>" onclick="setStatus('half_day', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">HL</button>
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm <?= $attendanceStatus == 'sick_leave' ? 'active' : '' ?>" onclick="setStatus('sick_leave', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">SL</button>
+                                                                    <input type="hidden" name="status[<?= htmlspecialchars($employee['id']) ?>]" value="<?= $attendanceStatus ?>" id="status-<?= htmlspecialchars($employee['id']) ?>">
                                                                 </div>
                                                             </td>
                                                         </tr>
