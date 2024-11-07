@@ -57,7 +57,7 @@
                     <li><a class="nav-link" href="items.php">Spares Part</a></li>
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
                     <li><a class="nav-link" href="work-master.php">Work Schedule</a></li>
-                    <li><a class="nav-link" href="employee.php">Employee</a></li>
+                  
                 </ul>
             </li>
 
@@ -84,6 +84,7 @@
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>HR Management</span></a>
                 <ul class="dropdown-menu">
+                <li><a class="nav-link" href="employee.php">Employee</a></li>
                     <li><a class="nav-link" href="attendance.php">Attendance</a></li>
 
                 </ul>
