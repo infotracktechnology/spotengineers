@@ -1,8 +1,9 @@
 <?php
 ob_start();
 session_start();
+include "config.php";
 if (!isset($_SESSION['username'])) {
-    header("location:index.php");
+    header("Location:index.php");
     exit;
 }
 
@@ -52,7 +53,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
 <head>
 <meta charset="UTF-8" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport" />
-    <title>Spares Return</title>
+    <title>Sales Return</title>
     <!-- General CSS Files -->
     <link rel="stylesheet" href="assets/css/app.min.css" />
     <link rel="stylesheet" href="assets/bundles/summernote/summernote-bs4.css" />
@@ -63,9 +64,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="assets/css/components.css" />
     <!-- Custom style CSS -->
     <link rel="stylesheet" href="assets/css/custom.css" />
-    <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css" />
-    <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css" />
-    <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
@@ -76,7 +75,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
         <div class="main-wrapper main-wrapper-1">
             <?php require('sidebar.php'); ?>
             <!-- Main Content -->
-            <div class="main-content">
+            <div class="main-content" x-data="app">
                 <section class="section">
                     <div class="section-body">
                         <div class="row">
@@ -173,11 +172,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 
-    <script src="assets/js/app.min.js"></script>
-    <script src="assets/js/scripts.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
 <script>
     $(document).ready(function() {
@@ -259,25 +254,13 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
     }
 </script>
 <!-- General JS Scripts -->
-<script src="assets/js/app.min.js"></script>
-  <!-- JS Libraies -->
-  <!-- Page Specific JS File -->
-  <script src="assets/bundles/datatables/datatables.min.js"></script>
-  <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
-  <script src="assets/bundles/datatables/export-tables/dataTables.buttons.min.js"></script>
-  <script src="assets/bundles/datatables/export-tables/buttons.flash.min.js"></script>
-  <script src="assets/bundles/datatables/export-tables/jszip.min.js"></script>
-  <script src="assets/bundles/datatables/export-tables/pdfmake.min.js"></script>
-  <script src="assets/bundles/datatables/export-tables/vfs_fonts.js"></script>
-  <script src="assets/bundles/datatables/export-tables/buttons.print.min.js"></script>
-  <script src="assets/js/page/datatables.js"></script>
-  <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
 
-  <!-- Template JS File -->
-  <script src="assets/js/scripts.js"></script>
-  <!-- Custom JS File -->
-  
-  <script src="assets/js/custom.js"></script>
+<script src="assets/js/app.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    
+
 </body>
 </html>
 
