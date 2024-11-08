@@ -68,6 +68,7 @@ include "config.php";
     SELECT 
         b.job_no,
         b.job_date,
+        a.id,
         a.issue_no,
         a.issue_date,
         c.name,
@@ -90,11 +91,11 @@ include "config.php";
           <td><?php echo $key+1; ?></td>
           <td><?php echo $spare['job_no']; ?></td>
           <td><?php echo $spare['job_date']; ?></td>
-          <td><?php echo $spare['issue_no']; ?></td>
+            <td><?php echo $spare['issue_no']; ?></td>
           <td><?php echo $spare['issue_date']; ?></td>
           <td><?php echo $spare['name']; ?></td>
           <td><?php echo $spare['phone']; ?></td>
-          <td><a href="spare-edit.php?issue_no=<?php echo $spare['issue_no']; ?>" class="btn btn-success text-white">
+          <td><a href="spare-edit.php?id=<?php echo $spare['id']; ?>" class="btn btn-success text-white">
         <i class="fa fa-edit"></i>
       </a></td>
         </tr>

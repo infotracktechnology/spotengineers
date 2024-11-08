@@ -11,12 +11,12 @@ if (!isset($_SESSION['username'])) {
 include "config.php";
 
 // Check if issue_no is provided in the URL
-if (!isset($_GET['issue_no'])) {
+if (!isset($_GET['id'])) {
     http_response_code(400);  // Bad request if issue_no is missing
     exit;
 }
 
-$issue_no = $_GET['issue_no'];
+$issue_no = $_GET['id'];
 
 // Fetch the spare issue record based on issue_no
 $result = $con->query("SELECT a.*, b.job_no, b.job_date, c.name as customer_name, c.phone as customer_phone
@@ -172,7 +172,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 
-    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
     $(document).ready(function() {

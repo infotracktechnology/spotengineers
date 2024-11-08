@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     // If everything is successful, redirect back with success message
-    header("Location: spare-return.php?issue_no=$issue_no&success=true");
+    header("Location: spare-return.php?id=$id&success=true");
     exit;
 }
 ?>
