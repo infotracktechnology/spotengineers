@@ -86,6 +86,7 @@
                 <ul class="dropdown-menu">
                 <li><a class="nav-link" href="employee.php">Employee</a></li>
                     <li><a class="nav-link" href="attendance.php">Attendance</a></li>
+                    <li><a class="nav-link" href="attendance-report.php">Attendance Report</a></li>
 
                 </ul>
             </li>
