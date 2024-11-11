@@ -10,14 +10,14 @@ if (!isset($_SESSION['username'])) {
 }
 
 
-$currentMonth = date('Y-m');  
+$currentMonth = date('Y-m');
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
     $attendance_date = $_POST['attendance_date'];
-    $currentMonth = $attendance_date;  
+    $currentMonth = $attendance_date;
 
-   
+
     $stmt = $con->prepare("SELECT e.name, e.id AS emp_id,
     COUNT(DISTINCT a.attendance_date) AS month_working_days, 
     SUM(CASE WHEN a.attendance = 'present' THEN 1 ELSE 0 END) AS present_count,
@@ -29,14 +29,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
     WHERE a.attendance_date LIKE ?
     GROUP BY e.id");
 
-    $attendance_date .= '%';  
+    $attendance_date .= '%';
 
-    $stmt->bind_param("s", $attendance_date);  
+    $stmt->bind_param("s", $attendance_date);
     $stmt->execute();
     $result = $stmt->get_result();
-
 } else {
-    $result = null; 
+    $result = null;
 }
 ?>
 
@@ -75,12 +74,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
                                     <div class="card-body">
                                         <form method="post" id="myForm">
                                             <div class="row">
-                                                
+
                                                 <div class="col-md-4 form-group">
                                                     <label>Date</label>
                                                     <input type="month" name="attendance_date" class="form-control form-control-sm" value="<?php echo $currentMonth; ?>" required />
                                                 </div>
-                                                
+
+
+
                                                 <div class="col-md-4 form-group align-self-end">
                                                     <button type="submit" class="btn btn-success">Submit</button>
                                                 </div>
@@ -100,26 +101,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-    <?php
-    
-    if ($result && $result->num_rows > 0) {
-        $sno = 1;
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>" . $sno++ . "</td>";
-            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
-            echo "<td>" . $row['month_working_days'] . "</td>";
-            echo "<td>" . $row['present_count'] . "</td>";
-            echo "<td>" . $row['absent_count'] . "</td>";
-            echo "<td>" . $row['sl_count'] . "</td>";
-            echo "<td>" . $row['hl_count'] . "</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='7' class='text-center'>No attendance records found for the selected month.</td></tr>";
-    }
-    ?>
-</tbody>
+                                                    <?php
+
+                                                    if ($result && $result->num_rows > 0) {
+                                                        $sno = 1;
+                                                        while ($row = $result->fetch_assoc()) {
+                                                            echo "<tr>";
+                                                            echo "<td>" . $sno++ . "</td>";
+                                                            echo "<td>" . htmlspecialchars($row['name']) . "</td>";
+                                                            echo "<td>" . $row['month_working_days'] . "</td>";
+                                                            echo "<td>" . $row['present_count'] . "</td>";
+                                                            echo "<td>" . $row['absent_count'] . "</td>";
+                                                            echo "<td>" . $row['sl_count'] . "</td>";
+                                                            echo "<td>" . $row['hl_count'] . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                    } else {
+                                                        echo "<tr><td colspan='7' class='text-center'>No attendance records found for the selected month.</td></tr>";
+                                                    }
+                                                    ?>
+                                                </tbody>
 
                                             </table>
                                         </div>
@@ -140,5 +141,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#tableExport').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+    });
+</script>
 
 </html>
