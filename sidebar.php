@@ -100,7 +100,7 @@
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="sales_report.php">Sales Register</a></li>
                     <li><a class="nav-link" href="purchase-report.php">Purchase Register</a></li>
-                    <li><a class="nav-link" href="stackreport.php">Stack Report</a></li>
+                    <li><a class="nav-link" href="stockreport.php">Stock Report</a></li>
                 </ul>
             </li>
 

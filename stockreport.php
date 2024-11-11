@@ -51,7 +51,7 @@ $result = mysqli_query($con, $query);
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Stack Report</title>
+    <title>Stock Report</title>
     <link rel="stylesheet" href="assets/css/app.min.css" />
     <link rel="stylesheet" href="assets/bundles/summernote/summernote-bs4.css" />
     <link rel="stylesheet" href="assets/bundles/jquery-selectric/selectric.css" />
@@ -79,7 +79,7 @@ $result = mysqli_query($con, $query);
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-                                    <h6 class="col-deep-purple m-0 mr-n2" style="padding-bottom: 20px;">Stack Report</h6>
+                                    <h6 class="col-deep-purple m-0 mr-n2" style="padding-bottom: 20px;">Stock Report</h6>
                                        <div class="table-responsive">
                                         <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
                                                 <thead>
@@ -88,12 +88,12 @@ $result = mysqli_query($con, $query);
                                                         <th>Name</th>
                                                         <th>Brand</th>
                                                         <th>Model</th>
-                                                        <th>Opening Stack</th>
+                                                        <th>Opening Stock</th>
                                                         <th>Purchase</th>
                                                         <th>Purchase Return</th>
                                                         <th>Sale</th>
                                                         <th>Issue</th>
-                                                        <th>Closing Stack</th>
+                                                        <th>Closing Stock</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
