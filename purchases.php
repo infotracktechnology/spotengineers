@@ -5,8 +5,26 @@ if (!isset($_SESSION['username'])) {
     header("location:index.php");
     exit;
 }
+
 include "config.php";
-$purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inner join suppliers b on a.supplier=b.supplier_id GROUP by a.purchase_id");
+
+// Set default dates: start date is the first day of the current month, end date is today's date
+$start_date = date('Y-m-01'); // First day of the current month
+$end_date = date('Y-m-d'); // Today's date
+
+// If start_date and end_date are passed via GET, use them
+if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
+    $start_date = $_GET['start_date'];
+    $end_date = $_GET['end_date'];
+}
+
+// Query to fetch purchases based on the selected or default date range
+$purchases = $con->query("SELECT a.*, b.supplier_name, b.city 
+                          FROM purchase a 
+                          INNER JOIN suppliers b ON a.supplier = b.supplier_id
+                          WHERE a.receipt_date BETWEEN '$start_date' AND '$end_date'
+                          GROUP BY a.purchase_id");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,6 +63,20 @@ $purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inne
                                                 <h6 class="col-deep-purple">Purchases Details</h6>
                                             </div>
                                         </div>
+                                        <!-- Date Filter Form -->
+                                        <form action="purchases.php" class="row mb-3" method="get">
+                                            <div class="col-md-3 col-sm-12">
+                                                <input type="date" name="start_date" value="<?php echo isset($_GET['start_date']) ? $_GET['start_date'] : $start_date; ?>" class="form-control form-control-sm" />
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <input type="date" name="end_date" value="<?php echo isset($_GET['end_date']) ? $_GET['end_date'] : $end_date; ?>" class="form-control form-control-sm" />
+                                            </div>
+                                            <div class="col-md-3 col-sm-12">
+                                                <button type="submit" class="btn btn-success">Search</button>
+                                            </div>
+                                        </form>
+
+                                        <!-- Purchases Table -->
                                         <div class="table-responsive">
                                             <table class="table table-sm" id="myTable">
                                                 <thead>
@@ -78,7 +110,6 @@ $purchases = $con->query("select a.*,b.supplier_name,b.city from purchase a inne
                                                         $i++;
                                                     }
                                                     ?>
-                                                   
                                                 </tbody>
                                             </table>
                                         </div>

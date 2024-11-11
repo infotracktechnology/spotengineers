@@ -103,7 +103,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                     <select name="sale_type" class="form-control form-control-sm" required>
                                                         <option value="">Select Sale Type</option>
                                                         <option value="Cash">Cash</option>
-                                                        <option value="Credit">Credit</option>
+                                                        <option value="Credit">Credit Card</option>
                                                         <option value="UPI">UPI</option>
                                                     </select>
                                                 </div>
