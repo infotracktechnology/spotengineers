@@ -81,7 +81,7 @@ $result = mysqli_query($con, $query);
                                     <div class="card-body">
                                     <h6 class="col-deep-purple m-0 mr-n2" style="padding-bottom: 20px;">Stock Report</h6>
                                        <div class="table-responsive">
-                                        <table class="table table-striped table-hover" id="tableExport" style="width:100%;">
+                                        <table class="table table-striped table-hover" id="myTable" style="width:100%;">
                                                 <thead>
                                                     <tr role="row">
                                                         <th>S.No</th>
@@ -150,10 +150,12 @@ $result = mysqli_query($con, $query);
   <script src="assets/js/custom.js"></script>
     <script>
         const table = $('#myTable').DataTable({
-            "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
-            ],
+           "paging": false,
+            "ordering": false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
         });
     </script>
 </body>
