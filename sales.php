@@ -46,8 +46,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 }
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -144,7 +142,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Brand / Spare Name</label>
-                                                    <select name="item[]"  x-model="item.item" @change="getItem(item)" class="items">
+                                                    <select name="item[]"  x-model="item.item" @change="getItem(item)" class="items" required>
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($items as $row) { ?>
                                                             <option value="<?php echo $row->item_id; ?>"><?php echo $row->brand. '/' . $row->name; ?></option>

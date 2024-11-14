@@ -19,8 +19,6 @@ $item_json = json_encode($items->fetch_all(MYSQLI_ASSOC),JSON_UNESCAPED_UNICODE)
 $sale_items = $con->query("SELECT * FROM items")->fetch_all(MYSQLI_ASSOC);
 $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -109,7 +107,7 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
 
                                                 <div class="col-md-3 form-group">
                                                     <label class="col-blue">Brand / Spare Name</label>
-                                                    <select name="item[]"  x-model="item.item_id" @change="getItem(item)" class="items">
+                                                    <select name="item[]"  x-model="item.item_id" @change="getItem(item)" class="items" required>
                                                         <option value="">Select Parts</option>
                                                         <?php foreach ($sale_items as $row) { ?>
                                                             <option value="<?php echo $row['item_id']; ?>"><?php echo $row['brand'].'/'.$row['name']; ?></option>
