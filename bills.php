@@ -11,8 +11,8 @@ $cyear = $_SESSION['cyear'];
 $biil_no = $con->query("SELECT max(bill_no)bill_no FROM bills WHERE cyear = '$cyear'")->fetch_array();
 $bill_no = $biil_no['bill_no'] ? $biil_no['bill_no']+1 : 1;
 
-$bill_by = isset($_GET['bill_by']) ? $_POST['bill_by'] : '';
-$value = isset($_GET['value']) ? $_POST['value'] : '';
+$bill_by = isset($_GET['bill_by']) ? $_GET['bill_by'] : '';
+$value = isset($_GET['value']) ? $_GET['value'] : '';
 ?>
 
 
@@ -49,6 +49,9 @@ $value = isset($_GET['value']) ? $_POST['value'] : '';
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
+                            <div class="alert alert-danger alert-has-icon alert-dismissible show fade" role="alert">
+                                <b>Check your bills before finalizing. Scroll down to see the bills table and click on the "Reprint" button to Reprint the bill.Don't Generate bill again.</b>
+                            </div>
                             <form method="post" name="myForm" action="bills_create.php" enctype="multipart/form-data">
                                     <div class="card card-primary">
                                         <div class="card-header">
@@ -84,6 +87,36 @@ $value = isset($_GET['value']) ? $_POST['value'] : '';
 
                             </div>
                             </form>
+
+                            <div class="col-md-12">
+                                            <table class="table table-sm" id="myTable">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th>S.No</th>
+                                                        <th>Bill No</th>
+                                                        <th>Bill Date</th>
+                                                        <th>Customer</th>
+                                                        <th>Customer Phone</th>
+                                                        <th>Reprint</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php
+                                                $bills = $con->query("SELECT a.*,b.name,b.phone FROM `bills` a inner join customer b on a.customer=b.id where cyear='$cyear'")->fetch_all(MYSQLI_ASSOC);
+                                                 foreach($bills as $i => $row){?>
+                                                 <tr>
+                                                <td><?php echo $i+1; ?></td>
+                                                <td><?php echo $row['bill_no']; ?></td>
+                                                <td><?php echo $row['bill_date']; ?></td>
+                                                <td><?php echo $row['name']; ?></td>
+                                                <td><?php echo $row['phone']; ?></td>
+                                                <td><a href="sales-print.php?id=<?= $row['id'] ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a></td>
+                                                 </tr>
+                                                 <?php } ?>
+                                                </tbody>
+                                            </table>
+                            </div>
+                                    
                            
                         </div>
                     </div>
@@ -96,8 +129,11 @@ $value = isset($_GET['value']) ? $_POST['value'] : '';
     <script src="assets/js/scripts.js"></script>
     <script src="assets/js/custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <script src="assets/bundles/datatables/datatables.min.js"></script>
+    <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script>
-
+ const table = $('#myTable').DataTable({
+ });
 </script>
 
 </body>
