@@ -145,13 +145,7 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
             <label>Total</label>
             <input type="number" name="total[]" value="<?php echo $item['total']; ?>" class="form-control form-control-sm total" readonly />
         </div>
-
-        <div class="col-md-1 mt-4">
-            <!-- Trash button -->
-            <button type="button" class="btn btn-danger" onclick="deleteItem(<?php echo $item['id']; ?>)">
-                <i class="fa fa-trash-alt"></i>
-            </button>
-        </div>
+        
     </div>
 <?php endforeach; ?>
 
@@ -172,12 +166,14 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/app.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 
 <script>
-    $(document).ready(function() {
         // Add event listeners to dynamically update when any input field changes
-        $('input').on('input', function() {
+        $('.qty, .rate').on('input', function() {
             var row = $(this).closest('.row');  // Get the row containing the input that changed
             var qty = row.find('.qty').val();   // Get the quantity value (if exists)
             var rate = row.find('.rate').val(); // Get the rate value (if exists)
@@ -210,55 +206,18 @@ $spare_issue_items = $spare_issue_items_result->fetch_all(MYSQLI_ASSOC);
                 }
             });
 
-            // Send AJAX request to update the item data
-            $.ajax({
-                type: 'POST',
-                url: 'update_spare_item.php',  // Your backend PHP script to process the update
-                data: dataToSend,  // Send the updated data object
-                success: function(response) {
-                    console.log('Item updated successfully');
-                    // Optionally, you can do something with the server's response, e.g., display a message.
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error: ' + error);  // Log errors to console for debugging
-                }
-            });
+    
         });
-    });
 </script>
 
 </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-    function deleteItem(itemId) {
-        if (confirm('Are you sure you want to delete this item?')) {
-            // Send AJAX request to delete item using jQuery
-            $.ajax({
-                type: 'POST',
-                url: 'delete_spare_item.php',
-                data: { item_id: itemId },
-                success: function(response) {
-                    // On success, remove the row from the DOM
-                    if (response.trim() === 'Item deleted successfully') {
-                        $('#item-' + itemId).remove();
-                    } else {
-                        alert('Failed to delete item.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    alert('Error: ' + error);
-                }
-            });
-        }
-    }
+  
 </script>
 <!-- General JS Scripts -->
 
-<script src="assets/js/app.min.js"></script>
-    <script src="assets/js/scripts.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
     
 
 </body>

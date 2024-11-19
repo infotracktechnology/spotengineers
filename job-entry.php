@@ -81,7 +81,7 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                                         <th>Technician</th>
                                                         <th>Status</th>
                                                         <th>Spare Issue</th>
-                                                        <th>Action</th>
+                                                        <th>Print</th>
                                                     </tr> 
                                                 </thead>
                                                 <tbody>

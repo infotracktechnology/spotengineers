@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                     <input type="date" name="attendance_date" class="form-control form-control-sm" max="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d') ?>" required />
                                                 </div>
                                             </div>
-                                            <table class="table table-striped table-sm">
+                                            <table class="table table-bordered table-sm">
                                                 <thead>
                                                     <tr>
                                                         <th>SI</th>
@@ -95,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             <td><?= htmlspecialchars($employee['name']) ?></td>
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    <!-- Add the 'active' class to the Present button if the status is 'present' -->
                                                                     <button type="button" class="btn btn-outline-info btn-sm <?= $attendanceStatus == 'present' ? 'active' : '' ?>" onclick="setStatus('present', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">P</button>
                                                                     <button type="button" class="btn btn-outline-danger btn-sm <?= $attendanceStatus == 'absent' ? 'active' : '' ?>" onclick="setStatus('absent', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">A</button>
                                                                     <button type="button" class="btn btn-outline-warning btn-sm <?= $attendanceStatus == 'half_day' ? 'active' : '' ?>" onclick="setStatus('half_day', <?= htmlspecialchars($employee['id']) ?>)" style="margin-right: 14px;">HL</button>
@@ -145,19 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Log form data before submitting to check if 'sick_leave' is sent
-        document.getElementById('myForm').addEventListener('submit', function(e) {
-            const selectedDate = document.querySelector('input[name="attendance_date"]').value;
-            const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const tomorrowDate = tomorrow.toISOString().split('T')[0]; // Get tomorrow's date in YYYY-MM-DD format
-
-            // Check if selected date is today or tomorrow
-            if (selectedDate !== today && selectedDate === tomorrowDate) {
-                alert("You cannot record attendance for tomorrow.");
-                e.preventDefault(); // Prevent form submission
-            }
-        });
+       
     </script>
 
 </body>
