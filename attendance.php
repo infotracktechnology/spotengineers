@@ -8,7 +8,6 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-// Fetch all employees
 $employees = [];
 $result = $con->query("SELECT id, name FROM employee");
 if ($result) {
@@ -17,34 +16,22 @@ if ($result) {
     }
 }
 
-// Check if a date is selected
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $attendance_date = $_POST['attendance_date'];
-
-    // Check if attendance already exists for the selected date
     $checkQuery = "SELECT COUNT(*) AS count FROM attendance WHERE attendance_date = '$attendance_date'";
     $result = $con->query($checkQuery);
     $row = $result->fetch_assoc();
 
     if ($row['count'] > 0) {
-        // If data exists for the selected date, set an alert message
-        $_SESSION['attendance_alert'] = "Attendance data for the selected date already exists!";
-        header("Location: attendance.php?date=$attendance_date");
+        echo "<script>alert('Attendance data for this date already exists!'); window.location.href = 'attendance.php';</script>";
         exit;
     }
-
-    // If no attendance data exists, proceed to insert new data
     foreach ($_POST['status'] as $emp_id => $attendance) {
         $attendance = $con->query("INSERT INTO attendance (emp_id, attendance_date, attendance) VALUES ($emp_id, '$attendance_date', '$attendance')");
     }
 
-    header("Location: attendance.php?date=$attendance_date&success=1");
+    echo "<script>alert('Attendance data saved successfully!'); window.location.href = 'attendance.php';</script>";
     exit;
-}
-
-if (isset($_SESSION['attendance_alert'])) {
-    echo "<script>alert('" . $_SESSION['attendance_alert'] . "');</script>";
-    unset($_SESSION['attendance_alert']);
 }
 ?>
 
@@ -100,7 +87,7 @@ if (isset($_SESSION['attendance_alert'])) {
                                                     <?php
                                                     $si = 1;
                                                     foreach ($employees as $employee): 
-                                                        // Default attendance status set to 'present' (P)
+                                                    
                                                         $attendanceStatus = isset($attendanceData[$employee['id']]) ? $attendanceData[$employee['id']] : 'present';
                                                     ?>
                                                         <tr>

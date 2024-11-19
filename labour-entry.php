@@ -261,8 +261,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         },
 
         addItem() {
-            if (this.rate <= 0 || !this.appliance) {
-                alert("Please enter valid Amount.");
+            if (this.rate <= 0 || !this.appliance || !this.work) {
+                alert("Please fill in all the required fields.");
                 return false;
             }
             let selectedWork = this.work_list.find(w => w.id == this.work);
