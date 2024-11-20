@@ -103,11 +103,11 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                                             if($job['status'] != 'completed'):
                                                             ?>
                                                                     <a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
-                                                                    
-                                                                <?php endif; ?>
-                                                                </td>
+                                                                
+
                                                                 <td>
                                                                     <a href="bills.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
+                                                                    <?php endif; ?>
                                                                 </td>
                                                                 <td></td>
                                                             </tr>
