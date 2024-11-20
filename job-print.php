@@ -107,12 +107,8 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
             
         </tr>
         <tr>
-            <td width="50%">Technician: <?php echo $customer->name; ?></td>
-            <td width="50%"></td>
-        </tr>
-        <tr>
             <td width="50%">GST No: <?php echo $customer->gst_no; ?></td>
-            <td width="50%"></td>
+            <td width="50%">Technician: <?php echo $customer->name; ?></td>
         </tr>
 
         
