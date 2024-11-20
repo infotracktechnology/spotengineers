@@ -87,6 +87,7 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
                     <h5 style="margin:5px 0px;text-align: center;">Tax Invoice</h5>
                 </td>
             </tr>
+            
         </thead>
     </table>
 
@@ -103,11 +104,18 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
         <tr>
             <td width="50%">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
             <td width="50%">City: <?php echo $customer->city; ?></td>
+            
+        </tr>
+        <tr>
+            <td width="50%">Technician: <?php echo $customer->name; ?></td>
+            <td width="50%"></td>
         </tr>
         <tr>
             <td width="50%">GST No: <?php echo $customer->gst_no; ?></td>
             <td width="50%"></td>
         </tr>
+
+        
     </table>
 
     <h5 style="text-align: center;">Labour Details</h5>
