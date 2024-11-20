@@ -96,20 +96,19 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                                                 <td><?php echo $job['name'] ?></td>
                                                                 <td><?php echo $job['phone'] ?></td>
                                                                 <td><?php echo $job['emp_name'] ?></td>
-                                                                <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>
-                                                            
-                                                                <td>
-                                                                <?php
+                                                                <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>    
+                                                            <?php
                                                             if($job['status'] != 'completed'):
                                                             ?>
-                                                                    <a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
-                                                                
-
-                                                                <td>
-                                                                    <a href="bills.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
-                                                                    <?php endif; ?>
-                                                                </td>
+                                                            <td><a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
+                                                            </td>
+                                                            <td>
+                                                            <a href="bills.php?bill_by=Job&value=<?php echo $job['job_no']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
+                                                            </td>
+                                                            <?php else: ?>
                                                                 <td></td>
+                                                                <td></td>
+                                                            <?php endif; ?>
                                                             </tr>
                                                         <?php
                                                         endforeach;

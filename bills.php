@@ -110,7 +110,15 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
                                                 <td><?php echo $row['bill_date']; ?></td>
                                                 <td><?php echo $row['name']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
-                                                <td><a href="sales-print.php?id=<?= $row['id'] ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a></td>
+                                                <td>
+                                                    <?php if(is_null($row['job_no'])){ ?>
+                                                    <a href="sales-print.php?id=<?= $row['id'] ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
+                                                    <?php } else{ ?>
+
+                                                    <a href="job-print.php?id=<?= $row['id'] ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
+                                                    <?php } ?>
+                                                
+                                                </td>
                                                  </tr>
                                                  <?php } ?>
                                                 </tbody>
