@@ -69,7 +69,7 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
                                                 <select name="search" class="form-control form-control-sm" required>
                                                     <option value="">Select Search</option>
                                                     <option value="Sale" <?= ($bill_by == 'Sale') ? 'selected' : ''; ?>>Sale No</option>
-                                                    <!-- <option value="Job">Job No</option> -->
+                                                    <option value="Job" <?= ($bill_by == 'Job') ? 'selected' : ''; ?>>Job No</option>
                                                 </select>
                                                 </div>
 

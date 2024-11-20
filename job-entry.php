@@ -97,9 +97,17 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                                                 <td><?php echo $job['phone'] ?></td>
                                                                 <td><?php echo $job['emp_name'] ?></td>
                                                                 <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>
-                                                               
+                                                            
                                                                 <td>
+                                                                <?php
+                                                            if($job['status'] != 'completed'):
+                                                            ?>
                                                                     <a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
+                                                                    
+                                                                <?php endif; ?>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="bills.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
                                                                 </td>
                                                                 <td></td>
                                                             </tr>

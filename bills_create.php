@@ -18,6 +18,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: sales-print.php?id=$id", true, 303);
         exit;
     }
+    else {
+        $completed = $con->query("UPDATE `job_entry` SET `status` = 'completed' WHERE `job_no` = $value and cyear = '$cyear'");
+        $job = $con->query("SELECT * FROM `job_entry` a where a.job_no=$value and a.cyear = '$cyear'")->fetch_object();
+        $bill = $con->query("INSERT INTO `bills`(`bill_no`, `bill_date`, `job_no`, `customer`,`total`, `cyear`,technician) VALUES ('$bill_no',curdate(), '$job->job_no', '$job->customer_id', '$job->grand_total', '$cyear','$job->emp_id')");
+        $id = $con->insert_id;
+        header("Location: job-print.php?id=$id", true, 303);
+        exit;
+    }
 }
 
 ?>
