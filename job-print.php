@@ -9,14 +9,8 @@ if (!isset($_SESSION['username'])) {
 
 $id = $_GET['id'];
 $cyear = $_SESSION['cyear'];
-
-// Fetching the bill details using the provided bill ID and year.
 $bill = $con->query("SELECT * FROM `bills` WHERE `id` = $id AND `cyear` = '$cyear'")->fetch_object();
-
-// Fetching job details based on the job number related to the bill.
 $job = $con->query("SELECT * FROM `job_entry` WHERE `job_no` = '$bill->job_no' AND `cyear` = '$cyear'")->fetch_object();
-
-// Fetching customer details based on the job entry.
 $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_id'")->fetch_object();
 ?>
 
@@ -122,8 +116,6 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
         <th>Rate</th>
     </tr>
     <?php
-    // Fetching labour entry details for the job by linking job_id in labour_entry to job_entry
-    // and fetching the work title from the work table.
     $labour_entry = $con->query("
         SELECT a.*, b.title 
         FROM labour_entry a
@@ -131,13 +123,12 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
         WHERE a.job_id = '$job->id'  -- Linking the job_entry using job_id
     ");
 
-    // Loop through and display each entry from the labour_entry table
     foreach ($labour_entry->fetch_all(MYSQLI_ASSOC) as $i => $item) {
     ?>
         <tr>
             <td><?php echo $i + 1; ?></td>
-            <td><?php echo $item['title']; ?></td>  <!-- Display work title from work table -->
-            <td><?php echo $item['rate']; ?></td>   <!-- Display rate from labour_entry table -->
+            <td><?php echo $item['title']; ?></td>  
+            <td><?php echo $item['rate']; ?></td>  
         </tr>
     <?php } ?>
 </table><br>
@@ -163,11 +154,11 @@ foreach ($spare_issue_item->fetch_all(MYSQLI_ASSOC) as $i => $item) {
 ?>
     <tr>
         <td><?php echo $i + 1; ?></td>
-        <td><?php echo $item['Name']; ?></td>   <!-- Displaying the item name from items table -->
-        <td><?php echo $item['Brand']; ?></td>  <!-- Displaying the item brand from items table -->
-        <td><?php echo $item['qty']; ?></td>    <!-- Displaying quantity from spare_issue_item table -->
-        <td><?php echo $item['rate']; ?></td>   <!-- Displaying rate from spare_issue_item table -->
-        <td><?php echo $item['total']; ?></td>  <!-- Displaying total from spare_issue_item table -->
+        <td><?php echo $item['Name']; ?></td>   
+        <td><?php echo $item['Brand']; ?></td>  
+        <td><?php echo $item['qty']; ?></td>    
+        <td><?php echo $item['rate']; ?></td>   
+        <td><?php echo $item['total']; ?></td>  
     </tr>
 <?php } ?>
 </table><br>
@@ -176,27 +167,22 @@ foreach ($spare_issue_item->fetch_all(MYSQLI_ASSOC) as $i => $item) {
 
 
 <?php
-// Calculate the sum of rates from the labour details
 $labour_total_rate = $con->query("
     SELECT SUM(rate) AS total_rate
     FROM labour_entry
     WHERE job_id = '$job->id'
 ")->fetch_object()->total_rate;
 
-// Calculate the sum of totals from the spare details
 $spare_total_amount = $con->query("
     SELECT SUM(total) AS total_amount
     FROM spare_issue_item
     WHERE job_id = '$job->id'
 ")->fetch_object()->total_amount;
 
-// Calculate Subtotal (sum of labour total rate + spare total amount)
 $subtotal = $labour_total_rate + $spare_total_amount;
 
-// Calculate Tax Total (18% GST on the labour total rate)
 $tax_total = ($labour_total_rate * 0.18);
 
-// Calculate Total Amount (subtotal + tax total)
 $total_amount = round($subtotal + $tax_total, 2);
 ?>
 
