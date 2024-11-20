@@ -12,6 +12,7 @@ $cyear = $_SESSION['cyear'];
 $bill = $con->query("SELECT * FROM `bills` WHERE `id` = $id AND `cyear` = '$cyear'")->fetch_object();
 $job = $con->query("SELECT * FROM `job_entry` WHERE `job_no` = '$bill->job_no' AND `cyear` = '$cyear'")->fetch_object();
 $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_id'")->fetch_object();
+$employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")->fetch_object();
 ?>
 
 <!DOCTYPE html>
@@ -102,7 +103,7 @@ $customer = $con->query("SELECT * FROM `customer` WHERE `id` = '$job->customer_i
         </tr>
         <tr>
             <td width="50%">GST No: <?php echo $customer->gst_no; ?></td>
-            <td width="50%">Technician: <?php echo $customer->name; ?></td>
+            <td width="50%">Technician: <?php echo $employee->name; ?></td>
         </tr>
 
         
