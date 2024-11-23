@@ -121,7 +121,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
    </head>
 <body>
 
-    <table style="margin: 5px 0px 5px 0px;background-color: #0e59a9;color: #fff;">
+    <table style="margin: 5px 0px 5px 0px;background-color: #00008C;color: #fff;">
         <thead>
               <!-- <tr>
               <td><h2 style="margin:5px 0px;text-align: center;">Spot At Engineers</h2></td>

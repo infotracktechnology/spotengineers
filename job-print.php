@@ -127,7 +127,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
 </head>
 
 <body>
-<table style="margin: 5px 0px 5px 0px;background-color: #0e59a9;color: #fff;">
+<table style="margin: 5px 0px 5px 0px;background-color:#00008C;color: #fff;">
         <thead>
               <tr>
                 <td><h2 style="margin:5px 0px;text-align: center;">Tax Invoice</h2></td>   
