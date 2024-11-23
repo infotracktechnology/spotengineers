@@ -152,7 +152,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         </tr>
     </table>
     </div>
-     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+    <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 5px; overflow: hidden;">
      <table style="width: 100%; border-collapse: collapse;">
       <table>
      <h3>Buyer</h3>
