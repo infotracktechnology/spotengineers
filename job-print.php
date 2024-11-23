@@ -150,10 +150,10 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             <td width="30%">
                 CONTACT No.: 96009 38759
             </td>
-            <td width="35%">
+            <td width="30%">
                 GSTIN: 33DHWPM2568H1ZS
             </td>
-            <td width="35%">
+            <td width="39%">
                 STATE NAME:TAMILNADU-CODE:33
             </td>
         </tr>

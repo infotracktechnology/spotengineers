@@ -27,16 +27,16 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
 
       }
       @media print {
-
-         .break {page-break-after: always;}
-
-         }
-         @page {
+            .break {
+                page-break-after: always;
+            }
+            @page {
                 size : A4;
                 border: .1rem solid #000;
                 margin: 15px 20px;
                 border-radius: 15px;
             }
+        }
        table {
         border-collapse: collapse;
         width: 100%;
@@ -118,16 +118,8 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
    </head>
 <body>
 
-    <table style="margin: 5px 0px 5px 0px;background-color: #00008C;color: #fff;">
+<table style="margin: 5px 0px 5px 0px;background-color:#00008C;color: #fff;">
         <thead>
-              <!-- <tr>
-              <td><h2 style="margin:5px 0px;text-align: center;">Spot At Engineers</h2></td>
-              </tr>
-              <tr>
-              <td><p style="margin:0px;text-align: center;">49, Vengatesha Colony,Old Bus Stand Back Side,</p></td>
-              </tr>
-              <td><p style="margin:0px;text-align: center;">Pollachi - 642001.</p></td>
-              </tr> -->
               <tr>
                 <td><h2 style="margin:5px 0px;text-align: center;">Tax Invoice</h2></td>   
             </tr>
@@ -151,10 +143,10 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             <td width="30%">
                 CONTACT No.: 96009 38759
             </td>
-            <td width="35%">
+            <td width="30%">
                 GSTIN: 33DHWPM2568H1ZS
             </td>
-            <td width="35%">
+            <td width="38%">
                 STATE NAME:TAMILNADU-CODE:33
             </td>
         </tr>
@@ -162,6 +154,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
     </div>
      <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
      <table style="width: 100%; border-collapse: collapse;">
+      <table>
      <h3>Buyer</h3>
             <tr>
               <td width="50%">Invoice No: <?php echo $sale->bill_no; ?></td>
