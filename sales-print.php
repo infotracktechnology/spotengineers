@@ -157,16 +157,18 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
       <table>
      <h3>Buyer</h3>
             <tr>
+            <td width="50%">Customer Name: <?php echo $sale->name; ?></td>
               <td width="50%">Invoice No: <?php echo $sale->bill_no; ?></td>
-              <td width="50%">Date: <?php echo $sale->bill_date; ?></td>
+              
             </tr>
             <tr>
-                <td width="50%">Customer Name: <?php echo $sale->name; ?></td>
-                <td width="50%">Phone No: <?php echo $sale->phone; ?></td>
+            <td width="50%">Address: <?php echo $sale->address_line_1.",".$sale->address_line_2; ?></td>
+            <td width="50%">Date: <?php echo $sale->bill_date; ?></td>
+                
               </tr>
               
               <tr>
-                <td width="50%">Address: <?php echo $sale->address_line_1.",".$sale->address_line_2; ?></td>
+              <td width="50%">Phone No: <?php echo $sale->phone; ?></td>
                 <td width="50%">City: <?php echo $sale->city; ?></td>
               </tr>
               <tr>
