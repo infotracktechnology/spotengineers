@@ -39,11 +39,10 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             width: 100%;
         }
 
-        .table th,
-        .table thead th {
+        .table th, .table td {
             border-top: none;
-            border-bottom: .1rem solid #000;
-            padding: 5px 0px 5px 0px;
+            border: .1rem solid #000;
+            padding: 5px;
             text-align: left !important;
         }
 
@@ -56,116 +55,182 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             size: B3 landscape;
             margin: 6mm;
         }
+
+       /* Box for the image and details below it */
+       .image-box {
+            border: 1px solid #000;
+            border-radius: 15px;
+            margin: 1px 0px;
+            padding: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Stack the image and text vertically */
+            align-items: flex-start; /* Align to the left side */
+            height: auto; /* Adjust the height based on content */
+        }
+
+        .image-box img {
+            max-width: 520px; /* Reduced image size */
+            height: auto;
+            width: 100%;
+            margin-bottom: 1px; /* Add space between image and text */
+            object-fit: contain;
+        }
+
+        /* Styling the details container with position adjustment */
+        .image-details {
+            font-size: 13px;
+            display: flex;
+            flex-direction: column; /* Stack the text details vertically */
+            align-items: center; /* Center-align the content */
+            text-align: center; /* Center the text */
+            margin-bottom: 1px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Box for the address (center aligned) */
+        .address {
+            text-align: center; /* Center the address */
+            margin-bottom: 1px;
+        }
+
+        /* Flexbox container for contact, gst and state code to appear in the same row */
+        .contact-gst-state {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 1px;
+        }
+
+        .contact,
+        .gst,
+        .state {
+            width: 100%; /* Each takes up 30% width */
+            text-align: center; /* Center-align the content */
+        }
+
+        .contact {
+            text-align: left; /* Left-align contact number */
+        }
+
+        .gst {
+            text-align: center; /* Center-align GST number */
+        }
+
+        .state {
+            text-align: right; /* Right-align state code */
+        }
+
+
     </style>
 </head>
 
 <body>
-    <table style="margin: 5px 0px 0px 0px;">
+<table style="margin: 5px 0px 5px 0px;background-color: #0e59a9;color: #fff;">
         <thead>
-            <tr>
-                <td>
-                    <h2 style="margin:5px 0px;text-align: center;">Spot At Engineers</h2>
-                </td>
+              <tr>
+                <td><h2 style="margin:5px 0px;text-align: center;">Tax Invoice</h2></td>   
             </tr>
-            <tr>
-                <td>
-                    <p style="margin:0px;text-align: center;">49, Vengatesha Colony, Old Bus Stand Back Side,</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <p style="margin:0px;text-align: center;">Pollachi - 642001.</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h5 style="margin:5px 0px;text-align: center;">Tax Invoice</h5>
-                </td>
-            </tr>
-            
         </thead>
-    </table>
+     </table>
 
-    <table>
-        <tr>
-            <td width="50%">Bill No: <?php echo $bill->bill_no; ?></td>
-            <td width="50%">Bill Date: <?php echo $bill->bill_date; ?></td>
-        </tr>
-        <tr>
-            <td width="50%">Customer Name: <?php echo $customer->name; ?></td>
-            <td width="50%">Phone No: <?php echo $customer->phone; ?></td>
-        </tr>
-
-        <tr>
-            <td width="50%">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
-            <td width="50%">City: <?php echo $customer->city; ?></td>
-            
-        </tr>
-        <tr>
-            <td width="50%">GST No: <?php echo $customer->gst_no; ?></td>
-            <td width="50%">Technician: <?php echo $employee->name; ?></td>
-        </tr>
-
-        
-    </table>
-
-    <h5 style="text-align: center;">Labour Details</h5>
-    <table class="table" style="margin: 5px 0px 5px 0px;">
-    <tr>
-        <th>#</th>
-        <th>Work</th>
-        <th>Rate</th>
-    </tr>
-    <?php
-    $labour_entry = $con->query("
-        SELECT a.*, b.title 
-        FROM labour_entry a
-        INNER JOIN work b ON a.work_id = b.id
-        WHERE a.job_id = '$job->id'  -- Linking the job_entry using job_id
-    ");
-
-    foreach ($labour_entry->fetch_all(MYSQLI_ASSOC) as $i => $item) {
-    ?>
-        <tr>
-            <td><?php echo $i + 1; ?></td>
-            <td><?php echo $item['title']; ?></td>  
-            <td><?php echo $item['rate']; ?></td>  
-        </tr>
-    <?php } ?>
-</table><br>
-<h5 style="text-align: center;">Spare Details</h5>
+     <div class="image-box">
+    <img src="assets/img/se-logo.png" alt="Company Logo"> <!-- Place the image URL here -->
+    <div class="image-details">
+        <div class="address">
+            <p><bold>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony. Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</bold></p>
+        </div>
+        <!-- Row for Contact, GST, and State Code -->
+        <div class="contact-gst-state">
+            <div class="contact">
+                <p><bold>CONTACT No.: 96009 38759</bold></p>
+            </div>
+            <div class="gst">
+                <p><bold>GSTIN: 33DHWPM2568H1ZS</bold></p>
+            </div>
+            <div class="state">
+                <p><bold>STATE NAME:TAMILNADU-CODE:33</bold></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <h4>Buyer Details</h4> -->
+<div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+<table style="width: 100%; border-collapse: collapse;">
+    
+        <table>
+            <tr>
+                <td width="50%" style="">Invoice No: <?php echo $bill->bill_no; ?></td>
+                <td width="50%" style="">Date: <?php echo $bill->bill_date; ?></td>
+            </tr>
+            <tr>
+                <td width="50%" style="">Customer Name: <?php echo $customer->name; ?></td>
+                <td width="50%" style="">Phone No: <?php echo $customer->phone; ?></td>
+            </tr>
+            <tr>
+                <td width="50%" style="">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
+                <td width="50%" style="">City: <?php echo $customer->city; ?></td>
+            </tr>
+            <tr>
+                <td width="50%" style="">GST No: <?php echo $customer->gst_no; ?></td>
+                <td width="50%" style="">Technician: <?php echo $employee->name; ?></td>
+            </tr>
+        </table>
+    </div>
 <table class="table" style="margin: 5px 0px 5px 0px;">
     <tr>
-        <th>#</th>
-        <th>Name</th>
+        <th>SI No.</th>
+        <th>Goods Description</th>
         <th>Brand</th>
         <th>Qty</th>
         <th>Rate</th>
         <th>Total</th>
     </tr>
     <?php
-$spare_issue_item = $con->query("
-    SELECT a.*, b.name AS Name, b.brand AS Brand
-    FROM spare_issue_item a
-    INNER JOIN items b ON a.spare_id = b.item_id
-    WHERE a.job_id = '$job->id'  -- Linking spare_issue_item to job_entry using job_id
-");
+    // Fetch spare items
+    $spare_issue_item = $con->query("
+        SELECT a.*, b.name AS Name, b.brand AS Brand
+        FROM spare_issue_item a
+        INNER JOIN items b ON a.spare_id = b.item_id
+        WHERE a.job_id = '$job->id' -- Linking spare_issue_item to job_entry using job_id
+    ");
+    $spare_item_count = $spare_issue_item->num_rows; // Count the number of spare items
 
-foreach ($spare_issue_item->fetch_all(MYSQLI_ASSOC) as $i => $item) {
-?>
-    <tr>
-        <td><?php echo $i + 1; ?></td>
-        <td><?php echo $item['Name']; ?></td>   
-        <td><?php echo $item['Brand']; ?></td>  
-        <td><?php echo $item['qty']; ?></td>    
-        <td><?php echo $item['rate']; ?></td>   
-        <td><?php echo $item['total']; ?></td>  
-    </tr>
-<?php } ?>
+    foreach ($spare_issue_item->fetch_all(MYSQLI_ASSOC) as $i => $item) {
+    ?>
+        <tr>
+            <td><?php echo $i + 1; ?></td>
+            <td><?php echo $item['Name']; ?></td>   
+            <td><?php echo $item['Brand']; ?></td>  
+            <td><?php echo $item['qty']; ?></td>    
+            <td><?php echo $item['rate']; ?></td>   
+            <td><?php echo $item['total']; ?></td>  
+        </tr>
+    <?php } ?>
+
+    <?php
+    // Fetch labour items
+    $labour_entry = $con->query("
+        SELECT a.*, b.title 
+        FROM labour_entry a
+        INNER JOIN work b ON a.work_id = b.id
+        WHERE a.job_id = '$job->id' -- Linking the job_entry using job_id
+    ");
+
+    // Display labour items with SI number continuing from spare items
+    foreach ($labour_entry->fetch_all(MYSQLI_ASSOC) as $i => $item) {
+    ?>
+        <tr>
+            <td><?php echo $spare_item_count + $i + 1; ?></td> <!-- Continue SI No. from last spare item -->
+            <td><?php echo $item['title']; ?></td>  
+            <td>-</td>  
+            <td>-</td>    
+            <td>-</td>   
+            <td><?php echo $item['rate']; ?></td>  
+        </tr>
+    <?php } ?>
 </table><br>
-
-
-
 
 <?php
 $labour_total_rate = $con->query("
@@ -207,29 +272,25 @@ $total_amount = round($subtotal + $tax_total, 2);
     </tr>
 </table>
 
-    <table style="margin: 5px 0px 5px 0px;">
+<div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 5px; overflow: hidden;">
+    <table style="margin: 5px 0px 10px 0px;">
+        <tr><td style=""><b>Company Bank Details :- </b></td></tr>
+        <tr><td style="">Name : Spot At Engineers</td></tr>
+        <tr><td style="">Account No : 120028536542</td></tr>
         <tr>
-            <td><b>Terms & Conditions :- </b></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
+            <td>IFSC Code : CNRBOO001619</td>
+            <td style="text-align: right">Authorized Signatory</td>
         </tr>
     </table>
+</div>
 
-    <p style="text-align: center;font-size:14px;font-weight:600;">* Thank You! *</p>
+<p style="text-align: center;font-size:14px;font-weight:600;">* Thanks For Choosing Spotatengineers For Your Needs.. Please Come Back Soon..! *</p>
 
-    <script>
-        window.print();
-        window.onafterprint = () => {
-            location.href = "sales.php";
-        }
-    </script>
+<script>
+    window.print();
+    window.onafterprint = () => {
+        location.href = "sales.php";
+    }
+</script>
 </body>
-
 </html>

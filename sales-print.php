@@ -37,10 +37,10 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         width: 100%;
       }
 
-      .table th, .table thead th{
+      .table th, .table  td{
         border-top: none;
-        border-bottom: .1rem solid #000;
-        padding: 5px 0px 5px 0px;
+        border: .1rem solid #000;
+        padding: 5px;
         text-align: left !important;
       }
 
@@ -52,31 +52,115 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
     size: B3 landscape;
     margin: 6mm;
 }
+.image-box {
+            border: 1px solid #000;
+            border-radius: 15px;
+            margin: 1px 0px;
+            padding: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column; /* Stack the image and text vertically */
+            align-items: flex-start; /* Align to the left side */
+            height: auto; /* Adjust the height based on content */
+        }
+
+        .image-box img {
+            max-width: 520px; /* Reduced image size */
+            height: auto;
+            width: 100%;
+            margin-bottom: 1px; /* Add space between image and text */
+            object-fit: contain;
+        }
+
+        /* Styling the details container with position adjustment */
+        .image-details {
+            font-size: 13px;
+            display: flex;
+            flex-direction: column; /* Stack the text details vertically */
+            align-items: center; /* Center-align the content */
+            text-align: center; /* Center the text */
+            margin-bottom: 1px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Box for the address (center aligned) */
+        .address {
+            text-align: center; /* Center the address */
+            margin-bottom: 1px;
+        }
+
+        /* Flexbox container for contact, gst and state code to appear in the same row */
+        .contact-gst-state {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 1px;
+        }
+
+        .contact,
+        .gst,
+        .state {
+            width: 100%; /* Each takes up 30% width */
+            text-align: center; /* Center-align the content */
+        }
+
+        .contact {
+            text-align: left; /* Left-align contact number */
+        }
+
+        .gst {
+            text-align: center; /* Center-align GST number */
+        }
+
+        .state {
+            text-align: right; /* Right-align state code */
+        }
 
     </style>
    </head>
 <body>
 
-    <table style="margin: 5px 0px 0px 0px;">
+    <table style="margin: 5px 0px 5px 0px;background-color: #0e59a9;color: #fff;">
         <thead>
-              <tr>
+              <!-- <tr>
               <td><h2 style="margin:5px 0px;text-align: center;">Spot At Engineers</h2></td>
               </tr>
               <tr>
               <td><p style="margin:0px;text-align: center;">49, Vengatesha Colony,Old Bus Stand Back Side,</p></td>
               </tr>
               <td><p style="margin:0px;text-align: center;">Pollachi - 642001.</p></td>
-              </tr>
+              </tr> -->
               <tr>
-                <td><h5 style="margin:5px 0px;text-align: center;">Tax Invoice</h5></td>   
+                <td><h2 style="margin:5px 0px;text-align: center;">Tax Invoice</h2></td>   
             </tr>
         </thead>
      </table>
-
-     <table>
+     <div class="image-box">
+    <img src="assets/img/se-logo.png" alt="Company Logo"> <!-- Place the image URL here -->
+    <div class="image-details">
+        <div class="address">
+            <p><bold>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony. Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</bold></p>
+        </div>
+        <!-- Row for Contact, GST, and State Code -->
+        <div class="contact-gst-state">
+            <div class="contact">
+                <p><bold>CONTACT No.: 96009 38759</bold></p>
+            </div>
+            <div class="gst">
+                <p><bold>GSTIN: 33DHWPM2568H1ZS</bold></p>
+            </div>
+            <div class="state">
+                <p><bold>STATE NAME:TAMILNADU-CODE:33</bold></p>
+            </div>
+        </div>
+    </div>
+</div>
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+     <table style="width: 100%; border-collapse: collapse;">
             <tr>
-              <td width="50%">Bill No: <?php echo $sale->bill_no; ?></td>
-              <td width="50%">Bill Date: <?php echo $sale->bill_date; ?></td>
+              <td width="50%">Invoice No: <?php echo $sale->bill_no; ?></td>
+              <td width="50%">Date: <?php echo $sale->bill_date; ?></td>
             </tr>
             <tr>
                 <td width="50%">Customer Name: <?php echo $sale->name; ?></td>
@@ -94,13 +178,13 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
               
         </tbody>
      </table>
-
+</div>
      <h5 style="text-align: center;">Items Details</h5>
      <table class="table" style="margin: 5px 0px 5px 0px;">
             <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>HSN</th>
+                <th>SI No.</th>
+                <th>Goods Description</th>
+                <th>HSN/SAC</th>
                 <th>Brand</th>
                 <th>Qty</th>
                 <th>Rate</th>
@@ -144,22 +228,26 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         </tr>
 
      </table>
-
-     <table style="margin: 5px 0px 5px 0px;">
-      <tr><td><b>Terms & Conditions :- </b></td></tr>
-      <tr><td></td></tr>
-      <tr><td></td></tr>
-      <tr><td></td></tr>
-     </table>
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+     <table style="margin: 5px 0px 10px 0px;">
+  <tr><td><b>Company Bank Details :- </b></td></tr>
+  <tr><td>Name : Spot At Engineers</td></tr>
+  <tr><td>Account No : 120028536542</td></tr>
+  <tr>
+    <td>IFSC Code : CNRBOO001619</td>
+    <td style="text-align: right">Authorized Signatory</td>
+  </tr>
+</table>
+</div>
 
     
-     <p  style="text-align: center;font-size:14px;font-weight:600;">* Thank You! *</p>
-     <script>
+     <p  style="text-align: center;font-size:14px;font-weight:600;">* Thanks For Choosing Spotatengineers For Your Needs.. Please Come Back Soon..! *</p>
+    <!-- <script>
         window.print();
         window.onafterprint = () => {
           location.href = "sales.php";
         }
-     </script>
+     </script>-->
 </body>
 
 </html>
