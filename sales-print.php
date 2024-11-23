@@ -59,38 +59,38 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             padding: 10px;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Stack the image and text vertically */
-            align-items: flex-start; /* Align to the left side */
-            height: auto; /* Adjust the height based on content */
+            flex-direction: column; 
+            align-items: flex-start; 
+            height: auto; 
         }
 
         .image-box img {
-            max-width: 520px; /* Reduced image size */
+            max-width: 520px; 
             height: auto;
             width: 100%;
-            margin-bottom: 1px; /* Add space between image and text */
+            margin-bottom: 1px; 
             object-fit: contain;
         }
 
-        /* Styling the details container with position adjustment */
+       
         .image-details {
             font-size: 13px;
             display: flex;
-            flex-direction: column; /* Stack the text details vertically */
-            align-items: center; /* Center-align the content */
-            text-align: center; /* Center the text */
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
             margin-bottom: 1px;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
         }
 
-        /* Box for the address (center aligned) */
+       
         .address {
-            text-align: center; /* Center the address */
+            text-align: center; 
             margin-bottom: 1px;
         }
 
-        /* Flexbox container for contact, gst and state code to appear in the same row */
+        
         .contact-gst-state {
             display: flex;
             justify-content: space-between;
@@ -101,20 +101,20 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         .contact,
         .gst,
         .state {
-            width: 100%; /* Each takes up 30% width */
-            text-align: center; /* Center-align the content */
+            width: 100%; 
+            text-align: center; 
         }
 
         .contact {
-            text-align: left; /* Left-align contact number */
+            text-align: left; 
         }
 
         .gst {
-            text-align: center; /* Center-align GST number */
+            text-align: center; 
         }
 
         .state {
-            text-align: right; /* Right-align state code */
+            text-align: right; 
         }
 
     </style>

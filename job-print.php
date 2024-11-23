@@ -56,7 +56,6 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             margin: 6mm;
         }
 
-       /* Box for the image and details below it */
        .image-box {
             border: 1px solid #000;
             border-radius: 15px;
@@ -64,38 +63,37 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             padding: 10px;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Stack the image and text vertically */
-            align-items: flex-start; /* Align to the left side */
-            height: auto; /* Adjust the height based on content */
+            flex-direction: column; 
+            align-items: flex-start; 
+            height: auto; 
         }
 
         .image-box img {
-            max-width: 520px; /* Reduced image size */
+            max-width: 520px; 
             height: auto;
             width: 100%;
-            margin-bottom: 1px; /* Add space between image and text */
+            margin-bottom: 1px; 
             object-fit: contain;
         }
 
-        /* Styling the details container with position adjustment */
+        
         .image-details {
             font-size: 13px;
             display: flex;
-            flex-direction: column; /* Stack the text details vertically */
-            align-items: center; /* Center-align the content */
-            text-align: center; /* Center the text */
+            flex-direction: column; 
+            align-items: center; 
+            text-align: center; 
             margin-bottom: 1px;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
         }
 
-        /* Box for the address (center aligned) */
         .address {
-            text-align: center; /* Center the address */
+            text-align: center; 
             margin-bottom: 1px;
         }
 
-        /* Flexbox container for contact, gst and state code to appear in the same row */
+        
         .contact-gst-state {
             display: flex;
             justify-content: space-between;
@@ -106,20 +104,20 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
         .contact,
         .gst,
         .state {
-            width: 100%; /* Each takes up 30% width */
-            text-align: center; /* Center-align the content */
+            width: 100%; 
+            text-align: center; 
         }
 
         .contact {
-            text-align: left; /* Left-align contact number */
+            text-align: left; 
         }
 
         .gst {
-            text-align: center; /* Center-align GST number */
+            text-align: center; 
         }
 
         .state {
-            text-align: right; /* Right-align state code */
+            text-align: right; 
         }
 
 
@@ -136,12 +134,12 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
      </table>
 
      <div class="image-box">
-    <img src="assets/img/se-logo.png" alt="Company Logo"> <!-- Place the image URL here -->
+    <img src="assets/img/se-logo.png" alt="Company Logo"> 
     <div class="image-details">
         <div class="address">
             <p><bold>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony. Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</bold></p>
         </div>
-        <!-- Row for Contact, GST, and State Code -->
+      
         <div class="contact-gst-state">
             <div class="contact">
                 <p><bold>CONTACT No.: 96009 38759</bold></p>
@@ -155,7 +153,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
         </div>
     </div>
 </div>
-<!-- <h4>Buyer Details</h4> -->
+
 <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
 <table style="width: 100%; border-collapse: collapse;">
     
@@ -188,7 +186,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
         <th>Total</th>
     </tr>
     <?php
-    // Fetch spare items
+   
     $spare_issue_item = $con->query("
         SELECT a.*, b.name AS Name, b.brand AS Brand
         FROM spare_issue_item a
@@ -210,7 +208,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
     <?php } ?>
 
     <?php
-    // Fetch labour items
+    
     $labour_entry = $con->query("
         SELECT a.*, b.title 
         FROM labour_entry a
@@ -218,11 +216,11 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
         WHERE a.job_id = '$job->id' -- Linking the job_entry using job_id
     ");
 
-    // Display labour items with SI number continuing from spare items
+    
     foreach ($labour_entry->fetch_all(MYSQLI_ASSOC) as $i => $item) {
     ?>
         <tr>
-            <td><?php echo $spare_item_count + $i + 1; ?></td> <!-- Continue SI No. from last spare item -->
+            <td><?php echo $spare_item_count + $i + 1; ?></td> 
             <td><?php echo $item['title']; ?></td>  
             <td>-</td>  
             <td>-</td>    
