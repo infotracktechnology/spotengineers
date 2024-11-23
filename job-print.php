@@ -32,6 +32,12 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             .break {
                 page-break-after: always;
             }
+            @page {
+                size : A4;
+                border: .1rem solid #000;
+                margin: 15px 20px;
+                border-radius: 15px;
+            }
         }
 
         table {
@@ -51,10 +57,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             display: block !important;
         }
 
-        @page {
-            size: B3 landscape;
-            margin: 6mm;
-        }
+       
 
        .image-box {
             border: 1px solid #000;
@@ -68,12 +71,9 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             height: auto; 
         }
 
-        .image-box img {
-            max-width: 520px; 
-            height: auto;
+         img {
+            height: 90px;
             width: 100%;
-            margin-bottom: 1px; 
-            object-fit: contain;
         }
 
         
@@ -132,47 +132,54 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             </tr>
         </thead>
      </table>
-
-     <div class="image-box">
-    <img src="assets/img/se-logo.png" alt="Company Logo"> 
-    <div class="image-details">
-        <div class="address">
-            <p><bold>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony. Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</bold></p>
-        </div>
-      
-        <div class="contact-gst-state">
-            <div class="contact">
-                <p><bold>CONTACT No.: 96009 38759</bold></p>
-            </div>
-            <div class="gst">
-                <p><bold>GSTIN: 33DHWPM2568H1ZS</bold></p>
-            </div>
-            <div class="state">
-                <p><bold>STATE NAME:TAMILNADU-CODE:33</bold></p>
-            </div>
-        </div>
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+         <table >
+        <tr>
+            <td colspan="2" align="left">
+                <img src="assets/img/se-logo.png" alt="Company Logo">
+            </td>
+            <td></td>
+           
+        </tr>
+        <tr>
+            <td colspan="3" align="center">
+                <p>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony.<br> Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</p>
+            </td>
+        </tr>
+        <tr>
+            <td width="30%">
+                CONTACT No.: 96009 38759
+            </td>
+            <td width="35%">
+                GSTIN: 33DHWPM2568H1ZS
+            </td>
+            <td width="35%">
+                STATE NAME:TAMILNADU-CODE:33
+            </td>
+        </tr>
+    </table>
     </div>
-</div>
-
 <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
 <table style="width: 100%; border-collapse: collapse;">
     
         <table>
+            <h3>Buyer</h3>
             <tr>
-                <td width="50%" style="">Invoice No: <?php echo $bill->bill_no; ?></td>
-                <td width="50%" style="">Date: <?php echo $bill->bill_date; ?></td>
+            <td width="60%" style="">Customer Name: <?php echo $customer->name; ?></td>
+                <td width="40%" style="">Invoice No: <?php echo $bill->bill_no; ?></td>
+                
             </tr>
             <tr>
-                <td width="50%" style="">Customer Name: <?php echo $customer->name; ?></td>
-                <td width="50%" style="">Phone No: <?php echo $customer->phone; ?></td>
+            <td width="60%" style="">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
+            <td width="40%" style="">Date: <?php echo $bill->bill_date; ?></td>
             </tr>
             <tr>
-                <td width="50%" style="">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
-                <td width="50%" style="">City: <?php echo $customer->city; ?></td>
+            <td width="60%" style="">Phone No: <?php echo $customer->phone; ?></td>
+                <td width="40%" style="">City: <?php echo $customer->city; ?></td>
             </tr>
             <tr>
-                <td width="50%" style="">GST No: <?php echo $customer->gst_no; ?></td>
-                <td width="50%" style="">Technician: <?php echo $employee->name; ?></td>
+                <td width="60%" style="">GST No: <?php echo $customer->gst_no; ?></td>
+                <td width="40%" style="">Technician: <?php echo $employee->name; ?></td>
             </tr>
         </table>
     </div>

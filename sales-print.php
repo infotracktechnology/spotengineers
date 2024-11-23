@@ -31,7 +31,12 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
          .break {page-break-after: always;}
 
          }
-
+         @page {
+                size : A4;
+                border: .1rem solid #000;
+                margin: 15px 20px;
+                border-radius: 15px;
+            }
        table {
         border-collapse: collapse;
         width: 100%;
@@ -47,11 +52,6 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
       .break:before, .break:after{  
     display: block!important;
 }
- 
-@page {
-    size: B3 landscape;
-    margin: 6mm;
-}
 .image-box {
             border: 1px solid #000;
             border-radius: 15px;
@@ -64,15 +64,12 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             height: auto; 
         }
 
-        .image-box img {
-            max-width: 520px; 
-            height: auto;
+         img {
+            height: 90px;
             width: 100%;
-            margin-bottom: 1px; 
-            object-fit: contain;
         }
 
-       
+        
         .image-details {
             font-size: 13px;
             display: flex;
@@ -84,7 +81,6 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             font-weight: 600;
         }
 
-       
         .address {
             text-align: center; 
             margin-bottom: 1px;
@@ -117,6 +113,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             text-align: right; 
         }
 
+
     </style>
    </head>
 <body>
@@ -136,28 +133,36 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             </tr>
         </thead>
      </table>
-     <div class="image-box">
-    <img src="assets/img/se-logo.png" alt="Company Logo"> <!-- Place the image URL here -->
-    <div class="image-details">
-        <div class="address">
-            <p><bold>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony. Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</bold></p>
-        </div>
-        <!-- Row for Contact, GST, and State Code -->
-        <div class="contact-gst-state">
-            <div class="contact">
-                <p><bold>CONTACT No.: 96009 38759</bold></p>
-            </div>
-            <div class="gst">
-                <p><bold>GSTIN: 33DHWPM2568H1ZS</bold></p>
-            </div>
-            <div class="state">
-                <p><bold>STATE NAME:TAMILNADU-CODE:33</bold></p>
-            </div>
-        </div>
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+         <table >
+        <tr>
+            <td colspan="2" align="left">
+                <img src="assets/img/se-logo.png" alt="Company Logo">
+            </td>
+            <td></td>
+           
+        </tr>
+        <tr>
+            <td colspan="3" align="center">
+                <p>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony.<br> Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</p>
+            </td>
+        </tr>
+        <tr>
+            <td width="30%">
+                CONTACT No.: 96009 38759
+            </td>
+            <td width="35%">
+                GSTIN: 33DHWPM2568H1ZS
+            </td>
+            <td width="35%">
+                STATE NAME:TAMILNADU-CODE:33
+            </td>
+        </tr>
+    </table>
     </div>
-</div>
      <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
      <table style="width: 100%; border-collapse: collapse;">
+     <h3>Buyer</h3>
             <tr>
               <td width="50%">Invoice No: <?php echo $sale->bill_no; ?></td>
               <td width="50%">Date: <?php echo $sale->bill_date; ?></td>
