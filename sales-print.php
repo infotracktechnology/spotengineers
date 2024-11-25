@@ -32,9 +32,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             }
             @page {
                 size : A4;
-                border: .1rem solid #000;
                 margin: 15px 20px;
-                border-radius: 15px;
             }
         }
        table {
@@ -112,6 +110,10 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         .state {
             text-align: right; 
         }
+        p{
+    margin:5px 0px;
+
+}
 
 
     </style>
@@ -125,7 +127,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
             </tr>
         </thead>
      </table>
-     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px 5px; overflow: hidden;">
          <table >
         <tr>
             <td colspan="2" align="left">
@@ -141,28 +143,28 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         </tr>
         <tr>
             <td width="30%">
-                CONTACT No.: 96009 38759
+                <b>Contact No.: 96009 38759</b>
             </td>
-            <td width="30%">
-                GSTIN: 33DHWPM2568H1ZS
+            <td width="35%">
+               <b> GSTIN: 33DHWPM2568H1ZS</b>
             </td>
-            <td width="38%">
-                STATE NAME:TAMILNADU-CODE:33
+            <td width="35%">
+               <b> State Name:Tamilnadu-Code:33</b>
             </td>
         </tr>
     </table>
     </div>
-    <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 5px; overflow: hidden;">
+    <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
      <table style="width: 100%; border-collapse: collapse;">
       <table>
-     <h3>Buyer</h3>
+      <p><b>Buyer</b></p>
             <tr>
             <td width="50%">Customer Name: <?php echo $sale->name; ?></td>
               <td width="50%">Invoice No: <?php echo $sale->bill_no; ?></td>
               
             </tr>
             <tr>
-            <td width="50%">Address: <?php echo $sale->address_line_1.",".$sale->address_line_2; ?></td>
+            <td width="50%">Address: <?php echo $sale->address_line_1."<br>".$sale->address_line_2; ?></td>
             <td width="50%">Date: <?php echo $sale->bill_date; ?></td>
                 
               </tr>

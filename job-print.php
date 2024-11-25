@@ -34,9 +34,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             }
             @page {
                 size : A4;
-                border: .1rem solid #000;
                 margin: 15px 20px;
-                border-radius: 15px;
             }
         }
 
@@ -119,7 +117,10 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
         .state {
             text-align: right; 
         }
+p{
+    margin:5px 0px;
 
+}
 
     </style>
 </head>
@@ -132,7 +133,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             </tr>
         </thead>
      </table>
-     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
+     <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px 5px; overflow: hidden;">
          <table >
         <tr>
             <td colspan="2" align="left">
@@ -142,35 +143,35 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
            
         </tr>
         <tr>
-            <td colspan="3" align="center">
+            <td colspan="3" align="center" >
                 <p>SPOT AT ENGINEERS 49, Dharmalingam Street, Vengatesha Colony.<br> Old Bus Stand Back Side, Pollachi, Tamilnadu - 642001</p>
             </td>
         </tr>
         <tr>
             <td width="30%">
-                CONTACT No.: 96009 38759
+                <b>Contact No.: 96009 38759</b>
             </td>
-            <td width="30%">
-                GSTIN: 33DHWPM2568H1ZS
+            <td width="35%">
+               <b> GSTIN: 33DHWPM2568H1ZS</b>
             </td>
-            <td width="39%">
-                STATE NAME:TAMILNADU-CODE:33
+            <td width="35%">
+               <b> State Name:Tamilnadu-Code:33</b>
             </td>
         </tr>
     </table>
     </div>
-<div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 5px; overflow: hidden;">
+<div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 10px; overflow: hidden;">
 <table style="width: 100%; border-collapse: collapse;">
     
         <table>
-            <h3>Buyer</h3>
+            <p><b>Buyer</b></p>
             <tr>
             <td width="60%" style="">Customer Name: <?php echo $customer->name; ?></td>
                 <td width="40%" style="">Invoice No: <?php echo $bill->bill_no; ?></td>
                 
             </tr>
             <tr>
-            <td width="60%" style="">Address: <?php echo $customer->address_line_1 . "," . $customer->address_line_2; ?></td>
+            <td width="60%" style="">Address: <?php echo $customer->address_line_1 . "<br>" . $customer->address_line_2; ?></td>
             <td width="40%" style="">Date: <?php echo $bill->bill_date; ?></td>
             </tr>
             <tr>
@@ -292,10 +293,10 @@ $total_amount = round($subtotal + $tax_total, 2);
 <p style="text-align: center;font-size:14px;font-weight:600;">* Thanks For Choosing Spotatengineers For Your Needs.. Please Come Back Soon..! *</p>
 
 <script>
-    window.print();
-    window.onafterprint = () => {
-        location.href = "sales.php";
-    }
+    // window.print();
+    // window.onafterprint = () => {
+    //     location.href = "sales.php";
+    // }
 </script>
 </body>
 </html>
