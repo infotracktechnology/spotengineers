@@ -293,10 +293,10 @@ $total_amount = round($subtotal + $tax_total, 2);
 <p style="text-align: center;font-size:14px;font-weight:600;">* Thanks For Choosing Spotatengineers For Your Needs.. Please Come Back Soon..! *</p>
 
 <script>
-    // window.print();
-    // window.onafterprint = () => {
-    //     location.href = "sales.php";
-    // }
+     window.print();
+     window.onafterprint = () => {
+         location.href = "sales.php";
+     }
 </script>
 </body>
 </html>

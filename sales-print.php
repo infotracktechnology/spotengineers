@@ -244,12 +244,12 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
 
     
      <p  style="text-align: center;font-size:14px;font-weight:600;">* Thanks For Choosing Spotatengineers For Your Needs.. Please Come Back Soon..! *</p>
-    <!-- <script>
+    <script>
         window.print();
         window.onafterprint = () => {
           location.href = "sales.php";
         }
-     </script>-->
+     </script>
 </body>
 
 </html>
