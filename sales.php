@@ -31,6 +31,10 @@ $biil_no = $con->query("SELECT max(sale_no)sale_no FROM sales WHERE cyear = '$cy
 $bill_no = $biil_no['sale_no'] ? $biil_no['sale_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
+    if(!is_array($_POST['item'])){
+       echo "<script>alert('Please select at least one item.');window.location.href = 'sales.php';</script>";
+       exit; 
+    }
     extract($_POST);
     $sales = mysqli_query($con,"INSERT INTO sales (sale_no,sale_date,sale_type,customer,customer_type,total,tax_total,net_total,cyear) VALUES ('$sale_no','$sale_date','$sale_type','$customer','$customer_type','$grandtotal','$tax_amount','$net_total','$cyear')");
     $id = mysqli_insert_id($con);
