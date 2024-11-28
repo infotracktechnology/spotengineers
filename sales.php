@@ -253,8 +253,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
           tax_amount : 0,
           net_total : 0,
           gst:'',
-          sale_items : JSON.parse('<?php echo $sale_items; ?>'),
-          customer : JSON.parse('<?php echo $customer_json; ?>'),
+          sale_items : JSON.parse(`<?php echo $sale_items; ?>`),
+          customer : JSON.parse(`<?php echo $customer_json; ?>`),
           items:[{item: '',qty:'',rate:'',discount:0}],
           addItem(){
             this.items.push({item: '',qty:'',rate:'',discount:0});

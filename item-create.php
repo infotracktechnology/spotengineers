@@ -49,17 +49,17 @@ if (!isset($_SESSION['username'])) {
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Name</label>
                           
-                          <input type="text" name="name" id="name" class="form-control form-control-sm" required>
+                          <input type="text" name="name" id="name" class="form-control form-control-sm char" required>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Brand</label>
                           
-                          <input type="text" name="brand" id="brand" class="form-control form-control-sm" required>
+                          <input type="text" name="brand" id="brand" class="form-control form-control-sm char" required>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Model</label>
                           
-                          <input type="text" name="model" id="model" class="form-control form-control-sm" required>
+                          <input type="text" name="model" id="model" class="form-control form-control-sm char" required>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Location</label>
@@ -71,13 +71,13 @@ if (!isset($_SESSION['username'])) {
 
                           <label class="col-blue">HSN No</label>
                           
-                          <input type="text" name="hsn" id="hsn" class="form-control form-control-sm" required>
+                          <input type="text" name="hsn" id="hsn" class="form-control form-control-sm numberk" required>
                         </div>
 
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Rack NO</label>
                           
-                          <input type="text" name="rack_no" value="" class="form-control form-control-sm">
+                          <input type="text" name="rack_no" value="" class="form-control form-control-sm numberk">
                         </div>
                         <div class="form-group col-lg-2">
                           <label class="col-blue">UOM</label>

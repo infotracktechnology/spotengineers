@@ -60,18 +60,18 @@ if ($result) {
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Name</label>
                           
-                          <input type="text" name="name" id="name" class="form-control form-control-sm" value="<?= $items[0]->name; ?>" required>
+                          <input type="text" name="name" id="name" class="form-control form-control-sm char" value="<?= $items[0]->name; ?>" required>
                           <small class="form-text text-danger" id="nameError"></small>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Brand</label>
                           
-                          <input type="text" name="brand" id="brand" value="<?= $items[0]->brand; ?>" class="form-control form-control-sm" required>
+                          <input type="text" name="brand" id="brand" value="<?= $items[0]->brand; ?>" class="form-control form-control-sm char" required>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Model</label>
                           
-                          <input type="text" name="model" id="model" value="<?= $items[0]->model; ?>" class="form-control form-control-sm" required>
+                          <input type="text" name="model" id="model" value="<?= $items[0]->model; ?>" class="form-control form-control-sm char" required>
                         </div>
                         <div class="col-md-3 form-group">
                           <label class="col-blue">Location</label>
@@ -84,7 +84,7 @@ if ($result) {
 
                           <label class="col-blue">HSN No</label>
                           
-                          <input type="text" name="hsn" id="hsn" value="<?= $items[0]->hsn; ?>" class="form-control form-control-sm" required>
+                          <input type="text" name="hsn" id="hsn" value="<?= $items[0]->hsn; ?>" class="form-control form-control-sm numberk" required>
                         </div>
 
 

@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                  <div class="row">
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Name</label>
-                     <input type="text" name="name" id="name" class="form-control form-control-sm" required>
+                     <input type="text" name="name" id="name" class="form-control form-control-sm char" required>
                    </div>
 
                    <div class="col-md-3 form-group">

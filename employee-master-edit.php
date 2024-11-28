@@ -63,7 +63,7 @@ if ($result) {
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Name</label>
                      <input type="hidden" name="id" value="<?= $employee[0]->id; ?>">
-                     <input type="text" name="name" value="<?= $employee[0]->name; ?>" id="name" class="form-control form-control-sm" required>
+                     <input type="text" name="name" value="<?= $employee[0]->name; ?>" id="name" class="form-control form-control-sm char" required>
                    </div>
 
                    <div class="col-md-3 form-group">
