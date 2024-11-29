@@ -30,6 +30,8 @@ if (mysqli_query($con, $purchase_query)) {
 
         mysqli_query($con, $item_query);
    }
+   header("Location: purchases.php", true, 303);
+    exit;
 }
 
 ?>
