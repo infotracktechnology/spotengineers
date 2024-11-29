@@ -63,7 +63,7 @@ $customer_appliances = json_encode($customer_appliances,JSON_UNESCAPED_UNICODE);
                            <div class="col-md-3 form-group">
                                <label class="col-blue">Name</label>
                                <input type="hidden" name="id" value="<?= $customer[0]->id; ?>">
-                               <input type="text" name="name" id="name" class="form-control form-control-sm" value="<?= $customer[0]->name; ?>" required>
+                               <input type="text" name="name" id="name" class="form-control form-control-sm char" value="<?= $customer[0]->name; ?>" required>
                            </div>
 
                            <div class="col-md-3 form-group">

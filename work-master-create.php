@@ -59,12 +59,12 @@ if (!isset($_SESSION['username'])) {
                  <div class="row">
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Title</label>
-                     <input type="text" name="title" id="name" class="form-control form-control-sm" required>
+                     <input type="text" name="title" id="name" class="form-control form-control-sm char" required>
                    </div>
 
                    <div class="col-md-3 form-group">
                      <label class="col-blue">Category</label>
-                     <input type="text" name="category" class="form-control form-control-sm" >
+                     <input type="text" name="category" class="form-control form-control-sm char" >
                    </div>
 
                    <div class="col-md-3 form-group">
