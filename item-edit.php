@@ -118,10 +118,26 @@ if ($result) {
                           <input type="number" name="qty" id="qty" min="0" value="<?= $items[0]->qty; ?>" class="form-control form-control-sm numberk" required>
                           <small class="form-text text-danger" id="qtyError"></small>
                         </div>
+                       
                         <div class="col-md-1 form-group">
                           <label class="col-blue">L.L.C</label>
                           
                           <input type="text" name="llc" value="<?= $items[0]->llc; ?>" class="form-control form-control-sm" required>
+                        </div>
+                        <div class="col-md-3 form-group">
+                          <label class="col-blue">Category</label>
+                          <select name="category" class="form-control form-control-sm">
+                            <option value="<?= $items[0]->category; ?>"><?= $items[0]->category; ?></option>
+                            <option value="ac">AC</option>
+                            <option value="washing_machine">Washing Machine</option>
+                            <option value="fridge">Fridge</option>
+                            <option value="washing_purifier">Water Purifier</option>
+                            <option value="washing_heater">Washing Heater</option>
+                            <option value="dth">DTH</option>
+                            <option value="ups">UPS</option>
+                            <option value="deep_freezer">Deep Freezer</option>
+                            <option value="air_cooler">Air Cooler</option>
+                          </select>
                         </div>
                         <!--Sub Heading -->
                         <div class="col-md-12 form-group m-0">

@@ -112,11 +112,17 @@ if (!isset($_SESSION['username'])) {
                         <div class="col-md-3 form-group">
     <label class="col-blue">Category</label>
     
-    <select name="llc" class="form-control form-control-sm">
+    <select name="category" class="form-control form-control-sm">
         <option value="">Select Category</option>
         <option value="ac">AC</option>
         <option value="washing_machine">Washing Machine</option>
         <option value="fridge">Fridge</option>
+        <option value="washing_purifier">Water Purifier</option>
+        <option value="washing_heater">Washing Heater</option>
+        <option value="dth">DTH</option>
+        <option value="ups">UPS</option>
+        <option value="deep_freezer">Deep Freezer</option>
+        <option value="air_cooler">Air Cooler</option>
     </select>
 </div>
 

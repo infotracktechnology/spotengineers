@@ -11,6 +11,7 @@ $('.numberk').on('input', function (event) {
 this.value = this.value.replace(/[^0-9.]/g, '');
 }); 
 $('.char').on('input', function () {
-  this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+  this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, '');
 });
+
 

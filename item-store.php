@@ -15,12 +15,13 @@ if(isset($_POST['submit'])) {
     $selling_price = $_POST['selling_price'];
     $qty = $_POST['qty'];
     $llc = $_POST['llc'];
+    $category = $_POST['category'];
     $product_min = $_POST['min'];
     $product_max = $_POST['max'];
     $reorder = $_POST['reorder'];
     $hsn = $_POST['hsn'];
 
-    $sql = "INSERT INTO `items` (`name`, `brand`, `model`, `location`, `rack_no`, `uom`, `mrp`, `selling_price`, `qty`, `llc`, `min`, `max`, `re_order`, `hsn`) VALUES ('$name', '$brand', '$model', '$location', '$rack_no', '$uom', '$mrp', '$selling_price', '$qty', '$llc', '$product_min', '$product_max', '$reorder', '$hsn')";
+    $sql = "INSERT INTO `items` (`name`, `brand`, `model`, `location`, `rack_no`, `uom`, `mrp`, `selling_price`, `qty`, `llc`, `category`, `min`, `max`, `re_order`, `hsn`) VALUES ('$name', '$brand', '$model', '$location', '$rack_no', '$uom', '$mrp', '$selling_price', '$qty', '$llc','$category', '$product_min', '$product_max', '$reorder', '$hsn')";
 
     echo $sql;
     $result = mysqli_query($con, $sql);     
