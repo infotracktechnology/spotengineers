@@ -28,6 +28,10 @@ $job_no = $con->query("SELECT max(job_no)job_no FROM job_entry WHERE cyear = '$c
 $job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!is_array($_POST['work_id'])) {
+        echo "<script>alert('Please Select Work!'); window.location.href = 'labour-entry.php';</script>";
+        exit;
+    }
  extract($_POST);
  $job = $con->query("INSERT INTO `job_entry`(`job_no`, `job_date`, `customer_id`, `gst_no`, `emp_id`, `cyear`,`grand_total`) VALUES ('$job_no', '$job_date', '$customer_id', '$gst_no', '$emp_id', '$cyear', '$grand_total')");
  if($job) {

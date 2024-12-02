@@ -49,8 +49,8 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
                     <div class="section-body">
                         <div class="row">
                             <div class="col-md-12">
-                            <div class="alert alert-danger alert-has-icon alert-dismissible show fade" role="alert">
-                                <b>Check your bills before finalizing. Scroll down to see the bills table and click on the "Reprint" button to Reprint the bill.Don't Generate bill again.</b>
+                            <div class="alert alert-danger show fade" role="alert">
+                                <b>Check your bills before finalizing. Scroll down to see the bills table and click on the "Reprint" button to Reprint the bill.Don't Generate Duplicate bill again.</b>
                             </div>
                             <form method="post" name="myForm" action="bills_create.php" enctype="multipart/form-data">
                                     <div class="card card-primary">
@@ -75,7 +75,7 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
 
                                                 <div class="col-md-2 form-group">
                                                     <label class="col-blue">Value To Search</label>
-                                                    <input type="number" name="value" placeholder="Value eg: 1" class="form-control form-control-sm" value="<?php echo $value; ?>"  required/>
+                                                    <input type="number" name="value" placeholder="Value eg: 1" class="form-control form-control-sm" value="<?php echo $value; ?>"  readonly/>
                                                 </div>
 
                                             <div class="col-md-12">
@@ -95,6 +95,7 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
                                                         <th>S.No</th>
                                                         <th>Bill No</th>
                                                         <th>Bill Date</th>
+                                                        <th>Category</th>
                                                         <th>Customer</th>
                                                         <th>Customer Phone</th>
                                                         <th>Reprint</th>
@@ -108,6 +109,7 @@ $value = isset($_GET['value']) ? $_GET['value'] : '';
                                                 <td><?php echo $i+1; ?></td>
                                                 <td><?php echo $row['bill_no']; ?></td>
                                                 <td><?php echo $row['bill_date']; ?></td>
+                                                <td><?php if(is_null($row['job_no'])){ echo "Sale"; } else{ echo "Job"; } ?></td>
                                                 <td><?php echo $row['name']; ?></td>
                                                 <td><?php echo $row['phone']; ?></td>
                                                 <td>
