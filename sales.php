@@ -140,7 +140,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                     <button type="button" class="btn btn-warning" @click="addItem"><i class="fa fa-plus"></i> Add Item</button>
                                                 </div>
 
-                                                <template x-for="item in items">
+                                                <template x-for="(item, index) in items">
 
                                                 <div class="col-md-12 row">
 
@@ -188,7 +188,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
                                                 <div class="col-md-1 form-group">
-                                                   <button type="button" class="btn btn-danger mt-4" @click="deleteItem"><i class="fa fa-times"></i></button>
+                                                   <button type="button" class="btn btn-danger mt-4" @click="deleteItem(index)"><i class="fa fa-times"></i></button>
                                                 </div>
                                                 </div>
                                                 </template>

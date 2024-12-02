@@ -101,7 +101,7 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
                                                     <button type="button" class="btn btn-warning" @click="addItem"><i class="fa fa-plus"></i> Add Item</button>
                                                 </div>
 
-                                                <template x-for="item in items">
+                                                <template x-for="(item, index) in items">
 
                                                 <div class="col-md-12 row">
 
@@ -149,7 +149,7 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
 
 
                                                 <div class="col-md-1 form-group">
-                                                   <button type="button" class="btn btn-danger mt-4" @click="deleteItem"><i class="fa fa-times"></i></button>
+                                                   <button type="button" class="btn btn-danger mt-4" @click="deleteItem(index)"><i class="fa fa-times"></i></button>
                                                 </div>
                                                 </div>
                                                 </template>
