@@ -16,24 +16,8 @@ $currentMonth = date('Y-m');
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
     $attendance_date = $_POST['attendance_date'];
     $currentMonth = $attendance_date;
-
-
-    $stmt = $con->prepare("SELECT e.name, e.id AS emp_id,
-    COUNT(DISTINCT a.attendance_date) AS month_working_days, 
-    SUM(CASE WHEN a.attendance = 'present' THEN 1 ELSE 0 END) AS present_count,
-    SUM(CASE WHEN a.attendance = 'absent' THEN 1 ELSE 0 END) AS absent_count,
-    SUM(CASE WHEN a.attendance = 'sick_leave' THEN 1 ELSE 0 END) AS sl_count,
-    SUM(CASE WHEN a.attendance = 'half_day' THEN 1 ELSE 0 END) AS hl_count
-    FROM attendance a
-    JOIN employee e ON a.emp_id = e.id
-    WHERE a.attendance_date LIKE ?
-    GROUP BY e.id");
-
-    $attendance_date .= '%';
-
-    $stmt->bind_param("s", $attendance_date);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $con->query("SELECT e.name, e.id AS emp_id,e.salary,COUNT(DISTINCT a.attendance_date) AS month_working_days, 
+    SUM(CASE WHEN a.attendance = 'present' THEN 1 ELSE 0 END) AS present_count,SUM(CASE WHEN a.attendance = 'absent' THEN 1 ELSE 0 END) AS absent_count,SUM(CASE WHEN a.attendance = 'sick_leave' THEN 1 ELSE 0 END) AS sl_count,SUM(CASE WHEN a.attendance = 'half_day' THEN 1 ELSE 0 END) AS hl_count FROM attendance a JOIN employee e ON a.emp_id = e.id WHERE a.attendance_date LIKE '$attendance_date%' GROUP BY e.id");
 } else {
     $result = null;
 }
@@ -45,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Attendance Report</title>
+    <title>Pay Slip</title>
     <link rel="stylesheet" href="assets/css/app.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -69,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
                             <div class="col-md-12">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h4 class="col-deep-purple m-0">Attendance Report</h4>
+                                        <h4 class="col-deep-purple m-0">Pay Slip</h4>
                                     </div>
                                     <div class="card-body">
                                         <form method="post" id="myForm">
@@ -92,12 +76,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
                                                 <thead>
                                                     <tr>
                                                         <th>S.No</th>
-                                                        <th>Employee Name</th>
-                                                        <th>Month Working Days</th>
-                                                        <th>Present Count</th>
-                                                        <th>Absent Count</th>
+                                                        <th>Name</th>
+                                                        <th>Working Days</th>
+                                                        <th>Present</th>
+                                                        <th>Absent</th>
                                                         <th>SL Count</th>
                                                         <th>HL Count</th>
+                                                        <th>Salary</th>
+                                                        <th>Advance Balance</th>
+                                                        <th>Advance Deduction</th>
+                                                        <th>Net salary</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -114,10 +102,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
                                                             echo "<td>" . $row['absent_count'] . "</td>";
                                                             echo "<td>" . $row['sl_count'] . "</td>";
                                                             echo "<td>" . $row['hl_count'] . "</td>";
+                                                            echo "<td>$row[salary]</td>";
+                                                            echo "<td></td>";
+                                                            echo "<td></td>";
+                                                            echo "<td></td>";
                                                             echo "</tr>";
                                                         }
-                                                    } else {
-                                                        echo "<tr><td colspan='7' class='text-center'>No attendance records found for the selected month.</td></tr>";
                                                     }
                                                     ?>
                                                 </tbody>
@@ -146,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
         $('#tableExport').DataTable({
             dom: 'Bfrtip',
             buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
+            'excel', 'pdf', 'print'
             ]
         });
     });
