@@ -79,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <th>City</th>
                                                         <th>Date of joining</th>
                                                         <th>Experience</th>
+                                                        <th>Advance Details</th>
                                                         <th>Edit</th>
                                                         <th>Visit Profile</th>
                                                         <th>Delete</th>
@@ -96,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <td><?= $value['city'] ?></td>
                                                         <td><?= $value['doj'] ?></td>
                                                         <td><?= $value['experience'] ?></td>
+                                                        <td><a href="employee-advance.php?emp_id=<?= $value['id'] ?>" class="btn btn-warning text-white"><i class="fa fa-dollar-sign"></i></a></td>
                                                         <td><a href="employee-master-edit.php?id=<?= $value['id'] ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
                                                         <td><a href="employee-profile.php?id=<?= $value['id'] ?>" class="btn btn-info text-white"><i class="fa fa-eye"></i></a></td>
                                                         <td>
