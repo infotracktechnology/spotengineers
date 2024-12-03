@@ -80,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <th>Date of joining</th>
                                                         <th>Experience</th>
                                                         <th>Edit</th>
+                                                        <th>Visit Profile</th>
                                                         <th>Delete</th>
                                                     </tr>
                                                 </thead>
@@ -96,6 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <td><?= $value['doj'] ?></td>
                                                         <td><?= $value['experience'] ?></td>
                                                         <td><a href="employee-master-edit.php?id=<?= $value['id'] ?>" class="btn btn-success text-white"><i class="fa fa-edit"></i></a></td>
+                                                        <td><a href="employee-profile.php?id=<?= $value['id'] ?>" class="btn btn-info text-white"><i class="fa fa-eye"></i></a></td>
                                                         <td>
                                                             <form action="employee.php" method="post" onsubmit="return confirm('Are you sure you want to delete this customer?');">
                                                                 <input type="hidden" name="id" value="<?= $value['id'] ?>">
