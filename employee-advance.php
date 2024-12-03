@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['advance_amount'])) {
                                                 </div>
                                                 <div class="col-md-3 form-group">
                                                     <label for="advance_date">Advance Date</label>
-                                                    <input type="date" name="advance_date" class="form-control form-control-sm">
+                                                    <input type="date" name="advance_date" value="<?= date('Y-m-d'); ?>" class="form-control form-control-sm">
                                                 </div>
                                                 <div class="col-md-2 form-group">
                                                     <label for="advance_amount">Advance Amount</label>
