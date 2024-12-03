@@ -108,7 +108,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['advance_amount'])) {
 
                                         <!-- Section for displaying employee advance data -->
                                         <?php if ($emp_id) { ?>
-                                            <h6 class="col-deep-purple mt-5">Employee Advance Details</h6>
                                             <div class="table-responsive">
                                                 <table class="table table-sm" id="myTable">
                                                     <thead>
