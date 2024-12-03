@@ -98,7 +98,7 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                                                 <td><?php echo $job['emp_name'] ?></td>
                                                                 <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>    
                                                             <?php
-                                                            if($job['status'] != 'completed' && $job['status'] != 'pending'):
+                                                            if($job['status'] != 'completed'):
                                                             ?>
                                                             <td><a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
                                                             </td>
