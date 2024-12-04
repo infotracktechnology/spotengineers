@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quotation'])) {
             echo "There was an error uploading your file.";
         }
     } else {
-        echo "Only PDF files are allowed!";
+        echo "<script>alert('Only PDF files are allowed!');window.location.href='job-entry.php';</script>";
     }
 }
 ?>
