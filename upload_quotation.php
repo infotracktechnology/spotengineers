@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quotation'])) {
     // Check if the file is a PDF
     if (in_array($fileExt, $allowed)) {
         if ($fileError === 0) {
-            if ($fileSize < 5000000) { // File size limit (5MB)
+            if ($fileSize < 1000000) { // File size limit (1MB)
                 // Generate a unique name for the file
                 $fileNewName = uniqid('', true) . '.' . $fileExt;
                 $fileDestination = 'assets/upload/' . $fileNewName;
