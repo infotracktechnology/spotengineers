@@ -1,4 +1,7 @@
 <?php
+ob_start();
+session_start();
+include "config.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quotation'])) {
     $job_id = $_POST['job_id'];
     $file = $_FILES['quotation'];
@@ -14,11 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quotation'])) {
                 $fileNewName = uniqid('', true) . '.' . $fileExt;
                 $fileDestination = 'assets/upload/' . $fileNewName;
                 if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                    $conn = new mysqli('localhost', 'root', '', 'spotengineer');
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-                    $stmt = $conn->prepare("UPDATE job_entry SET quotation = ? WHERE id = ?");
+                    // $conn = new mysqli('localhost', 'root', '', 'spotengineer');
+                    // if ($conn->connect_error) {
+                    //     die("Connection failed: " . $conn->connect_error);
+                    // }
+                    $stmt = $con->prepare("UPDATE job_entry SET quotation = ? WHERE id = ?");
                     $stmt->bind_param("si", $fileDestination, $job_id);
                     if ($stmt->execute()) {
                         echo "Quatation uploaded successfully!";
