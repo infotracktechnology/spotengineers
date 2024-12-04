@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['advance_amount'])) {
                                                                     <td><?= $key + 1 ?></td>
                                                                     <td><?= $value['name'] ?></td>
                                                                     <td><?= $value['date'] ?></td>
-                                                                    <td><?= $value['amount'] ?></td>
+                                                                    <td class="<?= $value['amount'] > 0 ? 'col-green' : 'col-red' ?>"><?= $value['amount'] ?></td>
                                                                 </tr>
                                                             <?php }
                                                         } else {
