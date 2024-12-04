@@ -44,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['quotation'])) {
                     $stmt->close();
                     $conn->close();
                 } else {
-                    echo "Error moving the file.";
+                    echo "<script>alert('Error moving the file.');window.location.href='job-entry.php';</script>"; // Replace with your page nameError moving the file.";
                 }
             } else {
-                echo "File is too large!";
+                echo "<script>alert('File is too large!');window.location.href='job-entry.php';</script>"; // Replace with your page nameFile is too large!";
             }
         } else {
-            echo "There was an error uploading your file.";
+            echo "<script>alert('There was an error uploading your file.');window.location.href='job-entry.php';</script>"; // Replace with your page nameThere was an error uploading your file.";
         }
     } else {
         echo "<script>alert('Only PDF files are allowed!');window.location.href='job-entry.php';</script>";
