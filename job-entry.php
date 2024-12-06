@@ -70,52 +70,59 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                                         </form>
 
                                         <div class="table-responsive">
-                                            <table class="table table-sm" id="myTable">
-                                                <thead>
-                                                    <tr role="row">
-                                                        <th>S.No</th>
-                                                        <th>Job No</th>
-                                                        <th>Job Date</th>
-                                                        <th>Customer</th>
-                                                        <th>Customer Phone</th>
-                                                        <th>Technician</th>
-                                                        <th>Status</th>
-                                                        <th>Spare Issue</th>
-                                                        <th>Print</th>
-                                                    </tr> 
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    $result = $con->query("SELECT a.*,b.name,b.phone,c.name emp_name,c.doj FROM job_entry a join customer b on a.customer_id=b.id join employee c on a.emp_id=c.id where job_date between '$start_date' and '$end_date'")->fetch_all(MYSQLI_ASSOC);
-                                                    foreach ($result as $key => $job):
-                                                    ?>
-                                                            <tr>
-                                                                <td><?php echo $key + 1 ?></td>
-                                                                <td><?php echo $job['job_no'] ?></td>
-                                                                <td><?php echo $job['job_date'] ?></td>
-                                                                <td><?php echo $job['name'] ?></td>
-                                                                <td><?php echo $job['phone'] ?></td>
-                                                                <td><?php echo $job['emp_name'] ?></td>
-                                                                <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>";  ?></td>    
-                                                            <?php
-                                                            if($job['status'] != 'completed'):
-                                                            ?>
-                                                            <td><a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a>
-                                                            </td>
-                                                            <td>
-                                                            <a href="bills.php?bill_by=Job&value=<?php echo $job['job_no']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a>
-                                                            </td>
-                                                            <?php else: ?>
-                                                                <td></td>
-                                                                <td></td>
-                                                            <?php endif; ?>
-                                                            </tr>
-                                                        <?php
-                                                        endforeach;
-                                                   ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
+    <table class="table table-sm" id="myTable">
+        <thead>
+            <tr role="row">
+                <th>S.No</th>
+                <th>Job No</th>
+                <th>Job Date</th>
+                <th>Customer</th>
+                <th>Customer Phone</th>
+                <th>Technician</th>
+                <th>Quatation Details</th>
+                <th>Status</th>
+                <th>Spare Issue</th>
+                <th>Print</th>
+            </tr> 
+        </thead>
+        <tbody>
+            <?php
+            $result = $con->query("SELECT a.*,b.name,b.phone,c.name emp_name,c.doj FROM job_entry a JOIN customer b ON a.customer_id=b.id JOIN employee c ON a.emp_id=c.id WHERE job_date BETWEEN '$start_date' AND '$end_date'")->fetch_all(MYSQLI_ASSOC);
+            foreach ($result as $key => $job):
+            ?>
+                <tr>
+                    <td><?php echo $key + 1 ?></td>
+                    <td><?php echo $job['job_no'] ?></td>
+                    <td><?php echo $job['job_date'] ?></td>
+                    <td><?php echo $job['name'] ?></td>
+                    <td><?php echo $job['phone'] ?></td>
+                    <td><?php echo $job['emp_name'] ?></td>
+                    <td>
+                        <?php if ($job['quotation']): ?>
+                            <!-- If a file exists, show a download button -->
+                            <a href="<?= $job['quotation'] ?>" class="btn btn-primary" target="_blank"><i class="fa fa-download"></i></a>
+                        <?php else: ?>
+                            <!-- File upload form if no file exists -->
+                            <form action="upload_quotation.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="job_id" value="<?php echo $job['id']; ?>">
+                                <input type="file" name="quotation" class="form-control form-control-sm" accept=".pdf" required style="width: 100px;margin-bottom: 5px;">
+                                <button type="submit" class="btn btn-success" style="font-size: 0.8rem; padding: 0.2rem 0.5rem;"><i class="fa fa-upload"></i>Upload Quotation</button>
+                            </form>
+                        <?php endif; ?>
+                    </td>
+                    <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>"; ?></td>    
+                    <?php if($job['status'] != 'completed'): ?>
+                        <td><a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a></td>
+                        <td><a href="bills.php?bill_by=Job&value=<?php echo $job['job_no']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a></td>
+                    <?php else: ?>
+                        <td></td>
+                        <td></td>
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
                                     </div>
                                 </div>
                             </div>
