@@ -28,7 +28,7 @@ $job_no = $con->query("SELECT max(job_no)job_no FROM job_entry WHERE cyear = '$c
 $job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if(!is_array($_POST['work_id'])) {
+    if(!is_array($_POST['work_id']) || !isset($_POST['work_id'])) {
         echo "<script>alert('Please Select Work!'); window.location.href = 'labour-entry.php';</script>";
         exit;
     }
