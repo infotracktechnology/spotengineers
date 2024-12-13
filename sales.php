@@ -285,7 +285,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             this.cgst = this.grandtotal * 9 / 100;
             this.sgst = this.grandtotal * 9 / 100;
             this.tax_amount = this.cgst + this.sgst;
-            this.net_total = this.grandtotal - this.tax_amount;
+            this.net_total = this.grandtotal + this.tax_amount;
           },
           getItem(item){
             let item_id = item.item;
