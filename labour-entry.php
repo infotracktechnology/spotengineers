@@ -28,7 +28,7 @@ $job_no = $con->query("SELECT max(job_no)job_no FROM job_entry WHERE cyear = '$c
 $job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // if(!is_array($_POST['work_id'])) {
+    // if(!is_array($_POST['work_id']) || !isset($_POST['work_id'])) {
     //     echo "<script>alert('Please Select Work!'); window.location.href = 'labour-entry.php';</script>";
     //     exit;
     // }
@@ -85,7 +85,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" name="myForm" action="labour-entry.php" @submit.prevent="checkForm" enctype="multipart/form-data">
+                            <form method="post" name="myForm" action="labour-entry.php" @summit="submitForm($event)"  enctype="multipart/form-data">
                                 <div class="card card-primary">
                                     <div class="card-header">
                                         <h4 class="col-deep-purple m-0">Labour Entry</h4>
@@ -305,13 +305,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             this.work = '';
             this.rate = 0;
         },
-        checkForm() {
+        submitForm(e){
+            e.preventDefault();
             if (this.items.length == 0) {
-                alert("Please add at least one work.");
+                alert("Please add at least one item.");
                 return false;
             }
+            e.target.submit();
             return true;
-        },   
+        }
+           
     }));
 });
 

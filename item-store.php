@@ -23,12 +23,13 @@ if(isset($_POST['submit'])) {
 
     $sql = "INSERT INTO `items` (`name`, `brand`, `model`, `location`, `rack_no`, `uom`, `mrp`, `selling_price`, `qty`, `llc`, `category`, `min`, `max`, `re_order`, `hsn`) VALUES ('$name', '$brand', '$model', '$location', '$rack_no', '$uom', '$mrp', '$selling_price', '$qty', '$llc','$category', '$product_min', '$product_max', '$reorder', '$hsn')";
 
-    echo $sql;
     $result = mysqli_query($con, $sql);     
     if($result) {
         header("Location: items.php");
+        exit;
     }else{
         header("Location: item-create.php");
+        exit;
     }
 }
 ?>
