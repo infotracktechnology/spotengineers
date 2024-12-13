@@ -280,9 +280,9 @@ $total_amount = round($subtotal + $tax_total, 2);
 
 <div style="border: 1px solid #000; border-radius: 15px; margin: 10px 0px;padding: 5px; overflow: hidden;">
     <table style="margin: 5px 0px 10px 0px;">
-        <tr><td style=""><b>Company Bank Details :- </b></td></tr>
-        <tr><td style="">Name : Spot At Engineers</td></tr>
-        <tr><td style="">Account No : 120028536542</td></tr>
+        <tr><td><b>Company Bank Details :- </b></td></tr>
+        <tr><td>Name : Spot At Engineers</td></tr>
+        <tr><td>Account No : 120028536542</td></tr>
         <tr>
             <td>IFSC Code : CNRBOO001619</td>
             <td style="text-align: right">Authorized Signatory</td>
