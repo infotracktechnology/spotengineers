@@ -155,11 +155,7 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
                                                 </template>
 
                                             
-                                                    <div class="col-md-2 form-group">
-                                                            <label class="col-blue"> Net Total: </label>
-                                                            <span  x-html="net_total.toFixed(2)"></span>
-                                                            <input type="hidden" name="net_total" x-model="net_total">
-                                                        </div>
+                                                    
                                                         <div class="col-md-2 form-group">
                                                             <label class="col-blue">CGST(9%): </label>
                                                             <span x-html="cgst.toFixed(2)"></span>
@@ -181,7 +177,11 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
                                                             <span  x-html="grandtotal.toFixed(2)"></span>
                                                             <input type="hidden" name="grandtotal" x-model="grandtotal">
                                                         </div>
-                                                   
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue"> Net Total: </label>
+                                                            <span  x-html="net_total.toFixed(2)"></span>
+                                                            <input type="hidden" name="net_total" x-model="net_total">
+                                                        </div>
 
                                             <div class="col-md-12">
                                                 <button type="submit" class="btn btn-success">Submit</button>
@@ -244,7 +244,7 @@ $sale_items_json = json_encode($sale_items,JSON_UNESCAPED_UNICODE);
             this.cgst = this.grandtotal * 9 / 100;
             this.sgst = this.grandtotal * 9 / 100;
             this.tax_amount = this.cgst + this.sgst;
-            this.net_total = this.grandtotal - this.tax_amount;
+            this.net_total = this.grandtotal + this.tax_amount;
           },
           getItem(item){
             let item_id = item.item_id;
