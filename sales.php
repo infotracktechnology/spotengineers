@@ -194,11 +194,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                 </template>
 
                                             
-                                                    <div class="col-md-2 form-group">
-                                                            <label class="col-blue"> Net Total: </label>
-                                                            <span  x-html="net_total.toFixed(2)"></span>
-                                                            <input type="hidden" name="net_total" x-model="net_total">
-                                                        </div>
+                                                    
                                                         <div class="col-md-2 form-group">
                                                             <label class="col-blue">CGST(9%): </label>
                                                             <span x-html="cgst.toFixed(2)"></span>
@@ -219,6 +215,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                             <label class="col-blue">Grand Total: </label>
                                                             <span  x-html="grandtotal.toFixed(2)"></span>
                                                             <input type="hidden" name="grandtotal" x-model="grandtotal">
+                                                        </div>
+
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue"> Net Total: </label>
+                                                            <span  x-html="net_total.toFixed(2)"></span>
+                                                            <input type="hidden" name="net_total" x-model="net_total">
                                                         </div>
                                                 
                                             <div class="col-md-12">
