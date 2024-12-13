@@ -211,16 +211,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                                             <input type="hidden" name="tax_amount" x-model="tax_amount">
                                                         </div>
 
-                                                        <div class="col-md-2 form-group">
-                                                            <label class="col-blue">Grand Total: </label>
-                                                            <span  x-html="grandtotal.toFixed(2)"></span>
-                                                            <input type="hidden" name="grandtotal" x-model="grandtotal">
-                                                        </div>
+                                                       
 
                                                         <div class="col-md-2 form-group">
                                                             <label class="col-blue"> Net Total: </label>
                                                             <span  x-html="net_total.toFixed(2)"></span>
                                                             <input type="hidden" name="net_total" x-model="net_total">
+                                                        </div>
+
+                                                        <div class="col-md-2 form-group">
+                                                            <label class="col-blue">Grand Total: </label>
+                                                            <span  x-html="grandtotal.toFixed(2)"></span>
+                                                            <input type="hidden" name="grandtotal" x-model="grandtotal">
                                                         </div>
                                                 
                                             <div class="col-md-12">
@@ -283,11 +285,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             this.items.forEach(item => {
               total += item.total;
             });
-            this.grandtotal = total;
-            this.cgst = this.grandtotal * 9 / 100;
-            this.sgst = this.grandtotal * 9 / 100;
+            this.net_total = total;
+            this.cgst = this.net_total * 9 / 100;
+            this.sgst = this.net_total * 9 / 100;
             this.tax_amount = this.cgst + this.sgst;
-            this.net_total = this.grandtotal + this.tax_amount;
+            this.grandtotal = this.net_total + this.tax_amount;
           },
           getItem(item){
             let item_id = item.item;

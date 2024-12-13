@@ -213,7 +213,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
      <tr>
           <td width="70%"></td>
           <td width="22%">Sub Total (₹):</td>
-          <td width="8%"><b><?= number_format($sale->total,2) ?></b></td>
+          <td width="8%"><b><?= number_format($sale->net_total,2) ?></b></td>
         </tr>
         
         <tr>
@@ -224,7 +224,7 @@ $sale_id = $con->query("SELECT * FROM `sales` where sale_no=$sale->sale_no and c
         <tr>
             <td width="70%"></td>
           <td width="22%">Grand Total (₹):</td>
-          <td width="8%"><?= number_format($sale->net_total,2) ?></td>
+          <td width="8%"><?= number_format($sale->total,2) ?></td>
         </tr>
     
         
