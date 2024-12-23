@@ -28,19 +28,17 @@ $job_no = $con->query("SELECT max(job_no)job_no FROM job_entry WHERE cyear = '$c
 $job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // if(!is_array($_POST['work_id']) || !isset($_POST['work_id'])) {
-    //     echo "<script>alert('Please Select Work!'); window.location.href = 'labour-entry.php';</script>";
-    //     exit;
-    // }
  extract($_POST);
  $job = $con->query("INSERT INTO `job_entry`(`job_no`, `job_date`, `customer_id`, `gst_no`, `emp_id`, `cyear`,`grand_total`) VALUES ('$job_no', '$job_date', '$customer_id', '$gst_no', '$emp_id', '$cyear', '$grand_total')");
  if($job) {
      $job_id = $con->insert_id;
+     if(isset($_POST['work_id'])){
      foreach ($_POST['work_id'] as $key => $work_id) {
          $appliance_id = $_POST['appliance_id'][$key];
          $rate = $_POST['rate'][$key];
         $labour = $con->query("INSERT INTO `labour_entry`(`job_id`, `appliance_id`, `work_id`, `rate`) VALUES ('$job_id', '$appliance_id', '$work_id', '$rate')");
      }
+    }
     }
     header("location:labour-entry.php");
     exit;
@@ -306,13 +304,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             this.rate = 0;
         },
         submitForm(e){
-            e.preventDefault();
-            if (this.items.length == 0) {
-                alert("Please add at least one item.");
-                return false;
-            }
-            e.target.submit();
-            return true;
+            // e.preventDefault();
+            // if (this.items.length == 0) {
+            //     alert("Please add at least one item.");
+            //     return false;
+            // }
+            // e.target.submit();
+            // return true;
         }
            
     }));
