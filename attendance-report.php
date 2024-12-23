@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['attendance_date'])) {
     $attendance_date = $_POST['attendance_date'];
     $currentMonth = $attendance_date;
     $result = $con->query("SELECT e.name, e.id AS emp_id,e.salary,COUNT(DISTINCT a.attendance_date) AS month_working_days, 
-    SUM(CASE WHEN a.attendance = 'present' THEN 1 ELSE 0 END) AS present_count,SUM(CASE WHEN a.attendance = 'absent' THEN 1 ELSE 0 END) AS absent_count,SUM(CASE WHEN a.attendance = 'sick_leave' THEN 1 ELSE 0 END) AS sl_count,SUM(CASE WHEN a.attendance = 'half_day' THEN 1 ELSE 0 END) AS hl_count FROM attendance a JOIN employee e ON a.emp_id = e.id left join employee_advance c on e.id=c.emp_id WHERE a.attendance_date LIKE '$attendance_date%' GROUP BY e.id");
+    SUM(CASE WHEN a.attendance = 'present' THEN 1 ELSE 0 END) AS present_count,SUM(CASE WHEN a.attendance = 'absent' THEN 1 ELSE 0 END) AS absent_count,SUM(CASE WHEN a.attendance = 'sick_leave' THEN 1 ELSE 0 END) AS sl_count,SUM(CASE WHEN a.attendance = 'half_day' THEN 1 ELSE 0 END) AS hl_count FROM attendance a JOIN employee e ON a.emp_id = e.id WHERE a.attendance_date LIKE '$attendance_date%' GROUP BY e.id");
 } else {
     $result = null;
 }

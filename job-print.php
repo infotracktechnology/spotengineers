@@ -239,23 +239,15 @@ p{
 </table><br>
 
 <?php
-$labour_total_rate = $con->query("
-    SELECT SUM(rate) AS total_rate
-    FROM labour_entry
-    WHERE job_id = '$job->id'
-")->fetch_object()->total_rate;
+$labour_total_rate = $con->query("SELECT SUM(rate) AS total_rate FROM labour_entry WHERE job_id = '$job->id'")->fetch_object()->total_rate;
 
-$spare_total_amount = $con->query("
-    SELECT SUM(total) AS total_amount
-    FROM spare_issue_item
-    WHERE job_id = '$job->id'
-")->fetch_object()->total_amount;
+$spare_total_amount = $con->query("SELECT SUM(total) AS total_amount FROM spare_issue_item WHERE job_id = '$job->id'")->fetch_object()->total_amount;
 
 $subtotal = $labour_total_rate + $spare_total_amount;
 
-$tax_total = ($labour_total_rate * 0.18);
+$tax_total = ($subtotal * 0.18);
 
-$total_amount = round($subtotal + $tax_total, 2);
+$total_amount = round($subtotal + $tax_total);
 ?>
 
 <table>
@@ -295,7 +287,7 @@ $total_amount = round($subtotal + $tax_total, 2);
 <script>
      window.print();
      window.onafterprint = () => {
-         location.href = "sales.php";
+         location.href = "job-entry.php";
      }
 </script>
 </body>
