@@ -79,6 +79,10 @@
                     <li><a class="nav-link" href="sales_all.php">Sales Return(Edit)</a></li>
                 </ul>
             </li>
+           
+
+
+
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="cpu"></i><span>Service</span></a>
                 <ul class="dropdown-menu">
@@ -99,9 +103,10 @@
 
                 </ul>
             </li>
-
-
-
+            
+            <li class="dropdown">
+                <a href="sold.php"  class="nav-link"><i data-feather="dollar-sign"></i><span>Sold </span></a>
+            </li>
 
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
