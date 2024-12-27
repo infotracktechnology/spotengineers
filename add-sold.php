@@ -25,7 +25,7 @@ while ($row = $result->fetch_assoc()) {
     );
 }
 
-$query = "SELECT id, name, phone FROM customer WHERE id != 78";
+$query = "SELECT id, name, phone FROM customer WHERE id != 78 order by name";
 $result = $con->query($query);
 
 if (!$result) {
@@ -126,12 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">expense</label>
-                                                    <input type="number" name="expense" class="form-control form-control-sm"  required/>
+                                                    <label class="col-blue">Expense</label>
+                                                    <input type="number" name="expense" class="form-control form-control-sm" required />
                                                 </div>
 
                                                 <div class="col-md-3 form-group">
-                                                    <label class="col-blue">seller_id</label>
+                                                    <label class="col-blue">Seller</label>
                                                     <select name="seller_id" class="form-control form-control-sm" required>
                                                         <option value="">Select Seller</option>
                                                         <?php
