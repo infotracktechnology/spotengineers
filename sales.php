@@ -283,7 +283,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
           calculateTotal(){
             let total = 0;
             this.items.forEach(item => {
-              total += item.total;
+              total += Number(item.total);
             });
             this.net_total = total;
             this.cgst = this.net_total * 9 / 100;

@@ -288,7 +288,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         },
 
         updateGrandTotal() {
-            this.grandTotal = this.items.reduce((sum, item) => sum + item.rate, 0);
+            this.grandTotal = this.items.reduce((sum, item) => sum + Number(item.rate), 0);
         },
 
         removeItem(index) {

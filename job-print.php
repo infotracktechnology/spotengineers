@@ -47,7 +47,7 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
             border-top: none;
             border: .1rem solid #000;
             padding: 5px;
-            text-align: left !important;
+            text-align: left;
         }
 
         .break:before,
@@ -120,6 +120,9 @@ $employee = $con->query("SELECT * FROM `employee` WHERE `id` = '$job->emp_id'")-
 p{
     margin:5px 0px;
 
+}
+.text-right{
+    text-align: right !important;
 }
 
     </style>
@@ -209,9 +212,9 @@ p{
             <td><?php echo $i + 1; ?></td>
             <td><?php echo $item['Name']; ?></td>   
             <td><?php echo $item['Brand']; ?></td>  
-            <td><?php echo $item['qty']; ?></td>    
-            <td><?php echo $item['rate']; ?></td>   
-            <td><?php echo $item['total']; ?></td>  
+            <td class="text-right"><?php echo $item['qty']; ?></td>    
+            <td class="text-right"><?php echo $item['rate']; ?></td>   
+            <td class="text-right"><?php echo $item['total']; ?></td>  
         </tr>
     <?php } ?>
 
@@ -231,9 +234,9 @@ p{
             <td><?php echo $spare_item_count + $i + 1; ?></td> 
             <td><?php echo $item['title']; ?></td>  
             <td>-</td>  
-            <td>-</td>    
-            <td>-</td>   
-            <td><?php echo $item['rate']; ?></td>  
+            <td class="text-right">1</td>    
+            <td class="text-right"><?php echo $item['rate']; ?></td>   
+            <td class="text-right"><?php echo $item['rate']; ?></td>  
         </tr>
     <?php } ?>
 </table><br>

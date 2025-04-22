@@ -109,6 +109,7 @@ $fromDate = date('Y-m-01');
         <th>Customer Name</th>
         <th>Customer Type</th>
         <th>Customer Mobile</th>
+        <th>Preview</th>
         <th>Net Total</th>
         <th>Tax Total</th>
         <th>Grand Total</th>
@@ -134,7 +135,9 @@ $fromDate = date('Y-m-01');
           <td><?php echo $sale['name']; ?></td>
           <td><?php echo $sale['type']; ?></td>
           <td><?php echo $sale['phone']; ?></td>
+          <td><a href="preview_sale.php?sale_id=<?php echo $sale['id']; ?>" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a></td>
           <td><?php echo $sale['net_total']; ?></td>
+      
           <td><?php echo $sale['tax_total']; ?></td>
           <td><?php echo $sale['total']; ?></td>
         </tr>

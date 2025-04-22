@@ -20,7 +20,7 @@
     </div>
     <ul class="navbar-nav navbar-right">
 
-    <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
             <a href="#" class="nav-link nav-link-lg nav-link-user" id="mode-toggle" data-toggle="dropdown">
                 <i data-feather="sun"></i>
             </a>
@@ -37,7 +37,7 @@
                 </a>
             </div>
         </li>
-        
+
     </ul>
 </nav>
 <div class="main-sidebar sidebar-style-2 bg-gray">
@@ -65,7 +65,7 @@
                     <li><a class="nav-link" href="items.php">Spares Part</a></li>
                     <li><a class="nav-link" href="customer.php">Customer</a></li>
                     <li><a class="nav-link" href="work-master.php">Work Schedule</a></li>
-                  
+
                 </ul>
             </li>
 
@@ -79,7 +79,7 @@
                     <li><a class="nav-link" href="sales_all.php">Sales Return(Edit)</a></li>
                 </ul>
             </li>
-           
+
 
 
 
@@ -97,20 +97,24 @@
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="users"></i><span>HR Management</span></a>
                 <ul class="dropdown-menu">
-                <li><a class="nav-link" href="employee.php">Employee</a></li>
+                    <li><a class="nav-link" href="employee.php">Employee</a></li>
                     <li><a class="nav-link" href="attendance.php">Attendance</a></li>
                     <li><a class="nav-link" href="attendance-report.php">Payroll</a></li>
 
                 </ul>
             </li>
-            
+
             <li class="dropdown">
-                <a href="sold.php"  class="nav-link"><i data-feather="dollar-sign"></i><span>Sold </span></a>
+                <a href="sold.php" class="nav-link"><i data-feather="dollar-sign"></i><span>Sold </span></a>
             </li>
 
             <li class="dropdown">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="file-text"></i><span>Reports</span></a>
                 <ul class="dropdown-menu">
+
+
+                    <li><a class="nav-link" href="report-bill.php">Bill Register</a></li>
+
                     <li><a class="nav-link" href="sales_report.php">Sales Register</a></li>
                     <li><a class="nav-link" href="purchase-report.php">Purchase Register</a></li>
                     <li><a class="nav-link" href="stockreport.php">Stock Report</a></li>
@@ -118,7 +122,7 @@
             </li>
 
             <li class="dropdown">
-                <a href="bills.php"  class="nav-link"><i data-feather="file"></i><span>Bills </span></a>
+                <a href="bills.php" class="nav-link"><i data-feather="file"></i><span>Bills </span></a>
             </li>
 
             <li class="dropdown">

@@ -81,6 +81,7 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                 <th>Technician</th>
                 <th>Quatation Details</th>
                 <th>Status</th>
+                <th>Preview</th>
                 <th>Spare Issue</th>
                 <th>Print</th>
             </tr> 
@@ -110,14 +111,20 @@ $job_status = array('pending' => 'badge-danger', 'spare issue' => 'badge-warning
                             </form>
                         <?php endif; ?>
                     </td>
-                    <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>"; ?></td>    
+                    <td><?= "<span class='badge {$job_status[$job['status']]}'>$job[status]</span>"; ?></td> 
+
+                    <td><a href="preview_job_entry.php?job_id=<?php echo $job['id']; ?>" class="btn btn-primary text-white"><i class="fa fa-eye"></i></a></td>
+  
                     <?php if($job['status'] != 'completed'): ?>
                         <td><a href="spare-issue.php?job_id=<?php echo $job['id']; ?>" class="btn btn-success text-white"><i class="fa fa-plus"></i></a></td>
                         <td><a href="bills.php?bill_by=Job&value=<?php echo $job['job_no']; ?>" class="btn btn-success text-white"><i class="fa fa-eye"></i></a></td>
+                       
                     <?php else: ?>
                         <td></td>
                         <td></td>
+                        
                     <?php endif; ?>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>

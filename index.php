@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start();
-$_SESSION['cyear']='2023-2024';
+$_SESSION['cyear']='2025-2026';
 ?>
 <!DOCTYPE html>
 <html lang="en">
