@@ -95,6 +95,24 @@ while ($row = $sale_chart_result->fetch_assoc()) {
       font-size: 30px;
       font-weight: 600;
     }
+
+    .heading {
+  min-height: 40px; /* Adjust based on font size and expected lines */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.sub_heading {
+  min-height: 48px; /* Or enough to fit 2 lines max */
+  display: block;
+}
+
+.card-statistic-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
   </style>
 </head>
 <body class="sidebar-mini">
@@ -105,16 +123,16 @@ while ($row = $sale_chart_result->fetch_assoc()) {
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="card" >
+        <div class="row d-flex">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+            <div class="card w-100">
                 <div class="card-statistic-4" style="height: 100%;">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content modified">
-                          <h5 class="font-15">Yesterday Sales</h5>
-                          <a href="yesterday_sales_report.php"><h2 class="mb-3 fw-modified"><?php echo $result; ?></h2></a>
+                          <h5 class="font-15 heading">Yesterday Sales</h5>
+                          <a href="yesterday_sales_report.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $result; ?></h2></a>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -127,15 +145,15 @@ while ($row = $sale_chart_result->fetch_assoc()) {
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
                 <div class="card-statistic-4" style="height: 100%;">
                   <div class="align-items-center justify-content-between" >
                     <div class="row" >
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content modified">
-                          <h5 class="font-15"> Credit Bills</h5>
-                          <a href="credit_bills.php"><h2 class="mb-3 fw-modified"><?php echo $credit_result; ?></h2></a>
+                          <h5 class="font-15 heading"> Credit Bills</h5>
+                          <a href="credit_bills.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $credit_result; ?></h2></a>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0" >
@@ -148,15 +166,15 @@ while ($row = $sale_chart_result->fetch_assoc()) {
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
                 <div class="card-statistic-4" style="height: 100%;">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content modified">
-                          <h5 class="font-15"> Re-Order Stock</h5>
-                          <a href="re_order_stock.php"><h2 class="mb-3 fw-modified"><?php echo $re_order_result; ?></h2></a>
+                          <h5 class="font-15 heading"> Re-Order Stock</h5>
+                          <a href="re_order_stock.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $re_order_result; ?></h2></a>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -171,15 +189,15 @@ while ($row = $sale_chart_result->fetch_assoc()) {
             </div>
 
 
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12">
-              <div class="card">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
                 <div class="card-statistic-4" style="height: 100%;">
                   <div class="align-items-center justify-content-between">
                     <div class="row ">
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content modified">
-                          <h5 class="font-15"> Sold</h5>
-                          <a href="sold.php"><h2 class="mb-3 fw-modified"><?php echo $sold_result; ?></h2></a>
+                          <h5 class="font-15 heading"> Sold</h5>
+                          <a href="sold.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $sold_result; ?></h2></a>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
@@ -266,7 +284,7 @@ while ($row = $sale_chart_result->fetch_assoc()) {
                 borderWidth: 1,
                 borderColor: '#fff'
             },
-            barWidth: '40%',  // Adjust width (40% of category width)
+            barWidth: '40px',  // Adjust width (40% of category width)
             barGap: '30%',    // Gap between bars
             barCategoryGap: '20%'  // Gap between categories
         }],
