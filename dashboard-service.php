@@ -7,6 +7,26 @@ if(!isset($_SESSION['username'])) {
   header("Location: index.php");
   exit;  
 }
+
+// $twoMonthsAgo = date('Y-m-d', strtotime('-2 months'));
+
+$twoMonthsAgo = date('Y-m', strtotime('-2 months'));
+
+$followups_sql = "SELECT COUNT(*) FROM job_entry 
+          WHERE status = 'completed' 
+          AND DATE_FORMAT(job_date, '%Y-%m') = '$twoMonthsAgo';";
+
+$followups_result = $con->query($followups_sql)->fetch_array()[0];
+
+$today = date('Y-m-d');
+
+$today_sql = "SELECT COUNT(*) FROM job_entry WHERE source = 'followup' AND job_date= '$today'";
+
+$today_result = $con->query($today_sql)->fetch_array()[0];
+
+$pending_sql ="SELECT COUNT(*) FROM `job_entry` WHERE status='pending'";
+
+$pending_result = $con->query($pending_sql)->fetch_array()[0];
 ?>
 <!DOCTYPE html> 
 <html lang="en">
@@ -22,8 +42,37 @@ if(!isset($_SESSION['username'])) {
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+  <style>
+    .modified{
+      display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-around; height: 100%;
+    }
+
+    .fw-modified{
+      font-style: italic;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .heading {
+  min-height: 40px; /* Adjust based on font size and expected lines */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.sub_heading {
+  min-height: 48px; /* Or enough to fit 2 lines max */
+  display: block;
+}
+
+.card-statistic-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+  </style>
 </head>
-<body>
+<body class="sidebar-mini">
   <div class="loader"></div>
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
@@ -31,46 +80,90 @@ if(!isset($_SESSION['username'])) {
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-danger">
-                <div class="card-header">
-                <a href="#">Total Pending Calls</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">10</h5>
+        <div class="row d-flex">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+            <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading">Followup Calls</h5>
+                          <a href="followups.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $followups_result ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/5.avif" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-warning">
-                <div class="card-header">
-                <a href="#">Today Assignment</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">4</h5>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between" >
+                    <div class="row" >
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading">Today Assignment Calls</h5>
+                          <a href="today_jobs.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $today_result ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0" >
+                        <div class="banner-img">
+                          <img src="assets/img/banner/6.avif" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-success">
-                <div class="card-header">
-                  <a href="#">Tomorrow Followup Calls</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">2</h5>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading">Pending Job</h5>
+                          <a href="pending.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $pending_result ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/8.jpg" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
 
-            <div class="col-sm-12 col-lg-8">
-              <div class="card card-primary">
-                <div class="card-header">
-                <a href="#">Total Calls</a>
-                </div>
-                <div class="card-body">
-                  <div id="chart1" style="height: 400px;"></div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading">Calls Booked</h5>
+                          <a href="sold.php"><h2 class="mb-3 fw-modified sub_heading"></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/9.webp" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

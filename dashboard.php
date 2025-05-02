@@ -7,6 +7,69 @@ if(!isset($_SESSION['username'])) {
   header("Location: index.php");
   exit;  
 }
+
+$yesterday = date('Y-m-d', strtotime('yesterday'));
+
+$sql = "SELECT COUNT(*) FROM sales WHERE sale_date = '$yesterday'";
+$result = $con->query($sql)->fetch_array()[0];
+
+$credit_sql = "SELECT COUNT(*) FROM sales WHERE sale_type = 'Credit'";
+$credit_result = $con->query($credit_sql)->fetch_array()[0];
+
+$re_order_sql = "SELECT i.item_id,i.name AS item_name, i.brand AS item_brand,i.model AS item_model,i.qty AS opening_stack,
+COALESCE(p.purchase_qty, 0) AS purchase,COALESCE(pr.purchase_return_qty, 0) AS purchase_return,
+COALESCE(s.sale_qty, 0) AS sale,COALESCE(si.issue_qty, 0) AS issue,(i.qty + COALESCE(p.purchase_qty, 0) - COALESCE(pr.purchase_return_qty, 0) 
+     - COALESCE(s.sale_qty, 0) - COALESCE(si.issue_qty, 0)) AS closing_stack, i.re_order AS re_order  
+     FROM 
+    items i LEFT JOIN (
+    SELECT item_id, SUM(quantity) AS purchase_qty
+    FROM purchase_items
+    GROUP BY item_id
+) p ON i.item_id = p.item_id  
+LEFT JOIN (
+    SELECT item_id, SUM(qty) AS purchase_return_qty
+    FROM purchase_returns_items
+    GROUP BY item_id
+) pr ON i.item_id = pr.item_id  
+LEFT JOIN (
+    SELECT item_id, SUM(qty) AS sale_qty
+    FROM sales_items
+    GROUP BY item_id
+) s ON i.item_id = s.item_id  
+LEFT JOIN (
+    SELECT spare_id, SUM(qty) AS issue_qty
+    FROM spare_issue_item
+    GROUP BY spare_id
+) si ON i.item_id = si.spare_id 
+WHERE (i.qty + COALESCE(p.purchase_qty, 0) - COALESCE(pr.purchase_return_qty, 0) 
+     - COALESCE(s.sale_qty, 0) - COALESCE(si.issue_qty, 0)) <= i.re_order
+GROUP BY 
+    i.item_id, i.name, i.brand, i.model, i.qty  
+
+ORDER BY 
+    i.name;
+";
+$re_order_result = $con->query($re_order_sql)->num_rows;
+
+$sold_sql = "SELECT COUNT(*) FROM sold;";
+$sold_result = $con->query($sold_sql)->fetch_array()[0];
+
+$currentFY = date('Y') . '-' . (date('Y') + 1);
+if (date('m') < 4) { // April is month 4
+    $currentFY = (date('Y') - 1) . '-' . date('Y');
+}
+
+$sale_chart_sql = "SELECT MONTH(sale_date) AS month_number, DATE_FORMAT(sale_date, '%M') AS month_name, SUM(total) AS total_sales FROM sales WHERE cyear = '$currentFY' GROUP BY month_number, month_name ORDER BY id;";
+$sale_chart_result = $con->query($sale_chart_sql);
+$months = [];
+$sales = [];
+
+while ($row = $sale_chart_result->fetch_assoc()) {
+    $months[] = $row['month_name'];
+    $sales[] = $row['total_sales'];
+}
+// die($currentFY);
+
 ?>
 <!DOCTYPE html> 
 <html lang="en">
@@ -22,8 +85,37 @@ if(!isset($_SESSION['username'])) {
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
+  <style>
+    .modified{
+      display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: space-around; height: 100%;
+    }
+
+    .fw-modified{
+      font-style: italic;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    .heading {
+  min-height: 40px; /* Adjust based on font size and expected lines */
+  margin-bottom: 8px;
+  display: block;
+}
+
+.sub_heading {
+  min-height: 48px; /* Or enough to fit 2 lines max */
+  display: block;
+}
+
+.card-statistic-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+  </style>
 </head>
-<body>
+<body class="sidebar-mini">
   <div class="loader"></div>
   <div id="app">
     <div class="main-wrapper main-wrapper-1">
@@ -31,50 +123,109 @@ if(!isset($_SESSION['username'])) {
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-        <div class="row">
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-danger">
-                <div class="card-header">
-                <a href="#">Total Pending Calls</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">10</h5>
+        <div class="row d-flex">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+            <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading">Yesterday Sales</h5>
+                          <a href="yesterday_sales_report.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $result; ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/5.avif" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-warning">
-                <div class="card-header">
-                <a href="#">Today Assignment</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">4</h5>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between" >
+                    <div class="row" >
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading"> Credit Bills</h5>
+                          <a href="credit_bills.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $credit_result; ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0" >
+                        <div class="banner-img">
+                          <img src="assets/img/banner/6.avif" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-lg-4">
-              <div class="card card-success">
-                <div class="card-header">
-                  <a href="#">Tomorrow Followup Calls</a>
-                </div>
-                <div class="card-body">
-                <h5 class="font-15">2</h5>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading"> Re-Order Stock</h5>
+                          <a href="re_order_stock.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $re_order_result; ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/8.jpg" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
 
-            <div class="col-sm-12 col-lg-8">
-              <div class="card card-primary">
-                <div class="card-header">
-                <a href="#">Total Calls</a>
-                </div>
-                <div class="card-body">
-                  <div id="chart1" style="height: 400px;"></div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+              <div class="card w-100">
+                <div class="card-statistic-4" style="height: 100%;">
+                  <div class="align-items-center justify-content-between">
+                    <div class="row ">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                        <div class="card-content modified">
+                          <h5 class="font-15 heading"> Sold</h5>
+                          <a href="sold.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $sold_result; ?></h2></a>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                        <div class="banner-img">
+                          <img src="assets/img/banner/9.webp" alt="" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             
+          </div>
+
+          <div class="row clearfix">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-8">
+              <div class="card">
+                <div class="card-header">
+                  <h4>Month-wise Sales <span class="col-blue font-15">(<?php echo $currentFY;?>)</span></h4>
+                </div>
+                <div class="card-body">
+                  <div class="recent-report__chart">
+                    <div id="barChart"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
          
@@ -94,34 +245,65 @@ if(!isset($_SESSION['username'])) {
   <script src="assets/js/custom.js"></script>
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
   <script>
-    var chartDom = document.getElementById('chart1');
-    var myChart = echarts.init(chartDom);
-    var option;
-
-    option = {
+    var barChart = echarts.init(document.getElementById('barChart'));
+    var option = {
       tooltip: {
-        trigger: 'item'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left'
-      },
-      series: [
-        {
-          type: 'pie',
-          radius: '50%',
-          data: [
-            { value: 10, name: 'Pending Calls',itemStyle:{color:'#dc3545'} },
-            { value: 4, name: 'Today Assignment',itemStyle:{color:'#ffc107'} },
-            { value: 2, name: 'Tomorrow Followup Calls',itemStyle:{color:'#28a745'} },
-          ],
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow' // Shadow type on hover
+            },
+            formatter: function(params) {
+                // Custom tooltip content
+                return `<strong>${params[0].name}</strong><br/>
+                        Amount: <b>${params[0].value}</b>`;
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: <?php echo json_encode($months); ?>
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: <?php echo json_encode($sales); ?>,
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(220, 220, 220, 0.4)'  // Light gray background
+            },
+            itemStyle: {
+                color:
+                    // Custom color for each bar
+                    new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    { offset: 0, color: '#83bff6' },
+    { offset: 0.5, color: '#91CC75' },
+    { offset: 1, color: '#91CC25' }
+   ]),
+    barBorderRadius: [6, 6, 0, 0],  // Rounded top corners
+                borderWidth: 1,
+                borderColor: '#fff'
+            },
+            barWidth: '40px',  // Adjust width (40% of category width)
+            barGap: '30%',    // Gap between bars
+            barCategoryGap: '20%'  // Gap between categories
+        }],
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
         }
-      ]
     };
 
-    option && myChart.setOption(option);
-
-   
+    barChart.setOption(option);
+    
+    // Responsive behavior
+    window.addEventListener('resize', function() {
+        barChart.resize();
+    });
 </script>
+
+
 </body>
 </html>

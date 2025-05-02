@@ -7,10 +7,10 @@ if (!isset($_SESSION['username'])) {
 }
 
 include "config.php";
-$query = "SELECT s.id, s.sold_date, a.appliance_name, s.expense, c.name, s.sell_amnt
+$query = "SELECT s.id, s.sold_date, a.appliance_name, s.expense, c.name, c.phone, s.sell_amnt
           FROM sold s
-          JOIN customer_appliances a ON s.appliance_id = a.id
-          JOIN customer c ON s.seller_id = c.id";
+          LEFT JOIN customer_appliances a ON s.appliance_id = a.id
+          LEFT JOIN customer c ON s.seller_id = c.id";
 $sold = $con->query($query);
 
 ?>
@@ -78,6 +78,7 @@ $sold = $con->query($query);
                                                         <th>Appliance Name</th>
                                                         <th>Expense Amount</th>
                                                         <th>Seller Name</th>
+                                                        <th>Seller Phone</th>
                                                         <th>Sell Amount</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -94,6 +95,7 @@ $sold = $con->query($query);
                                                             <td><?php echo $row['appliance_name']; ?></td>
                                                             <td><?php echo $row['expense']; ?></td>
                                                             <td><?php echo $row['name']; ?></td>
+                                                            <td><?php echo $row['phone']; ?></td>
                                                             <td><?php echo $row['sell_amnt']; ?></td>
                                                             <td>
 

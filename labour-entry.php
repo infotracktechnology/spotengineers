@@ -29,7 +29,7 @@ $job_no = $job_no['job_no'] ? $job_no['job_no']+1 : 1;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
  extract($_POST);
- $job = $con->query("INSERT INTO `job_entry`(`job_no`, `job_date`, `customer_id`, `gst_no`, `emp_id`, `cyear`,`grand_total`) VALUES ('$job_no', '$job_date', '$customer_id', '$gst_no', '$emp_id', '$cyear', '$grand_total')");
+ $job = $con->query("INSERT INTO `job_entry`(`job_no`, `job_date`, `customer_id`, `gst_no`, `emp_id`, `cyear`,`grand_total`,`source`) VALUES ('$job_no', '$job_date', '$customer_id', '$gst_no', '$emp_id', '$cyear', '$grand_total', '$source')");
  if($job) {
      $job_id = $con->insert_id;
      if(isset($_POST['work_id'])){
@@ -40,8 +40,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
      }
     }
     }
-    header("location:labour-entry.php");
-    exit;
+    echo '<script>alert("Labour Entry Added Successfully");</script>';
+    echo '<script>window.location.href="labour-entry.php";</script>';
 }
 
 ?>
@@ -130,6 +130,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                         echo '<option value="' . $technician['id'] . '">' . $technician['name'] . '</option>';
                                                     }
                                                     ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-3 form-group">
+                                                <label class="col-blue">Lead Source</label>
+                                                <select id="source" name="source" class="form-control form-control-sm" required>
+                                                    <option value="" selected disabled>Select Source</option>
+                                                    <option value="followup">Call Followup</option>
+                                                    <option value="customer referral">Customer Referral</option>
+                                                    <option value="social media">Social Media</option>
+                                                    <option value="walkin">Walkin</option>
+                                                    <option value="website">Webiste</option>
+                                                    <option value="office">Office</option>
+                                                    <option value="other">Other</option>
                                                 </select>
                                             </div>
 
@@ -289,6 +303,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         updateGrandTotal() {
             this.grandTotal = this.items.reduce((sum, item) => sum + Number(item.rate), 0);
+            this.grandTotal.toFixed(2);
         },
 
         removeItem(index) {
