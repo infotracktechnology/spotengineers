@@ -14,19 +14,23 @@ $twoMonthsAgo = date('Y-m', strtotime('-2 months'));
 
 $followups_sql = "SELECT COUNT(*) FROM job_entry 
           WHERE status = 'completed' 
-          AND DATE_FORMAT(job_date, '%Y-%m') = '$twoMonthsAgo';";
+          AND DATE_FORMAT(job_date, '%Y-%m') = '$twoMonthsAgo' AND followup_status = '';";
 
 $followups_result = $con->query($followups_sql)->fetch_array()[0];
 
 $today = date('Y-m-d');
 
-$today_sql = "SELECT COUNT(*) FROM job_entry WHERE source = 'followup' AND job_date= '$today'";
+$today_sql = "SELECT COUNT(*) FROM job_entry WHERE source = 'followup' AND job_date= '$today';";
 
 $today_result = $con->query($today_sql)->fetch_array()[0];
 
-$pending_sql ="SELECT COUNT(*) FROM `job_entry` WHERE status='pending'";
+$pending_sql ="SELECT COUNT(*) FROM `job_entry` WHERE id NOT IN (SELECT job_entry_id FROM followup) AND status='pending';";
 
 $pending_result = $con->query($pending_sql)->fetch_array()[0];
+
+$booked_sql = "SELECT COUNT(*) FROM `job_entry` WHERE status='pending' AND source = 'followup' AND DATE_FORMAT(job_date, '%Y-%m-%d') > '$today';";
+
+$booked_result = $con->query($booked_sql)->fetch_array()[0];
 ?>
 <!DOCTYPE html> 
 <html lang="en">
@@ -154,7 +158,7 @@ $pending_result = $con->query($pending_sql)->fetch_array()[0];
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                         <div class="card-content modified">
                           <h5 class="font-15 heading">Calls Booked</h5>
-                          <a href="sold.php"><h2 class="mb-3 fw-modified sub_heading"></h2></a>
+                          <a href="calls_booked.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $booked_result ?></h2></a>
                         </div>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
