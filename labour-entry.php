@@ -44,6 +44,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo '<script>window.location.href="labour-entry.php";</script>';
 }
 
+if(isset($_GET['customer_id'])) {
+    $redirect_customer_id = $_GET['customer_id'];
+    $redirect_source = "followup";
+    // $job = $con->query("SELECT * FROM job_entry WHERE id = '$job_id'")->fetch_array();
+    // $labour = $con->query("SELECT * FROM labour_entry WHERE job_id = '$job_id'")->fetch_all(MYSQLI_ASSOC);
+}else {
+    $redirect_customer_id = null;
+    $redirect_source = '';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -135,9 +145,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                             <div class="col-md-3 form-group">
                                                 <label class="col-blue">Lead Source</label>
-                                                <select id="source" name="source" class="form-control form-control-sm" required>
+                                                <select id="source" name="source" class="form-control form-control-sm" <?php if ($redirect_source == 'followup') echo 'style="pointer-events: none;"';  ?> required>
                                                     <option value="" selected disabled>Select Source</option>
-                                                    <option value="followup">Call Followup</option>
+                                                    <option value="followup" <?php if (isset($redirect_source) && $redirect_source == 'followup') echo 'selected'; ?>>Call Followup</option>
                                                     <option value="customer referral">Customer Referral</option>
                                                     <option value="social media">Social Media</option>
                                                     <option value="walkin">Walkin</option>
@@ -264,7 +274,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         rate: 0,
         items: [],
         grandTotal: 0,
-  
+        redirect_customer_id : "<?php echo $redirect_customer_id; ?>",
         getCustomer(value) {
             this.customer_name = this.customer[value]?.name || '';
             this.city = this.customer[value]?.city || '';
@@ -285,7 +295,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             let selectedWork = this.work_list.find(w => w.id == this.work);
             let selecteAppliance = this.appliances.find(a => a.id == this.appliance);
-            console.log(this.appliance);
             
             let item = {
                 appliance_id: this.appliance,
@@ -326,6 +335,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             // }
             // e.target.submit();
             // return true;
+        },
+        init(){
+            if(this.redirect_customer_id){
+                this.customer_name = this.customer[this.redirect_customer_id]?.name || '';
+                this.city = this.customer[this.redirect_customer_id]?.city || '';
+                this.gst_no = this.customer[this.redirect_customer_id]?.gst_no || '';
+                this.appliances = this.customer[this.redirect_customer_id]?.appliances || [];
+                customerSelect.setValue(this.redirect_customer_id);
+                customerSelect.wrapper.setAttribute('style', 'pointer-events: none;');
+            }
         }
            
     }));

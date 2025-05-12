@@ -9,35 +9,25 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-$successMessage = $_SESSION['success'] ?? null;
-$errorMessage = $_SESSION['error'] ?? null;
-unset($_SESSION['error']);
-unset($_SESSION['success']);
-
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
     $job = $con->query("INSERT INTO `followup`(`job_entry_id`, `job_no`, `proposal_date`, `call_status`, `customer_id`,`employee_id`, `customer_phone`, `remarks`) VALUES ('$job_entry_id', '$job_no', '$proposal_date', '$call_status', '$customer_id','$employee_id', '$customer_phone', '$remarks');");
     if($job) {
-        $_SESSION['success'] = "Successfully saved!";
-        header("Location: pending.php");
-        exit;
+        echo '<script>alert("Remarks Added Successfully");</script>';
+        echo '<script>window.location.href="calls_status.php";</script>';
        }else {
-        $_SESSION['error'] = "Error while saving!". $con->error;
-        header("Location: pending.php");
-        exit;
+        echo '<script>alert("Something went wrong");</script>';
+        echo '<script>window.location.href="calls_status.php";</script>';
        }
     //    echo '<script>alert("Remarks Added Successfully");</script>';
     //    echo '<script>window.location.href="pending.php";</script>';
    }
 
-// $twoMonthsAgo = date('Y-m-d', strtotime('-2 months'));
-// $twoMonthsAgo = date('Y-m', strtotime('-2 months'));
+// $yesterday = date('Y-m-d', strtotime('yesterday'));
 
 $today = date('Y-m-d');
 
-// $sql = "SELECT j.job_no, j.job_date, j.id AS job_id, c.name AS customer_name, c.id AS customer_id, c.phone AS customer_phone, e.id AS employee_id, e.name AS employee_name FROM job_entry j LEFT JOIN customer c ON j.customer_id = c.id LEFT JOIN employee e ON j.emp_id = e.id WHERE j.id NOT IN (SELECT job_entry_id FROM followup) AND status='pending' ORDER BY j.id ASC;";
-// $result = $con->query($sql);
-
+// $sql = "SELECT c.name AS customer_name, c.phone AS customer_phone, f.proposal_date AS proposal_date, f.call_status AS call_status, f.id AS followup_id, f.job_no AS job_no, f.job_entry_id AS job_entry_id, f.customer_id AS customer_id, f.employee_id AS employee_id, e.name AS employee_name FROM followup f LEFT JOIN customer c ON f.customer_id = c.id LEFT JOIN employee e ON f.employee_id = e.id WHERE f.call_status = 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today' ORDER BY c.name ASC;";
 $sql = "SELECT 
 c.name AS customer_name,
 c.phone AS customer_phone,
@@ -53,10 +43,9 @@ FROM followup f
 LEFT JOIN customer c ON f.customer_id = c.id
 LEFT JOIN employee e ON f.employee_id = e.id
 WHERE f.id = (SELECT MAX(id)
-FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status = 'pending' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
+FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status = 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
 ORDER BY c.name ASC;
 ";
-
 $result = $con->query($sql);
 ?>
 
@@ -66,7 +55,7 @@ $result = $con->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Pending Calls | Spot Engineers</title>
+    <title>Call Status | Spot Engineers</title>
     <link rel="stylesheet" href="assets/css/app.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -76,31 +65,6 @@ $result = $con->query($sql);
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
     <link rel="stylesheet" href="assets/bundles/select2/dist/css/select2.min.css">
-    <style>
-        .toast {
-    min-width: 300px;
-}
-
-.toast-header {
-    color: white;
-}
-
-.bg-success {
-    background-color: #28a745 !important;
-}
-
-.bg-danger {
-    background-color: #dc3545 !important;
-}
-
-.bg-warning {
-    background-color: #ffc107 !important;
-}
-
-.bg-info {
-    background-color: #17a2b8 !important;
-}
-    </style>
 </head>
 
 <body>
@@ -115,36 +79,36 @@ $result = $con->query($sql);
                             <div class="col-md-12">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h4 class="col-deep-purple m-0">Pending Calls</h4>
+                                        <h4 class="col-deep-purple m-0">Call Status Report</h4>
                                     </div>
                                     <div class="card-body">
                                       
                                         <div class="table-responsive">
                                             <table class="table table-striped table-sm" id="tableExport" style="width:100%;">
-                                                <thead class="tableHeader">
+                                                <thead>
                                                     <tr>
                                                         <th>S.No</th>
-                                                        <th>Job #</th>
-                                                        <th>Proposal Date</th>
-                                                        <th>Customer Name</th>
+                                                        <th>Name</th>
                                                         <th>Customer Phone</th>
+                                                        <th>Proposal Date</th>
+                                                        <th>Call Status</th>
                                                         <th>Employee Name</th>
-                                                        <th>Call</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="tableBody">
+                                                <tbody>
                                                     <?php
                                                     $i = 1;
                                                     while ($row = $result->fetch_assoc()) {
                                                         echo "<tr>
                                                             <td>" . $i . "</td>
-                                                            <td>" . $row['job_no'] . "</td>
-                                                            <td>" . $row['proposal_date'] . "</td>
                                                             <td>" . $row['customer_name'] . "</td>
                                                             <td>" . $row['customer_phone'] . "</td>
+                                                            <td>" . $row['proposal_date'] . "</td>
+                                                            <td>" . $row['call_status'] . "</td>
                                                             <td>" . $row['employee_name'] . "</td>
                                                             <td>
-                                                            <button type='button' class='btn btn-primary btn pending-btn' 
+                                                            <button type='button' class='btn btn-primary btn update-btn' 
                                                                     data-toggle='modal' 
                                                                     data-customerid='" . $row['customer_id'] . "'
                                                                     data-employeeid='" . $row['employee_id'] . "'
@@ -153,8 +117,9 @@ $result = $con->query($sql);
                                                                     data-job_no='" . $row['job_no'] . "'
                                                                     data-job_entry_id='" . $row['job_entry_id'] . "'
                                                                     data-followup_id='" . $row['followup_id'] . "'>
-                                                                    <i class='fas fa-phone' style='font-size:16px; vertical-align:middle'></i>
-                                                            </
+                                                                    <i class='fas fa-edit'></i>
+                                                            </button>
+                                                        </td>
                                                         </tr>";
                                                         $i++;
                                                     }
@@ -171,7 +136,7 @@ $result = $con->query($sql);
                 </section>
             </div>
         </div>
-<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -180,7 +145,7 @@ $result = $con->query($sql);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="pending.php" method="POST" id="callForm">
+            <form action="calls_status.php" method="POST">
 
             <div class="modal-body">
                 <div class="form-group">
@@ -199,36 +164,27 @@ $result = $con->query($sql);
                 </div>
 
                 <div class="form-group date_div" style="display: none;">
-                <label for="proposalDate">Proposal Date <span class="text-danger">*</span></label><input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
+                    <label for="proposalDate">Proposal Date</label><input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
                     <input type="hidden" id="modalCustomerId" name="customer_id" value="">
                     <input type="hidden" id="modalEmployeeId" name="employee_id" value="">
                     <input type="hidden" id="modalphone" name="customer_phone" value="">
-                    <input type="hidden" id="modaljob" name="job_no" value="">
-                    <input type="hidden" id="modaljob_id" name="job_entry_id" value="">
+                    <input type="hidden" id="modaljob_no" name="job_no" value="">
+                    <input type="hidden" id="modaljob_entry_id" name="job_entry_id" value="">
+                    <input type="hidden" id="modalfollowup_id" name="followup_id" value="">
                 </div>
 
-                <div class="form-group remarks_div" style="display: none;">
-                    <label for="feedbackText">Remarks <span class="text-danger call-remarks" style="display: none;">*</span></label>
+                <div class="form-group">
+                    <label for="feedbackText">Remarks</label>
                     <textarea class="form-control" id="feedbackText" name="remarks" rows="3"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary" id="saveFeedback">Save Feedback</button> -->
                 <button type="submit" class="btn btn-primary" id="saveFeedback">Save Feedback</button>
             </div>
             </form>
         </div>
-    </div>
-</div>
-<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999">
-    <div id="toastNotification" class="toast" data-delay="3000" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="mr-auto">Notification</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body"></div>
     </div>
 </div>
     </div>
@@ -239,90 +195,45 @@ $result = $con->query($sql);
     <script src="assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/js/app.js"></script>
-    <script>
-$(document).ready(function() {
-    $('.pending-btn').click(function() {
+</body>
+<script>
+    $(document).ready(function() {
+        $('.update-btn').click(function() {
         var phone = $(this).data('phone');
         var job = $(this).data('job_no');
         var customer_id = $(this).data('customerid');
         var employee_id = $(this).data('employeeid');
         var job_id = $(this).data('job_entry_id');
+        var followup_id = $(this).data('followup_id');
         $('#modalphone').val(phone); 
         $('#modalCustomerId').val(customer_id); 
         $('#modalEmployeeId').val(employee_id);
         $('#modalJobNumber').text(job);
-        $('#modaljob').val(job);
-        $('#modaljob_id').val(job_id);
+        $('#modaljob_no').val(job);
+        $('#modaljob_entry_id').val(job_id);
+        $('#modelfollowup_id').val(followup_id);
         $('#modalPhoneNumber').attr('onclick', "window.location.href='tel:+91" + phone + "';");
     });
 
     $('#proposalStatus').on('change', function() {
     const selectedValue = $(this).val();
     const dateDiv = $('.date_div');
-    const callRemarks = $('.call-remarks');
     const proposalDate = $('#proposalDate');
     const feedbackText = $('#feedbackText');
-    const remarksDiv = $('.remarks_div');
-    const isEmpty = selectedValue === '';
-    const isRejected = selectedValue === 'rejected';
-    const isAccepted = selectedValue === 'accepted';
-    const isBooked = selectedValue === 'booked';
-    if(isBooked) {
-        proposalDate.attr('min', '<?php echo date('Y-m-d', strtotime('+1 day')); ?>').val('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
-    } else {
-        proposalDate.attr('min', '<?php echo date('Y-m-d'); ?>').val('<?php echo date('Y-m-d'); ?>');
-    }
-    remarksDiv.toggle(!isEmpty);
-    callRemarks.toggle(!isAccepted);
-    dateDiv.toggle(isRejected || isBooked);
-    proposalDate.prop('required', isRejected || isBooked).css('pointer-events', isRejected || isBooked ? 'auto' : 'none');
-    feedbackText.prop('required', !isAccepted);
 
+    const isRejected = selectedValue === 'rejected';
+    const isAcceptedOrBooked = selectedValue === 'accepted' || selectedValue === 'booked';
+
+    dateDiv.toggle(isRejected);
+    proposalDate.prop('required', isRejected).css('pointer-events', isRejected ? 'auto' : 'none');
+    feedbackText.prop('required', selectedValue !== ''); // Feedback required for any status other than the default/empty
+
+    // if (!isRejected) {
+    //   proposalDate.val(''); // Clear date if not rejected
+    // }
   });
 
-    $('#callForm').on('submit', function(e) {
-        if($('#proposalStatus').val() === 'booked') {
-            const submitDate = $('#proposalDate');
-            const selectedDate = new Date(submitDate.val());
-            const minDate = new Date('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
-            if(selectedDate < minDate) {
-                showToast('Error', 'Proposal Date should not be lesser', 'danger');
-                e.preventDefault();
-                return;
-        }
-        } else {
-            const submitDate = $('#proposalDate');
-            const selectedDate = new Date(submitDate.val());
-            const minDate = new Date('<?php echo date('Y-m-d'); ?>');
-            if(selectedDate < minDate) {
-                showToast('Error', 'Proposal Date should not be lesser', 'danger');
-                e.preventDefault();
-                return;
-            }
-        }
-    });
-
-        <?php if ($successMessage): ?>
-        showToast('Success', '<?php echo $successMessage; ?>', 'success');
-        <?php endif; ?>
-
-    function showToast(title, message, type = 'success') {
-    const toast = $('#toastNotification');
-    
-    toast.find('.toast-header strong').text(title);
-    toast.find('.toast-body').text(message);
-    
-    toast.find('.toast-header').removeClass('bg-success bg-danger bg-warning bg-info');
-    toast.find('.toast-header').addClass('bg-' + type);
-    
-    toast.toast('show');
-    
-    setTimeout(() => {
-        toast.toast('hide');
-    }, 3000);
-}
-
-    $('#tableExport').DataTable({
+  $('#tableExport').DataTable({
         dom: 'Bfrtip',
         buttons: [
             {
@@ -339,7 +250,9 @@ $(document).ready(function() {
             }
         ]
     });
-});
+ 
+      
+    });
 </script>
-</body>
+
 </html>

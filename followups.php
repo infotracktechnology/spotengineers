@@ -9,8 +9,11 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-// $twoMonthsAgo = date('Y-m-d', strtotime('-2 months'));
-// $today = date('Y-m-d');
+$successMessage = $_SESSION['successMessage'] ?? null;
+$errorMessage = $_SESSION['errorMessage'] ?? null;
+unset($_SESSION['errorMessage']);
+unset($_SESSION['successMessage']);
+
 
 $twoMonthsAgo = date('Y-m', strtotime('-2 months'));
 
@@ -30,7 +33,7 @@ $result = $con->query($sql);
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/custom.css">
-    <link rel="stylesheet" href="assets/bundles/stepper/stepper.min.css">
+    <!-- <link rel="stylesheet" href="assets/bundles/stepper/stepper.min.css"> -->
     <link rel="stylesheet" href="assets/bundles/datatables/datatables.min.css">
     <link rel="stylesheet" href="assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
     <link rel='shortcut icon' type='image/x-icon' href='assets/img/favicon.ico' />
@@ -130,7 +133,6 @@ $result = $con->query($sql);
                 </section>
             </div>
         </div>
-        <!-- Feedback Modal -->
 <div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -140,7 +142,6 @@ $result = $con->query($sql);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <!-- <form action="save_followup.php" method="POST"> -->
 
             <div class="modal-body">
                 <div class="form-group">
@@ -149,17 +150,17 @@ $result = $con->query($sql);
                 </div>
 
                 <div class="form-group">
-                    <label for="proposalStatus">Call Status</label>
+                    <label for="proposalStatus">Call Status <span class="text-danger">*</span></label>
                     <select class="form-control" id="proposalStatus" name="call_status" required>
+                        <option value="">Select Call Status</option>
                         <option value="booked">Booked</option>
-                        <option value="pending">Pending</option>
                         <option value="accepted">Accepted</option>
                         <option value="rejected">Rejected</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="proposalDate">Proposal Date</label><input type="date" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
+                <div class="form-group date_div" style="display: none;">
+                <label for="proposalDate">Proposal Date <span class="text-danger">*</span></label><input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
                     <input type="hidden" id="modalCustomerId" name="customer_id" value="">
                     <input type="hidden" id="modalEmployeeId" name="employee_id" value="">
                     <input type="hidden" id="modalphone" name="customer_phone" value="">
@@ -167,22 +168,19 @@ $result = $con->query($sql);
                     <input type="hidden" id="modaljob_id" name="job_entry_id" value="">
                 </div>
 
-                <div class="form-group">
-                    <label for="feedbackText">Remarks</label>
+                <div class="form-group remarks_div" style="display: none;">
+                    <label for="feedbackText">Remarks <span class="text-danger call-remarks" style="display: none;">*</span></label>
                     <textarea class="form-control" id="feedbackText" name="remarks" rows="3"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveFeedback">Save Feedback</button>
-                <!-- <button type="submit" class="btn btn-primary" id="saveFeedback">Save Feedback</button> -->
             </div>
-            <!-- </form> -->
         </div>
     </div>
 </div>
-<!-- Toast Notification Container (place this in your layout file) -->
-<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999">
+<div aria-live="polite" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;" class="d-none" id="toastDiv">
     <div id="toastNotification" class="toast" data-delay="3000" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <strong class="mr-auto">Notification</strong>
@@ -202,6 +200,7 @@ $result = $con->query($sql);
     <script src="assets/bundles/select2/dist/js/select2.full.min.js"></script>
     <script src="assets/js/app.js"></script>
     <script>
+
 $(document).ready(function() {
     $('.call-btn').click(function() {
         var phone = $(this).data('phone');
@@ -218,7 +217,65 @@ $(document).ready(function() {
         $('#modalPhoneNumber').attr('onclick', "window.location.href='tel:+91" + phone + "';");
     });
 
+    $('#proposalStatus').on('change', function() {
+    const selectedValue = $(this).val();
+    const dateDiv = $('.date_div');
+    const callRemarks = $('.call-remarks');
+    const proposalDate = $('#proposalDate');
+    const feedbackText = $('#feedbackText');
+    const remarksDiv = $('.remarks_div');
+    const isEmpty = selectedValue === '';
+    const isRejected = selectedValue === 'rejected';
+    const isAccepted = selectedValue === 'accepted';
+    const isBooked = selectedValue === 'booked';
+    if(isBooked) {
+        proposalDate.attr('min', '<?php echo date('Y-m-d', strtotime('+1 day')); ?>').val('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
+
+    } else {
+        proposalDate.attr('min', '<?php echo date('Y-m-d'); ?>').val('<?php echo date('Y-m-d'); ?>');
+    }
+    remarksDiv.toggle(!isEmpty);
+    callRemarks.toggle(!isAccepted);
+    dateDiv.toggle(isRejected || isBooked);
+    proposalDate.prop('required', isRejected || isBooked).css('pointer-events', isRejected || isBooked ? 'auto' : 'none');
+    feedbackText.prop('required', !isAccepted);
+
+  });
+
     $('#saveFeedback').click(function() {
+        if ($('#proposalStatus').val() === '') {
+            showToast(
+                'Error', 
+                'Please select a status.', 
+                'danger'
+            );
+            return;
+        }
+        if($('#feedbackText').val() === '' && $('#proposalStatus').val() !== 'accepted') {
+            showToast(
+                'Error', 
+                'Please enter remarks.', 
+                'danger'
+            );
+            return;    
+        }
+        if($('#proposalStatus').val() === 'booked') {
+            const submitDate = $('#proposalDate');
+            const selectedDate = new Date(submitDate.val());
+            const minDate = new Date('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
+            if(selectedDate < minDate) {
+                showToast('Error', 'Proposal Date should not be lesser', 'danger');
+                return;
+        }
+        } else {
+            const submitDate = $('#proposalDate');
+            const selectedDate = new Date(submitDate.val());
+            const minDate = new Date('<?php echo date('Y-m-d'); ?>');
+            if(selectedDate < minDate) {
+                showToast('Error', 'Proposal Date should not be lesser', 'danger');
+                return;
+            }
+        }
         $.ajax({
             url: 'save_followup.php',
             method: 'POST',
@@ -233,36 +290,42 @@ $(document).ready(function() {
                 proposal_date: $('#proposalDate').val()
             },
             success: function(response) {
-            // Hide modal
-            $('#callModal').modal('hide');
-            
-            // Show toast notification
-            showToast(
-                'Success', 
-                'Feedback saved successfully!', 
-                'success'
-            );
-            
-            // Reset form fields if needed
-            $('#feedbackText').val('');
-            $('#proposalStatus').val('pending');
-            // alert('Remarks added successfully');
-            setTimeout(function() {
-                        location.reload();
-                    }, 1500);
+                if(response.status === 'success') {
+                    $('#callModal').modal('hide');
+                    sessionStorage.setItem('successMessage', 'Feedback saved successfully!');
+                    location.reload();
+                    
+                    $('#feedbackText').val('');
+                    $('#proposalStatus').val('pending');
+                } else {
+                    sessionStorage.setItem('errorMessage', 'Failed to save : ' + response.message);
+                    location.reload();
+                }
         },
         error: function(xhr) {
-            showToast(
-                'Error', 
-                'Failed to save feedback: ' + (xhr.responseJSON?.message || xhr.statusText), 
-                'danger'
-            );
+            sessionStorage.setItem('errorMessage', 'Failed to save feedback: ' + (xhr.responseJSON?.message || xhr.statusText));
+            location.reload();
         }
         });
     });
 
+    const success = sessionStorage.getItem('successMessage');
+    const error = sessionStorage.getItem('errorMessage');
+    if (success) {
+    showToast(success, 'success');
+    sessionStorage.removeItem('successMessage');
+    } else if (error) {
+    showToast(error, 'danger');
+    sessionStorage.removeItem('errorMessage');
+    }
+
     function showToast(title, message, type = 'success') {
     const toast = $('#toastNotification');
+    const toastDiv = $('#toastDiv');
+
+    // Show the toast div
+    toastDiv.removeClass('d-none');
+    toastDiv.addClass('d-block');
     
     // Set toast content and style
     toast.find('.toast-header strong').text(title);
@@ -278,7 +341,9 @@ $(document).ready(function() {
     // Auto-hide after delay
     setTimeout(() => {
         toast.toast('hide');
-    }, 3000);
+        toastDiv.removeClass('d-block');
+        toastDiv.addClass('d-none');
+    }, 2000);
 }
 
     $('#tableExport').DataTable({
