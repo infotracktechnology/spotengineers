@@ -19,9 +19,9 @@ header('Content-Type: application/json');
             exit;
     }
     if($job) {
-        $response = ['status' => 'success', 'message' => 'Remarks added successfully'];
+        $response = ['status' => 'success', 'message' => 'Successfully saved'];
        }else {
-        $response = ['success' => false, 'message' => 'Error saving feedback: ' . $stmt->error];
+        $response = ['success' => false, 'message' => 'Error while saving: ' . $stmt->error];
        }
     echo json_encode($response);
 // ob_start();

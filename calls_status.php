@@ -11,38 +11,42 @@ if (!isset($_SESSION['username'])) {
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $job = $con->query("INSERT INTO `followup`(`job_entry_id`, `job_no`, `proposal_date`, `call_status`, `customer_id`,`employee_id`, `customer_phone`, `remarks`) VALUES ('$job_entry_id', '$job_no', '$proposal_date', 'pending', '$customer_id','$employee_id', '$customer_phone', 'pending');");
+    $job = $con->query("INSERT INTO `followup`(`job_entry_id`, `job_no`, `proposal_date`, `call_status`, `customer_id`,`employee_id`, `customer_phone`, `remarks`) VALUES ('$job_entry_id', '$job_no', '$proposal_date', '$call_status', '$customer_id','$employee_id', '$customer_phone', '$remarks');");
     if($job) {
         echo '<script>alert("Remarks Added Successfully");</script>';
-        echo '<script>window.location.href="today_jobs.php";</script>';
+        echo '<script>window.location.href="calls_status.php";</script>';
        }else {
         echo '<script>alert("Something went wrong");</script>';
-        echo '<script>window.location.href="today_jobs.php";</script>';
+        echo '<script>window.location.href="calls_status.php";</script>';
        }
+    //    echo '<script>alert("Remarks Added Successfully");</script>';
+    //    echo '<script>window.location.href="pending.php";</script>';
    }
+
+// $yesterday = date('Y-m-d', strtotime('yesterday'));
 
 $today = date('Y-m-d');
 
-$followups_sql = "SELECT 
-f.proposal_date AS proposal_date,
-f.job_no AS job_no,
+// $sql = "SELECT c.name AS customer_name, c.phone AS customer_phone, f.proposal_date AS proposal_date, f.call_status AS call_status, f.id AS followup_id, f.job_no AS job_no, f.job_entry_id AS job_entry_id, f.customer_id AS customer_id, f.employee_id AS employee_id, e.name AS employee_name FROM followup f LEFT JOIN customer c ON f.customer_id = c.id LEFT JOIN employee e ON f.employee_id = e.id WHERE f.call_status = 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today' ORDER BY c.name ASC;";
+$sql = "SELECT 
 c.name AS customer_name,
 c.phone AS customer_phone,
-e.name AS employee_name,
+f.proposal_date AS proposal_date,
 f.call_status AS call_status,
 f.id AS followup_id,
 f.job_no AS job_no,
 f.job_entry_id AS job_entry_id,
 f.customer_id AS customer_id,
-f.employee_id AS employee_id
+f.employee_id AS employee_id,
+e.name AS employee_name
 FROM followup f
 LEFT JOIN customer c ON f.customer_id = c.id
 LEFT JOIN employee e ON f.employee_id = e.id
 WHERE f.id = (SELECT MAX(id)
-FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status != 'rejected' AND call_status != 'pending' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
-ORDER BY c.name ASC;";
-
-$followups_result = $con->query($followups_sql);
+FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status = 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
+ORDER BY c.name ASC;
+";
+$result = $con->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +55,7 @@ $followups_result = $con->query($followups_sql);
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>Today Assigned Calls | Spot Engineers</title>
+    <title>Call Status | Spot Engineers</title>
     <link rel="stylesheet" href="assets/css/app.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -75,36 +79,36 @@ $followups_result = $con->query($followups_sql);
                             <div class="col-md-12">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h4 class="col-deep-purple m-0">Today Assigned Calls</h4>
+                                        <h4 class="col-deep-purple m-0">Call Status Report</h4>
                                     </div>
                                     <div class="card-body">
                                       
                                         <div class="table-responsive">
                                             <table class="table table-striped table-sm" id="tableExport" style="width:100%;">
-                                                <thead class="tableHeader">
+                                                <thead>
                                                     <tr>
                                                         <th>S.No</th>
-                                                        <th>Proposal Date</th>
-                                                        <th>Customer Name</th>
+                                                        <th>Name</th>
                                                         <th>Customer Phone</th>
+                                                        <th>Proposal Date</th>
+                                                        <th>Call Status</th>
                                                         <th>Employee Name</th>
-                                                        <th>Job Entry</th>
-                                                        <th>Move to Pending</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="tableBody">
+                                                <tbody>
                                                     <?php
                                                     $i = 1;
-                                                    while ($row = $followups_result->fetch_assoc()) {
+                                                    while ($row = $result->fetch_assoc()) {
                                                         echo "<tr>
                                                             <td>" . $i . "</td>
-                                                            <td>" . $row['proposal_date'] . "</td>
                                                             <td>" . $row['customer_name'] . "</td>
                                                             <td>" . $row['customer_phone'] . "</td>
+                                                            <td>" . $row['proposal_date'] . "</td>
+                                                            <td>" . $row['call_status'] . "</td>
                                                             <td>" . $row['employee_name'] . "</td>
-                                                            <td><a href='labour-entry.php?customer_id=" . $row['customer_id'] . "' target='_blank' class='btn btn-primary'><i class='fas fa-external-link-alt'></i></a></td>
                                                             <td>
-                                                            <button type='button' class='btn btn-danger btn pending-btn' 
+                                                            <button type='button' class='btn btn-primary btn update-btn' 
                                                                     data-toggle='modal' 
                                                                     data-customerid='" . $row['customer_id'] . "'
                                                                     data-employeeid='" . $row['employee_id'] . "'
@@ -113,7 +117,7 @@ $followups_result = $con->query($followups_sql);
                                                                     data-job_no='" . $row['job_no'] . "'
                                                                     data-job_entry_id='" . $row['job_entry_id'] . "'
                                                                     data-followup_id='" . $row['followup_id'] . "'>
-                                                                    <i class='fas fa-recycle' style='font-size:16px; vertical-align:middle'></i>
+                                                                    <i class='fas fa-edit'></i>
                                                             </button>
                                                         </td>
                                                         </tr>";
@@ -132,7 +136,7 @@ $followups_result = $con->query($followups_sql);
                 </section>
             </div>
         </div>
-<div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade" id="callModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -141,27 +145,43 @@ $followups_result = $con->query($followups_sql);
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="today_jobs.php" method="POST">
+            <form action="calls_status.php" method="POST">
 
             <div class="modal-body">
                 <div class="form-group">
                 <label>Job #: <span id="modalJobNumber" class="font-weight-bold"></span></label><br>
+                <button id="modalPhoneNumber" class="btn btn-primary" type="button" style="cursor: pointer;">Call</button>
                 </div>
 
-                <div class="form-group date_div">
-                    <label for="proposalDate">Proposal Date <span class="text-danger">*</span></label><input type="date" name="proposal_date" class="form-control" id="proposalDate" min="<?php echo date('Y-m-d'); ?>" value="<?php echo date('Y-m-d'); ?>" required>
+                <div class="form-group">
+                    <label for="proposalStatus">Call Status <span class="text-danger">*</span></label>
+                    <select class="form-control" id="proposalStatus" name="call_status" required>
+                        <option value="">Select Call Status</option>
+                        <option value="booked">Booked</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <div class="form-group date_div" style="display: none;">
+                    <label for="proposalDate">Proposal Date</label><input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
                     <input type="hidden" id="modalCustomerId" name="customer_id" value="">
                     <input type="hidden" id="modalEmployeeId" name="employee_id" value="">
                     <input type="hidden" id="modalphone" name="customer_phone" value="">
                     <input type="hidden" id="modaljob_no" name="job_no" value="">
                     <input type="hidden" id="modaljob_entry_id" name="job_entry_id" value="">
                     <input type="hidden" id="modalfollowup_id" name="followup_id" value="">
-                    <input type="hidden" id="modalproposal_status" name="call_status" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="feedbackText">Remarks</label>
+                    <textarea class="form-control" id="feedbackText" name="remarks" rows="3"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="saveFeedback">Send To Pending</button>
+                <!-- <button type="button" class="btn btn-primary" id="saveFeedback">Save Feedback</button> -->
+                <button type="submit" class="btn btn-primary" id="saveFeedback">Save Feedback</button>
             </div>
             </form>
         </div>
@@ -178,14 +198,13 @@ $followups_result = $con->query($followups_sql);
 </body>
 <script>
     $(document).ready(function() {
-        $('.pending-btn').click(function() {
+        $('.update-btn').click(function() {
         var phone = $(this).data('phone');
         var job = $(this).data('job_no');
         var customer_id = $(this).data('customerid');
         var employee_id = $(this).data('employeeid');
         var job_id = $(this).data('job_entry_id');
         var followup_id = $(this).data('followup_id');
-        var proposal_status = $(this).data('proposal_status');
         $('#modalphone').val(phone); 
         $('#modalCustomerId').val(customer_id); 
         $('#modalEmployeeId').val(employee_id);
@@ -193,17 +212,27 @@ $followups_result = $con->query($followups_sql);
         $('#modaljob_no').val(job);
         $('#modaljob_entry_id').val(job_id);
         $('#modelfollowup_id').val(followup_id);
-        $('#modalproposal_status').val(proposal_status);
+        $('#modalPhoneNumber').attr('onclick', "window.location.href='tel:+91" + phone + "';");
     });
 
-            const submitDate = $('#proposalDate');
-            const selectedDate = new Date(submitDate.val());
-            const minDate = new Date('<?php echo date('Y-m-d'); ?>');
-            if(selectedDate < minDate) {
-                e.preventDefault();
-                alert('Date should not be before today');
-                return;
-        }
+    $('#proposalStatus').on('change', function() {
+    const selectedValue = $(this).val();
+    const dateDiv = $('.date_div');
+    const proposalDate = $('#proposalDate');
+    const feedbackText = $('#feedbackText');
+
+    const isRejected = selectedValue === 'rejected';
+    const isAcceptedOrBooked = selectedValue === 'accepted' || selectedValue === 'booked';
+
+    dateDiv.toggle(isRejected);
+    proposalDate.prop('required', isRejected).css('pointer-events', isRejected ? 'auto' : 'none');
+    feedbackText.prop('required', selectedValue !== ''); // Feedback required for any status other than the default/empty
+
+    // if (!isRejected) {
+    //   proposalDate.val(''); // Clear date if not rejected
+    // }
+  });
+
   $('#tableExport').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -221,7 +250,9 @@ $followups_result = $con->query($followups_sql);
             }
         ]
     });
-});
+ 
+      
+    });
 </script>
 
 </html>
