@@ -116,6 +116,27 @@ if (date('m') < 4) { // April is month 4
           <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
             <div class="card w-100">
               <div class="card-statistic-4" style="height: 100%;">
+                <div class="align-items-center justify-content-between">
+                  <div class="row ">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
+                      <div class="card-content modified">
+                        <h5 class="font-15 heading">Calls Status</h5>
+                        <a href="calls_status.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $status_result ?></h2></a>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
+                      <div class="banner-img">
+                        <img src="assets/img/banner/9.webp" alt="" height="100" width="100">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
+            <div class="card w-100">
+              <div class="card-statistic-4" style="height: 100%;">
                 <div class="align-items-center justify-content-between" >
                   <div class="row" >
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
@@ -156,27 +177,7 @@ if (date('m') < 4) { // April is month 4
             </div>
           </div>
 
-          <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-xs-12 d-flex">
-            <div class="card w-100">
-              <div class="card-statistic-4" style="height: 100%;">
-                <div class="align-items-center justify-content-between">
-                  <div class="row ">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
-                      <div class="card-content modified">
-                        <h5 class="font-15 heading">Calls Status</h5>
-                        <a href="calls_status.php"><h2 class="mb-3 fw-modified sub_heading"><?php echo $status_result ?></h2></a>
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
-                      <div class="banner-img">
-                        <img src="assets/img/banner/9.webp" alt="" height="100" width="100">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
 
         </div>
 
