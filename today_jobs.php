@@ -39,7 +39,7 @@ FROM followup f
 LEFT JOIN customer c ON f.customer_id = c.id
 LEFT JOIN employee e ON f.employee_id = e.id
 WHERE f.id = (SELECT MAX(id)
-FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status != 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
+FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND call_status != 'rejected' AND call_status != 'pending' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today'
 ORDER BY c.name ASC;";
 
 $followups_result = $con->query($followups_sql);
@@ -161,7 +161,7 @@ $followups_result = $con->query($followups_sql);
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="saveFeedback">Save Feedback</button>
+                <button type="submit" class="btn btn-primary" id="saveFeedback">Send To Pending</button>
             </div>
             </form>
         </div>
@@ -177,6 +177,7 @@ $followups_result = $con->query($followups_sql);
     <script src="assets/js/app.js"></script>
 </body>
 <script>
+    $(document).ready(function() {
         $('.pending-btn').click(function() {
         var phone = $(this).data('phone');
         var job = $(this).data('job_no');
@@ -194,6 +195,15 @@ $followups_result = $con->query($followups_sql);
         $('#modelfollowup_id').val(followup_id);
         $('#modalproposal_status').val(proposal_status);
     });
+
+            const submitDate = $('#proposalDate');
+            const selectedDate = new Date(submitDate.val());
+            const minDate = new Date('<?php echo date('Y-m-d'); ?>');
+            if(selectedDate < minDate) {
+                e.preventDefault();
+                alert('Date should not be before today');
+                return;
+        }
   $('#tableExport').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -211,6 +221,7 @@ $followups_result = $con->query($followups_sql);
             }
         ]
     });
+});
 </script>
 
 </html>

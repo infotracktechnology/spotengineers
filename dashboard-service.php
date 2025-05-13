@@ -19,7 +19,7 @@ $followups_result = $con->query($followups_sql)->fetch_array()[0];
 $today = date('Y-m-d');
 
 $today_sql = "SELECT COUNT(*) FROM `followup` f WHERE f.id = (SELECT MAX(id)
-FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND f.call_status != 'rejected' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today';";
+FROM followup latest WHERE latest.job_entry_id = f.job_entry_id) AND f.call_status != 'rejected' AND call_status != 'pending' AND DATE_FORMAT(f.proposal_date, '%Y-%m-%d') = '$today';";
 
 $today_result = $con->query($today_sql)->fetch_array()[0];
 
@@ -180,14 +180,33 @@ if (date('m') < 4) { // April is month 4
 
         </div>
 
+          <div class="card">
+          <div class="card-body">
+            <div class="row">
+            <div class="form-group col-sm-5">
+                  <label for="fromDate">From</label>
+                  <input type="date" class="form-control form-control " id="fromDate" max="<?php echo date('Y-m-d'); ?>">
+                  </div>
+                  <div class="form-group col-sm-5">
+                  <label for="toDate">To</label>
+                  <input type="date" class="form-control form-control" id="toDate" max="<?php echo date('Y-m-d'); ?>">
+                  </div>
+                  <div class="form-group col-sm-2 mt-4">
+                  <button id="filterBtn" class="btn btn-primary w-100 mt-1">Filter</button>
+                  </div>
+            </div>
+          </div>
+        </div>
+        
+
           <div class="row clearfix">
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 col-12">
               <div class="card">
                 <div class="card-header justify-content-between align-items-center">
                   <h4>Month Vs Job Entry <span class="col-blue font-15"></span></h4>
-                  <div class="card-header-right" data-toggle='modal' data-target='#dateModal'>
+                  <!-- <div class="card-header-right" data-toggle='modal' data-target='#dateModal'>
                   <i class="fas fa-calendar-alt font-20"></i>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="card-body">
                   <div class="recent-report__chart">

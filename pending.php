@@ -16,7 +16,7 @@ unset($_SESSION['success']);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $job = $con->query("INSERT INTO `followup`(`job_entry_id`, `job_no`, `proposal_date`, `call_status`, `customer_id`,`employee_id`, `customer_phone`, `remarks`) VALUES ('$job_entry_id', '$job_no', '$proposal_date', '$call_status', '$customer_id','$employee_id', '$customer_phone', '$remarks');");
+    $job = $con->query("INSERT INTO `followup`(`job_entry_id`, `job_no`, `proposal_date`, `call_status`, `customer_id`,`employee_id`, `customer_phone`, `remarks`) VALUES ('$job_entry_id', '$job_no', '$proposal_date', 'booked', '$customer_id','$employee_id', '$customer_phone', '$remarks');");
     if($job) {
         $_SESSION['success'] = "Successfully saved!";
         header("Location: pending.php");
@@ -129,7 +129,7 @@ $result = $con->query($sql);
                                                         <th>Customer Name</th>
                                                         <th>Customer Phone</th>
                                                         <th>Employee Name</th>
-                                                        <th>Call</th>
+                                                        <th>Move To Booked</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="tableBody">
@@ -144,7 +144,7 @@ $result = $con->query($sql);
                                                             <td>" . $row['customer_phone'] . "</td>
                                                             <td>" . $row['employee_name'] . "</td>
                                                             <td>
-                                                            <button type='button' class='btn btn-primary btn pending-btn' 
+                                                            <button type='button' class='btn btn-danger btn pending-btn' 
                                                                     data-toggle='modal' 
                                                                     data-customerid='" . $row['customer_id'] . "'
                                                                     data-employeeid='" . $row['employee_id'] . "'
@@ -153,7 +153,7 @@ $result = $con->query($sql);
                                                                     data-job_no='" . $row['job_no'] . "'
                                                                     data-job_entry_id='" . $row['job_entry_id'] . "'
                                                                     data-followup_id='" . $row['followup_id'] . "'>
-                                                                    <i class='fas fa-phone' style='font-size:16px; vertical-align:middle'></i>
+                                                                    <i class='fas fa-exchange-alt' style='font-size:16px; vertical-align:middle'></i>
                                                             </
                                                         </tr>";
                                                         $i++;
@@ -185,21 +185,11 @@ $result = $con->query($sql);
             <div class="modal-body">
                 <div class="form-group">
                 <label>Job #: <span id="modalJobNumber" class="font-weight-bold"></span></label><br>
-                <button id="modalPhoneNumber" class="btn btn-primary" type="button" style="cursor: pointer;">Call</button>
                 </div>
 
-                <div class="form-group">
-                    <label for="proposalStatus">Call Status <span class="text-danger">*</span></label>
-                    <select class="form-control" id="proposalStatus" name="call_status" required>
-                        <option value="">Select Call Status</option>
-                        <option value="booked">Booked</option>
-                        <option value="accepted">Accepted</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-
-                <div class="form-group date_div" style="display: none;">
-                <label for="proposalDate">Proposal Date <span class="text-danger">*</span></label><input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
+                <div class="form-group date_div">
+                <label for="proposalDate">Proposal Date <span class="text-danger">*</span></label>
+                <input type="date" min="<?php echo date('Y-m-d'); ?>" name="proposal_date" class="form-control" id="proposalDate" value="<?php echo date('Y-m-d'); ?>" required>
                     <input type="hidden" id="modalCustomerId" name="customer_id" value="">
                     <input type="hidden" id="modalEmployeeId" name="employee_id" value="">
                     <input type="hidden" id="modalphone" name="customer_phone" value="">
@@ -207,14 +197,14 @@ $result = $con->query($sql);
                     <input type="hidden" id="modaljob_id" name="job_entry_id" value="">
                 </div>
 
-                <div class="form-group remarks_div" style="display: none;">
-                    <label for="feedbackText">Remarks <span class="text-danger call-remarks" style="display: none;">*</span></label>
-                    <textarea class="form-control" id="feedbackText" name="remarks" rows="3"></textarea>
+                <div class="form-group remarks_div">
+                    <label for="feedbackText">Remarks <span class="text-danger call-remarks">*</span></label>
+                    <textarea class="form-control" id="feedbackText" name="remarks" rows="3" placeholder="Enter Remarks" required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="saveFeedback">Save Feedback</button>
+                <button type="submit" class="btn btn-primary" id="saveFeedback">Send To Assignment</button>
             </div>
             </form>
         </div>
@@ -253,44 +243,9 @@ $(document).ready(function() {
         $('#modalJobNumber').text(job);
         $('#modaljob').val(job);
         $('#modaljob_id').val(job_id);
-        $('#modalPhoneNumber').attr('onclick', "window.location.href='tel:+91" + phone + "';");
     });
 
-    $('#proposalStatus').on('change', function() {
-    const selectedValue = $(this).val();
-    const dateDiv = $('.date_div');
-    const callRemarks = $('.call-remarks');
-    const proposalDate = $('#proposalDate');
-    const feedbackText = $('#feedbackText');
-    const remarksDiv = $('.remarks_div');
-    const isEmpty = selectedValue === '';
-    const isRejected = selectedValue === 'rejected';
-    const isAccepted = selectedValue === 'accepted';
-    const isBooked = selectedValue === 'booked';
-    if(isBooked) {
-        proposalDate.attr('min', '<?php echo date('Y-m-d', strtotime('+1 day')); ?>').val('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
-    } else {
-        proposalDate.attr('min', '<?php echo date('Y-m-d'); ?>').val('<?php echo date('Y-m-d'); ?>');
-    }
-    remarksDiv.toggle(!isEmpty);
-    callRemarks.toggle(!isAccepted);
-    dateDiv.toggle(isRejected || isBooked);
-    proposalDate.prop('required', isRejected || isBooked).css('pointer-events', isRejected || isBooked ? 'auto' : 'none');
-    feedbackText.prop('required', !isAccepted);
-
-  });
-
     $('#callForm').on('submit', function(e) {
-        if($('#proposalStatus').val() === 'booked') {
-            const submitDate = $('#proposalDate');
-            const selectedDate = new Date(submitDate.val());
-            const minDate = new Date('<?php echo date('Y-m-d', strtotime('+1 day')); ?>');
-            if(selectedDate < minDate) {
-                showToast('Error', 'Proposal Date should not be lesser', 'danger');
-                e.preventDefault();
-                return;
-        }
-        } else {
             const submitDate = $('#proposalDate');
             const selectedDate = new Date(submitDate.val());
             const minDate = new Date('<?php echo date('Y-m-d'); ?>');
@@ -298,8 +253,8 @@ $(document).ready(function() {
                 showToast('Error', 'Proposal Date should not be lesser', 'danger');
                 e.preventDefault();
                 return;
-            }
         }
+        
     });
 
         <?php if ($successMessage): ?>
